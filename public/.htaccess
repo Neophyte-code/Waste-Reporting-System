@@ -1,0 +1,11 @@
+RewriteEngine On
+RewriteBase /WasteWise/public/
+
+# Allow direct access to static files
+RewriteCond %{REQUEST_URI} \.(css|js|jpg|png|gif|ico|svg)$ [NC]
+RewriteRule ^ - [L]
+
+# Redirect all other requests to index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
