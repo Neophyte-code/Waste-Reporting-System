@@ -40,6 +40,7 @@
                         <a href="/public/home" class="text-green-500 hover:text-green-50"><button class="border-2 border-green-500 rounded p-2 text-xl text-green hover:bg-green-500">Report Litterer</button></a>
                     </div>
                 </div>
+
                 <div class="bg-white-400 gap-4 flex flex-col min-w-1/3 drop-shadow-2xl">
                     <!-- Register -->
                     <form id="signUpForm" action="/MVC-PRACTICE/public/auth/register" method="post" class="hidden flex flex-col p-10 gap-5 bg-green-50 rounded-xl">
@@ -51,7 +52,6 @@
                         <button type="submit" class="rounded-full bg-green-500 text-white hover:bg-green-600">Register</button>
                         <p class="text-center text-green-950">Already have an account? <span><button type="button" id="showSignIn" class="text-green-500">Sign In</button></span></p>
                     </form>
-
                     <!-- Login -->
                     <form id="signInForm" action="/MVC-PRACTICE/public/auth/login" method="post" class="hidden flex flex-col p-10 gap-5 bg-green-50 rounded-xl">
                         <h3 class="text-center text-green-950 font-bold text-4xl">Sign In</h3>
