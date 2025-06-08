@@ -50,10 +50,10 @@
         </nav>
     </header>
 
-    <!-- HOME CONTENT -->
+    <!-- ABOUT CONTENT -->
 
     <main class="flex-grow w-full">
-        <h1>this is for home page</h1>
+        <h1>this is for about page</h1>
     </main>
     <footer class="text-gray bg-green-50 py-2">
         <h1 class="text-center text-xs">&copyWasteWise 2025 All Rights Reserved</h1>

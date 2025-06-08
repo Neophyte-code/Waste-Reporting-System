@@ -18,45 +18,39 @@
             <div class="nav-links duration-500 md:static absolute bg-white md:min-h-fit min-h-[38vh] left-0 top-[-100%] md:w-auto z-1 w-full flex items-center px-5">
                 <ul class="w-full flex items-center justify-center md:flex-row flex-col md:text-md md:h-full md:items-center md:gap-[2vw] gap-8 font-bold">
                     <li>
-                        <a class="hover:text-green-500" href="#">HOME</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>">HOME</a>
                     </li>
                     <li>
-                        <a class="hover:text-green-500" href="#">ABOUT</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/about">ABOUT</a>
                     </li>
                     <li>
-                        <a class="hover:text-green-500" href="#">CONTACT</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/contact">CONTACT</a>
                     </li>
                     <li>
-                        <a class="hover:text-green-500" href="#">ANNOUNCEMENT</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/announcement">ANNOUNCEMENT</a>
                     </li>
-                    <li class="relative group">
-                        <button class="hover:text-green-500 cursor-pointer flex items-center gap-1">
-                          REPORT
+                    <li class="relative">
+                        <button onclick="toggleDropdown()" class="hover:text-green-500 cursor-pointer flex items-center gap-1 font-bold">
+                            REPORT
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.23 8.29a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.23 8.29a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
                             </svg>
                         </button>
-                            <ul class="absolute hidden group-hover:flex flex-col bg-white shadow-lg mt-2 rounded w-44 z-20 text-sm">
-                                <li>
-                                <a href="/waste-reporting-system/public/" class="block px-4 py-2 hover:bg-green-100 text-black">Report Waste</a>
-                                </li>
-                                <li>
-                                <a href="/home" class="block px-4 py-2 hover:bg-green-100 text-black">Report Litterer</a>
-                                </li>
-                            </ul>
-                        </li>
-
-
-
+                        <div id="reportDropdown" class="absolute hidden bg-white shadow-lg mt-2 rounded w-44 z-20 text-sm">
+                            <a href="<?php echo URL_ROOT; ?>/report/waste" class="block px-4 py-2 hover:bg-green-100 text-black">Report Waste</a>
+                            <a href="<?php echo URL_ROOT; ?>/report/litterer" class="block px-4 py-2 hover:bg-green-100 text-black">Report Litterer</a>
+                        </div>
+                    </li>
                 </ul>
             </div>
             <div class="flex items-center gap-6">
-                <button id="signInBtn" class="bg-green-500 md:shadow-2xl text-sm px-2 py-1 text-white rounded hover:bg-green-600 ">Sign in</button>
+                <button id="signInBtn" class="bg-green-500 md:shadow-lg text-md px-2 py-1 text-white rounded hover:bg-green-600">Sign in</button>
                 <ion-icon onclick="onToggleMenu(this)" name="menu" class="text-3xl cursor-pointer md:hidden z-1"></ion-icon>
             </div>
+        </nav>
     </header>
 
-    <!-- HOME CONTENT -->
+    <!-- AUTH CONTENT -->
 
     <main class="flex-grow w-full">
         <div class="bg-gradient-to-r from-green-100 via-emerald-200 to-green-500 p-4 sm:p-6 md:p-0 h-screen flex items-center justify-center w-full">
@@ -82,9 +76,9 @@
                                 <input type="password" name="password" placeholder="Password" required class="text-green-900 border-2 border-green-300 rounded-lg p-2 font-medium text-xs sm:text-sm focus:border-green-500 transition-colors" aria-label="Password">
                                 <button type="submit" class="rounded-full bg-green-600 text-white hover:bg-green-700 p-2 text-xs sm:text-sm font-semibold transition-colors">Sign In</button>
                                 <a href="">
-                                    <p class="text-blue-400 underline">Forgot password</p>
+                                    <p class="text-blue-400 underline text-sm">Forgot password?</p>
                                 </a>
-                                <p class="text-center text-green-800 text-xs">Don't have an account? <button type="button" id="showSignUp" class="text-green-600 hover:text-green-700 font-medium">Sign Up</button></p>
+                                <p class="text-center text-green-800 text-sm">Don't have an account? <button type="button" id="showSignUp" class="text-green-600 hover:text-green-700 font-medium underline">Sign Up</button></p>
                             </form>
 
                             <!-- Sign Up Form -->
@@ -104,7 +98,7 @@
                                 <input type="password" name="password" placeholder="Password" required class="text-green-900 border-2 border-green-300 rounded-lg p-2 font-medium text-xs sm:text-sm focus:border-green-500 transition-colors" aria-label="Password">
                                 <input type="password" name="confirm_password" placeholder="Confirm Password" required class="text-green-900 border-2 border-green-300 rounded-lg p-2 font-medium text-xs sm:text-sm focus:border-green-500 transition-colors" aria-label="Confirm Password">
                                 <button type="submit" class="rounded-full bg-green-600 text-white hover:bg-green-700 p-2 text-xs sm:text-sm font-semibold transition-colors">Register</button>
-                                <p class="text-center text-green-800 text-xs">Already have an account? <button type="button" id="showSignIn" class="text-green-600 hover:text-green-700 font-medium">Sign In</button></p>
+                                <p class="text-center text-green-800 text-sm">Already have an account? <button type="button" id="showSignIn" class="text-green-600 hover:text-green-700 font-medium underline">Sign In</button></p>
                             </form>
                         </div>
                     </div>
@@ -126,6 +120,23 @@
                 backDelay: 1000,
                 loop: true
             });
+        });
+
+        // Modern JavaScript for dropdown functionality
+        function toggleDropdown() {
+            const dropdown = document.getElementById("reportDropdown");
+            dropdown.classList.toggle("hidden");
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById("reportDropdown");
+            const button = event.target.closest('button[onclick="toggleDropdown()"]');
+
+            // If click is not on the dropdown button, close the dropdown
+            if (!button && !dropdown.classList.contains('hidden')) {
+                dropdown.classList.add("hidden");
+            }
         });
     </script>
 </body>

@@ -1,0 +1,2 @@
+#ignore node_modules folder to be push in github
+node_modules/

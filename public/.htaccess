@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteBase /WasteWise/public/
+RewriteBase /Waste-Reporting-System/public/
 
 # Allow direct access to static files
 RewriteCond %{REQUEST_URI} \.(css|js|jpg|png|gif|ico|svg)$ [NC]
