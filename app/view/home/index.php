@@ -18,7 +18,7 @@
             <div class="nav-links duration-500 md:static absolute bg-white md:min-h-fit min-h-[38vh] left-0 top-[-100%] md:w-auto z-1 w-full flex items-center px-5">
                 <ul class="w-full flex items-center justify-center md:flex-row flex-col md:text-md md:h-full md:items-center md:gap-[2vw] gap-8 font-bold">
                     <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>">HOME</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/home">HOME</a>
                     </li>
                     <li>
                         <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/about">ABOUT</a>
@@ -53,11 +53,24 @@
     <!-- HOME CONTENT -->
 
     <main class="flex-grow w-full">
-        <h1>this is for home page</h1>
+        <div class="container">
+            <h1>Welcome, <?php echo htmlspecialchars($data['user']['firstname'] . ' ' . $data['user']['lastname']); ?>!</h1>
+
+            <div class="user-info">
+                <p><strong>Email:</strong> <?php echo htmlspecialchars($data['user']['email']); ?></p>
+                <p><strong>Barangay:</strong> <?php echo htmlspecialchars($data['user']['barangay']); ?></p>
+            </div>
+
+            <a href="<?php echo URL_ROOT; ?>/auth/logout">Logout</a>
+        </div>
     </main>
+
+    <!-- footer -->
+
     <footer class="text-gray bg-green-50 py-2">
         <h1 class="text-center text-xs">&copyWasteWise 2025 All Rights Reserved</h1>
     </footer>
+
     <script src="<?php echo URL_ROOT; ?>/js/auth.js"></script>
     <script>
         // Modern JavaScript for dropdown functionality
