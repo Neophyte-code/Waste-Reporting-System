@@ -86,9 +86,6 @@
                                     </button>
                                 </div>
                                 <button type="submit" class="rounded-full bg-green-600 text-white hover:bg-green-700 p-2 text-xs sm:text-sm font-semibold transition-colors">Sign In</button>
-                                <a href="">
-                                    <p class="text-blue-400 underline text-sm">Forgot password?</p>
-                                </a>
                                 <p class="text-center text-green-800 text-sm">Don't have an account? <button type="button" id="showSignUp" class="text-green-600 hover:text-green-700 font-medium underline">Sign Up</button></p>
                             </form>
 

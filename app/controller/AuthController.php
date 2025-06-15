@@ -54,7 +54,7 @@ class AuthController extends Controller
             // Register the user
             $data['barangay_id'] = $barangay_id;
             if ($userModel->register($data)) {
-                $this->view("auth/index", ['success' => 'Registration successful! Please sign in with your credentials.', 'form' => 'signup']);
+                $this->view("auth/index", ['success' => 'Registration successful!', 'form' => 'signup']);
             } else {
                 $this->view("auth/index", ['error' => 'Registration failed', 'form' => 'signup']);
             }
