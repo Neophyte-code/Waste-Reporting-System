@@ -9,7 +9,7 @@
     <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
 </head>
 
-<body class="font-[sans-serif] bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee] h-full w-full">
+<body class="font-[sans-serif] bg-gradient-to-r from-green-100 via-emerald-200 to-green-500 h-full w-full">
     <header class="bg-white w-full">
         <nav class="flex justify-between items-center w-[92%] mx-auto">
             <div>

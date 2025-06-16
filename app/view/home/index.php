@@ -1,33 +1,33 @@
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    <link href="<?php echo URL_ROOT; ?>/css/output.css" rel="stylesheet">
+    <title>WasteWise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+    <script src="https://unpkg.com/typed.js@2.0.16/lib/typed.min.js"></script>
 </head>
 
-<body class="font-[sans-serif] bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee] h-full w-full">
+<body class="font-[sans-serif] bg-gradient-to-r from-green-100 via-emerald-200 to-green-500 h-full w-full">
     <header class="bg-white w-full">
         <nav class="flex justify-between items-center w-[92%] mx-auto">
             <div>
-                <img class="w-27 cursor-pointer " src="<?php echo URL_ROOT; ?>/images/WasteWise.png" alt="...">
+                <img class="w-[110px] cursor-pointer " src="<?php echo URL_ROOT; ?>/images/WasteWise.png" alt="...">
             </div>
-            <div class="nav-links duration-500 md:static absolute bg-white md:min-h-fit min-h-[38vh] left-0 top-[-100%] md:w-auto z-1 w-full flex items-center px-5">
-                <ul class="w-full flex items-center justify-center md:flex-row flex-col md:text-md md:h-full md:items-center md:gap-[2vw] gap-8 font-bold">
+            <div class="nav-links duration-500 md:static absolute bg-white md:min-h-fit min-h-[38vh] left-0 top-[-100%] md:w-auto z-10 w-full flex items-center px-6">
+                <ul class="w-full flex items-center justify-center md:flex-row flex-col md:text-md md:h-full md:items-center md:gap-[2vw] py-6 gap-8 font-bold">
                     <li>
                         <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/home">HOME</a>
                     </li>
                     <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/about">ABOUT</a>
+                        <a class="hover:text-green-500" href="#">ABOUT</a>
                     </li>
                     <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/contact">CONTACT</a>
+                        <a class="hover:text-green-500" href="#">CONTACT</a>
                     </li>
                     <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/announcement">ANNOUNCEMENT</a>
+                        <a class="hover:text-green-500" href="#">ANNOUNCEMENT</a>
                     </li>
                     <li class="relative">
                         <button onclick="toggleDropdown()" class="hover:text-green-500 cursor-pointer flex items-center gap-1 font-bold">
@@ -37,43 +37,540 @@
                             </svg>
                         </button>
                         <div id="reportDropdown" class="absolute hidden bg-white shadow-lg mt-2 rounded w-44 z-20 text-sm">
-                            <a href="<?php echo URL_ROOT; ?>/report/waste" class="block px-4 py-2 hover:bg-green-100 text-black">Report Waste</a>
-                            <a href="<?php echo URL_ROOT; ?>/report/literrer" class="block px-4 py-2 hover:bg-green-100 text-black">Report Litterer</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-green-100 text-black">Report Waste</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-green-100 text-black">Report Litterer</a>
                         </div>
                     </li>
                 </ul>
             </div>
-            <div class="flex items-center gap-6">
-                <button id="signInBtn" class="bg-green-500 md:shadow-lg text-md px-2 py-1 text-white rounded hover:bg-green-600">Sign in</button>
-                <ion-icon onclick="onToggleMenu(this)" name="menu" class="text-3xl cursor-pointer md:hidden z-1"></ion-icon>
+            <div class="flex items-center gap-3">
+                <div class="relative">
+                    <ion-icon name="notifications-outline" class="text-3xl cursor-pointer hover:text-green-500 transition-colors" onclick="openNotificationModal()"></ion-icon>
+                    <div id="notificationBadge" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center font-bold">3</div>
+                </div>
+                <div class="relative">
+                    <img src="<?php echo URL_ROOT; ?>/images/tree3.png" 
+                         alt="Profile" 
+                         class="w-10 h-10 rounded-full cursor-pointer border-2 border-gray-300 hover:border-green-500 transition-colors"
+                         onclick="openProfileModal()">
+                </div>
+                <ion-icon onclick="onToggleMenu(this)" name="menu" class="text-3xl cursor-pointer md:hidden z-10"></ion-icon>
             </div>
         </nav>
     </header>
 
-    <!-- HOME CONTENT -->
+    <!-- Notification Modal -->
+<div id="notificationModal" class="fixed top-16 right-2 z-50 hidden" style="width: 350px;">
+    <div class="bg-white rounded-2xl shadow-2xl transform transition-all duration-300 translate-x-full opacity-0" id="notificationModalContent">
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-100 rounded-tr-2xl rounded-tl-2xl">
+            <div class="flex items-center gap-2">
+                <ion-icon name="notifications" class="text-xl text-green-500"></ion-icon>
+                <h2 class="text-lg font-bold text-gray-800">Notifications</h2>
+                <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-bold">3</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="markAllAsRead()" class="text-sm text-green-500 hover:text-green-600 font-medium">
+                    Mark all read
+                </button>
+                <button onclick="closeNotificationModal()" class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+                    <ion-icon name="close" class="text-xl text-gray-500"></ion-icon>
+                </button>
+            </div>
+        </div>
 
-    <main class="flex-grow w-full">
-        <div class="container">
-            <h1>Welcome, <?php echo htmlspecialchars($data['user']['firstname'] . ' ' . $data['user']['lastname']); ?>!</h1>
-
-            <div class="user-info">
-                <p><strong>Email:</strong> <?php echo htmlspecialchars($data['user']['email']); ?></p>
-                <p><strong>Barangay:</strong> <?php echo htmlspecialchars($data['user']['barangay']); ?></p>
+        <!-- Notification Content -->
+        <div class="h-[27rem] overflow-y-hidden " id="notificationContent">
+            <!-- Notification Item 1 -->
+            <div class="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
+                <div class="flex items-start gap-3">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                            <ion-icon name="trash" class="text-green-600 text-lg"></ion-icon>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1">
+                            <h4 class="text-sm font-semibold text-gray-800">Waste Report Approved</h4>
+                            <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-1">Your waste report at Tapilon Street has been approved. You earned 50 points!</p>
+                        <p class="text-xs text-gray-400">2 hours ago</p>
+                    </div>
+                </div>
             </div>
 
-            <a href="<?php echo URL_ROOT; ?>/auth/logout">Logout</a>
+            <!-- Notification Item 2 -->
+            <div class="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
+                <div class="flex items-start gap-3">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                            <ion-icon name="warning" class="text-yellow-600 text-lg"></ion-icon>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1">
+                            <h4 class="text-sm font-semibold text-gray-800">Report Under Review</h4>
+                            <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-1">Your litterer report is currently being reviewed by our team.</p>
+                        <p class="text-xs text-gray-400">5 hours ago</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Item 3 -->
+            <div class="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
+                <div class="flex items-start gap-3">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <ion-icon name="medal" class="text-blue-600 text-lg"></ion-icon>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1">
+                            <h4 class="text-sm font-semibold text-gray-800">Achievement Unlocked!</h4>
+                            <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-1">Congratulations! You've reached 500 points and unlocked the "Eco Warrior" badge.</p>
+                        <p class="text-xs text-gray-400">1 day ago</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hidden p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
+                <div class="flex items-start gap-3">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <ion-icon name="medal" class="text-blue-600 text-lg"></ion-icon>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1">
+                            <h4 class="text-sm font-semibold text-gray-800">Achievement Unlocked!</h4>
+                            <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-1">Congratulations! You've reached 500 points and unlocked the "Eco Warrior" badge.</p>
+                        <p class="text-xs text-gray-400">1 day ago</p>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="hidden p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
+                <div class="flex items-start gap-3">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                            <ion-icon name="trash" class="text-green-600 text-lg"></ion-icon>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1">
+                            <h4 class="text-sm font-semibold text-gray-800">New Waste Collection</h4>
+                            <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-1">A new waste collection point has been added near your location.</p>
+                        <p class="text-xs text-gray-400">2 days ago</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Hidden Notifications -->
+            <div class="hidden p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
+                <div class="flex items-start gap-3">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                            <ion-icon name="star" class="text-purple-600 text-lg"></ion-icon>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1">
+                            <h4 class="text-sm font-semibold text-gray-800">Weekly Leaderboard</h4>
+                            <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-1">You're in the top 10 contributors this week! Keep up the good work.</p>
+                        <p class="text-xs text-gray-400">3 days ago</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State (hidden by default) -->
+            <div id="emptyNotifications" class="hidden p-8 text-center">
+                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <ion-icon name="notifications-off" class="text-2xl text-gray-400"></ion-icon>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">No notifications</h3>
+                <p class="text-gray-500 text-sm">You're all caught up! Check back later for updates.</p>
+            </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="px-6 -mt-10 py-4 border-t border-gray-100" id="viewAllButtonContainer">
+            <button onclick="viewAllNotifications()" class="w-full text-center text-green-500 hover:text-green-600 font-medium text-sm">
+                View All Notifications
+            </button>
+        </div>
+    </div>
+</div>
+
+
+    
+
+    <!-- Profile Modal -->
+<div id="profileModal" class="fixed top-16 right-2 z-50 hidden" style="width: 320px;">
+    <div class="bg-white rounded-2xl shadow-2xl transform transition-all duration-300 translate-x-full opacity-0" id="modalContent">
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between px-6 py-3 border-b border-gray-100 bg-gray-200 rounded-tr-2xl rounded-tl-2xl">
+            <h2 class="text-lg font-bold text-gray-800">My Profile</h2>
+            <div class="flex items-center gap-3">
+                <button onclick="toggleEditMode()" class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+                    <ion-icon name="create-outline" class="text-xl text-gray-500"></ion-icon>
+                </button>
+                <button onclick="closeProfileModal()" class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+                    <ion-icon name="close" class="text-xl text-gray-500"></ion-icon>
+                </button>
+            </div>
+        </div>
+
+        <!-- Profile Content -->
+        <div class="p-6">
+            <!-- Profile Picture and Basic Info -->
+            <div class="flex items-center gap-4 mb-4">
+                <div class="relative group">
+                    <img src="<?php echo URL_ROOT; ?>/images/tree3.png" 
+                         alt="Profile" 
+                         class="w-20 h-20 rounded-full border-4 border-green-100 cursor-pointer"
+                         id="profileImage"
+                         onclick="document.getElementById('profileImageInput').click()">
+                    <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+                        <ion-icon name="checkmark" class="text-white text-sm"></ion-icon>
+                    </div>
+                    <div class="absolute inset-0 bg-black bg-opacity-30 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                         onclick="document.getElementById('profileImageInput').click()">
+                        <ion-icon name="camera" class="text-white text-2xl"></ion-icon>
+                    </div>
+                    <input type="file" id="profileImageInput" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-gray-800" id="profileName">Jerwin Noval</h3>
+                    <p class="text-sm text-gray-500" id="profileEmail">jerwinnoval@gmail.com</p>
+                    <button class="mt-1 text-sm text-blue-500 hover:text-blue-600 font-medium" onclick="toggleEditMode()">Edit Profile</button>
+                </div>
+            </div>
+
+            <!-- Menu Items -->
+            <div class="space-y-1" id="menuItems">
+                <div class="flex items-center gap-3 p-3 rounded-lg hover:bg-red-100 cursor-pointer transition-colors text-red-600">
+                    <ion-icon name="log-out-outline" class="text-xl"></ion-icon>
+                    <span class="-ml-8">Log Out</span>
+                    <ion-icon name="chevron-forward" class="text-red-400 ml-auto"></ion-icon>
+                </div>
+            </div>
+
+            <!-- Edit Form (Hidden by default) -->
+            <div id="editForm" class="hidden">
+                <div>
+                    <label class="block text-sm font-sm text-gray-700 mb-1">First Name</label>
+                    <input type="text" value="Jerwin" class="w-full p-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-sm text-gray-700 mb-1">Last Name</label>
+                    <input type="text" value="Noval" class="w-full p-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-sm text-gray-700 mb-1">Email</label>
+                    <input type="email" value="jerwinnoval@gmail.com" class="w-full p-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-sm text-gray-700 mb-1">Location</label>
+                    <select class="w-full p-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none focus:border-transparent">
+                        <option>Tapilon</option>
+                        <option>Maya</option>
+                        <option>Poblacion</option>
+                    </select>
+                </div>
+                <div class="flex gap-2 pt-2 mt-2">
+                    <button onclick="saveProfile()" class="flex-1 bg-green-500 text-white py-1 rounded-lg font-medium hover:bg-green-600 transition-colors">
+                        Save Changes
+                    </button>
+                    <button onclick="cancelEdit()" class="flex-1 border border-gray-300 text-gray-700 py-1 rounded-lg font-medium hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <!-- HOME CONTENT -->
+     <main class="flex-grow w-full">
+        <div class=" p-4  h-screen flex items-center justify-center w-full sm:p-6 md:p-0 md:gap-10">
+            <div class=" flex flex-col  gap-8 px-4 items-center justify-center w-full sm:mt-20 sm:px-6 md:flex-col md:max-w-full md:px-8 lg:flex-row">
+                <div class=" p-1 mt-15  w-full py-10 order-2 sm:p-6 md:p-8 md:order-2 md:min-w-[60%] lg:order-1">
+                    <h1 class="text-2xl -mt-[70px] font-bold text-black mb-2 sm:text-3xl md:text-4xl md:-mt-[10px]">Welcome to Waste<span class="text-green-500">Wise</span></h1>
+                    <h3 class="text-1xl font-bold text-black mb-2 sm:text-2xl md:text-3xl ">Earn by reporting <span id="report" class="text-green-400"></span></h3>
+                    <p class="mb-4 text-sm  text-black sm:text-lg md:text-xl ">WasteWise is a user-friendly system designed to help individuals and communities report waste effectively. Our platform enables users to easily log and track waste, providing valuable insights into waste management practices and identifying areas for improvement. By promoting transparency and accountability, WasteWise aims to contribute to a more sustainable future for our planet.</p>
+                    <div class="flex flex-col  gap-4 sm:flex-row">
+                        <a href="/waste-reporting-system/public/" class="text-green-50 hover:text-green-500"><button class="w-full  border-2 border-green-500 rounded p-2 text-base  bg-green-500 hover:text-green hover:bg-transparent hover:border-2 hover:border-green-500 transition-colors sm:w-auto sm:text-lg md:text-xl">Report Waste</button></a>
+                        <a href="/home" class="text-green-500 hover:text-green-50"><button class="w-full  border-2 border-green-500 rounded p-2 text-base  text-green hover:bg-green-500 hover:text-green-50 transition-colors sm:w-auto sm:text-lg md:text-xl">Report Litterer</button></a>
+                    </div>
+                </div>
+                <div class=" w-full  flex items-center justify-center p-1 order-1  h-full md:min-w-[30%] md:order-1 lg:mt-0 lg:order-2">
+                    <!-- image -->
+                    <img src="<?php echo URL_ROOT; ?>/images/tree3.png" alt="Tree illustration" class="w-60 max-w-xs object-contain sm:w-72  md:w-80 lg:w-96 md:mt-0.5 ">
+                </div>
+            </div>
         </div>
     </main>
 
-    <!-- footer -->
-
-    <footer class="text-gray bg-green-50 py-2">
-        <h1 class="text-center text-xs">&copyWasteWise 2025 All Rights Reserved</h1>
+   <footer class="text-gray bg-green-50 py-1 sm:py-2">
+        <h1 class="text-center text-xs sm:text-sm">©WasteWise 2025 All Rights Reserved</h1>
     </footer>
 
-    <script src="<?php echo URL_ROOT; ?>/js/auth.js"></script>
-    <script>
-        // Modern JavaScript for dropdown functionality
+    
+<script>
+    function openNotificationModal() {
+    const modal = document.getElementById('notificationModal');
+    const modalContent = document.getElementById('notificationModalContent');
+    
+    // Close profile modal if open
+    closeProfileModal();
+    
+    // Reset the modal state
+    resetNotificationModal();
+    
+    modal.classList.remove('hidden');
+    
+    // Trigger animation - slide in from right
+    setTimeout(() => {
+        modalContent.classList.remove('translate-x-full', 'opacity-0');
+        modalContent.classList.add('translate-x-0', 'opacity-100');
+    }, 10);
+}
+
+function resetNotificationModal() {
+    const notificationContent = document.getElementById('notificationContent');
+    // Reset overflow to hidden when reopening modal
+    notificationContent.classList.remove('overflow-y-auto');
+    notificationContent.classList.add('overflow-y-hidden');
+    
+    // Hide all notifications beyond the first few
+    const allNotifications = document.querySelectorAll('#notificationContent > div:not(#emptyNotifications)');
+    const maxInitialNotifications = 3;
+    
+    allNotifications.forEach((notification, index) => {
+        if (index >= maxInitialNotifications) {
+            notification.classList.add('hidden');
+        } else {
+            notification.classList.remove('hidden');
+        }
+    });
+    
+    // Show the "View All Notifications" button if there are more notifications
+    const viewAllButton = document.getElementById('viewAllButtonContainer');
+    if (allNotifications.length > maxInitialNotifications) {
+        viewAllButton.classList.remove('hidden');
+    } else {
+        viewAllButton.classList.add('hidden');
+    }
+    
+    // Hide the empty state if it was shown
+    document.getElementById('emptyNotifications').classList.add('hidden');
+    
+    // Update notification count
+    updateNotificationCount();
+}
+
+function closeNotificationModal() {
+    const modal = document.getElementById('notificationModal');
+    const modalContent = document.getElementById('notificationModalContent');
+    
+    modalContent.classList.remove('translate-x-0', 'opacity-100');
+    modalContent.classList.add('translate-x-full', 'opacity-0');
+    
+    setTimeout(() => {
+        modal.classList.add('hidden');
+    }, 300);
+}
+
+function markAsRead(element) {
+    // Remove the blue dot indicator
+    const blueDot = element.querySelector('.bg-blue-500');
+    if (blueDot) {
+        blueDot.remove();
+        // Update notification count
+        updateNotificationCount();
+    }
+}
+
+function markAllAsRead() {
+    // Remove all blue dots
+    const blueDots = document.querySelectorAll('#notificationModal .bg-blue-500');
+    blueDots.forEach(dot => {
+        if (dot.classList.contains('w-2') && dot.classList.contains('h-2')) {
+            dot.remove();
+        }
+    });
+    
+    // Update notification count
+    updateNotificationCount();
+}
+
+function updateNotificationCount() {
+    const unreadDots = document.querySelectorAll('#notificationModal .bg-blue-500.w-2.h-2');
+    const count = unreadDots.length;
+    const badge = document.getElementById('notificationBadge');
+    const headerBadge = document.querySelector('#notificationModal .bg-red-500');
+    
+    if (count === 0) {
+        badge.style.display = 'none';
+        if (headerBadge) headerBadge.style.display = 'none';
+        
+        // Check if we should show empty state
+        const hasVisibleNotifications = document.querySelectorAll('#notificationContent > div:not(.hidden):not(#emptyNotifications)').length > 0;
+        const emptyState = document.getElementById('emptyNotifications');
+        
+        if (!hasVisibleNotifications) {
+            emptyState.classList.remove('hidden');
+        } else {
+            emptyState.classList.add('hidden');
+        }
+    } else {
+        badge.textContent = count;
+        badge.style.display = 'flex';
+        if (headerBadge) {
+            headerBadge.textContent = count;
+            headerBadge.style.display = 'inline-block';
+        }
+    }
+}
+
+function viewAllNotifications() {
+    // Show all hidden notifications
+    const hiddenNotifications = document.querySelectorAll('#notificationContent .hidden');
+    hiddenNotifications.forEach(notification => {
+        notification.classList.remove('hidden');
+    });
+    
+    // Change overflow to auto to enable scrolling
+    const notificationContent = document.getElementById('notificationContent');
+    notificationContent.classList.remove('overflow-y-hidden');
+    notificationContent.classList.add('overflow-y-auto');
+    
+    // Hide the "View All Notifications" button
+    document.getElementById('viewAllButtonContainer').classList.add('hidden');
+    
+    // Update notification count in case some were hidden
+    updateNotificationCount();
+}
+
+     
+    // Profile Modal Functions
+    function openProfileModal() {
+        const modal = document.getElementById('profileModal');
+        const modalContent = document.getElementById('modalContent');
+        
+        // Close notification modal if open
+        closeNotificationModal();
+        
+        modal.classList.remove('hidden');
+        
+        // Trigger animation - slide in from right
+        setTimeout(() => {
+            modalContent.classList.remove('translate-x-full', 'opacity-0');
+            modalContent.classList.add('translate-x-0', 'opacity-100');
+        }, 10);
+    }
+
+    function closeProfileModal() {
+        const modal = document.getElementById('profileModal');
+        const modalContent = document.getElementById('modalContent');
+        
+        if (!modal.classList.contains('hidden')) {
+            modalContent.classList.remove('translate-x-0', 'opacity-100');
+            modalContent.classList.add('translate-x-full', 'opacity-0');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                // Reset to menu view if in edit mode
+                if (!document.getElementById('editForm').classList.contains('hidden')) {
+                    cancelEdit();
+                }
+            }, 300);
+        }
+    }
+
+    function toggleEditMode() {
+        const menuItems = document.getElementById('menuItems');
+        const editForm = document.getElementById('editForm');
+        
+        menuItems.classList.toggle('hidden');
+        editForm.classList.toggle('hidden');
+    }
+
+    function saveProfile() {
+        // Here you would typically save the profile data
+        alert('Profile saved successfully!');
+        cancelEdit();
+    }
+
+    function cancelEdit() {
+        const menuItems = document.getElementById('menuItems');
+        const editForm = document.getElementById('editForm');
+        
+        menuItems.classList.remove('hidden');
+        editForm.classList.add('hidden');
+    }
+
+    function handleImageUpload(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profileImage').src = e.target.result;
+                // Here you would typically upload the image to your server
+                alert('Profile picture updated!');
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Close modals when clicking outside
+    document.addEventListener('click', function(e) {
+        const profileModal = document.getElementById('profileModal');
+        const notificationModal = document.getElementById('notificationModal');
+        const profileImg = document.querySelector('img[onclick="openProfileModal()"]');
+        const notificationIcon = document.querySelector('ion-icon[onclick="openNotificationModal()"]');
+        
+        // Check profile modal
+        if (!profileModal.classList.contains('hidden') && 
+            !profileModal.contains(e.target) && 
+            e.target !== profileImg) {
+            closeProfileModal();
+        }
+        
+        // Check notification modal
+        if (!notificationModal.classList.contains('hidden') && 
+            !notificationModal.contains(e.target) && 
+            e.target !== notificationIcon) {
+            closeNotificationModal();
+        }
+    });
+
+        // TYPEWRITER EFFECT
+        document.addEventListener('DOMContentLoaded', function() {
+            var typed = new Typed('#report', {
+                strings: ['Waste', 'Litterer'],
+                typeSpeed: 150,
+                backSpeed: 100,
+                backDelay: 1000,
+                loop: true
+            });
+        });
+
+        // DROPDOWN FUNCTIONALITY
         function toggleDropdown() {
             const dropdown = document.getElementById("reportDropdown");
             dropdown.classList.toggle("hidden");
@@ -84,11 +581,24 @@
             const dropdown = document.getElementById("reportDropdown");
             const button = event.target.closest('button[onclick="toggleDropdown()"]');
 
-            // If click is not on the dropdown button, close the dropdown
             if (!button && !dropdown.classList.contains('hidden')) {
                 dropdown.classList.add("hidden");
             }
         });
+
+        // MOBILE MENU TOGGLE
+        function onToggleMenu(element) {
+            const navLinks = document.querySelector('.nav-links');
+            const icon = element.name;
+            
+            if (icon === 'menu') {
+                navLinks.style.top = '0';
+                element.name = 'close';
+            } else {
+                navLinks.style.top = '-100%';
+                element.name = 'menu';
+            }
+        }
     </script>
 </body>
 
