@@ -6,28 +6,27 @@
     <title>WasteWise</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
-    <script src="https://unpkg.com/typed.js@2.0.16/lib/typed.min.js"></script>
 </head>
 
 <body class="font-[sans-serif] bg-gradient-to-r from-green-100 via-emerald-200 to-green-500 h-full w-full">
-    <header class="bg-white w-full">
-        <nav class="flex justify-between items-center w-[92%] mx-auto">
+     <header class="bg-white w-full py-0.5">
+        <nav class="flex justify-between items-center w-[92%] mx-auto sm:py-0">
             <div>
-                <img class="w-[110px] cursor-pointer " src="<?php echo URL_ROOT; ?>/images/WasteWise.png" alt="...">
+                <img class="w-[100px] cursor-pointer" src="<?php echo URL_ROOT; ?>/images/WasteWise.png" alt="...">
             </div>
-            <div class="nav-links duration-500 md:static absolute bg-white md:min-h-fit min-h-[38vh] left-0 top-[-100%] md:w-auto z-10 w-full flex items-center px-6">
-                <ul class="w-full flex items-center justify-center md:flex-row flex-col md:text-md md:h-full md:items-center md:gap-[2vw] py-6 gap-8 font-bold">
+            <div class="nav-links duration-500 md:static absolute bg-white md:min-h-fit min-h-[38vh] left-0 top-[-100%] md:w-auto w-full flex items-center px-5 py-8 sm:py-0 z-10">
+                <ul class="w-full flex items-center justify-center md:flex-row flex-col md:text-md md:h-full md:items-center md:gap-[2vw] gap-8 font-bold">
                     <li>
                         <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/home">HOME</a>
                     </li>
                     <li>
-                        <a class="hover:text-green-500" href="#">ABOUT</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/about">ABOUT</a>
                     </li>
                     <li>
-                        <a class="hover:text-green-500" href="#">CONTACT</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/contact">CONTACT</a>
                     </li>
                     <li>
-                        <a class="hover:text-green-500" href="#">ANNOUNCEMENT</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/announcement">ANNOUNCEMENT</a>
                     </li>
                     <li class="relative">
                         <button onclick="toggleDropdown()" class="hover:text-green-500 cursor-pointer flex items-center gap-1 font-bold">
@@ -37,8 +36,8 @@
                             </svg>
                         </button>
                         <div id="reportDropdown" class="absolute hidden bg-white shadow-lg mt-2 rounded w-44 z-20 text-sm">
-                            <a href="#" class="block px-4 py-2 hover:bg-green-100 text-black">Report Waste</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-green-100 text-black">Report Litterer</a>
+                            <a href="<?php echo URL_ROOT; ?>/report/waste" class="block px-4 py-2 hover:bg-green-100 text-black">Report Waste</a>
+                            <a href="<?php echo URL_ROOT; ?>/report/litterer" class="block px-4 py-2 hover:bg-green-100 text-black">Report Litterer</a>
                         </div>
                     </li>
                 </ul>
@@ -58,6 +57,8 @@
             </div>
         </nav>
     </header>
+
+    
 
     <!-- Notification Modal -->
 <div id="notificationModal" class="fixed top-16 right-2 z-50 hidden" style="width: 350px;">
@@ -222,9 +223,7 @@
         <div class="flex items-center justify-between px-6 py-3 border-b border-gray-100 bg-gray-200 rounded-tr-2xl rounded-tl-2xl">
             <h2 class="text-lg font-bold text-gray-800">My Profile</h2>
             <div class="flex items-center gap-3">
-                <button onclick="toggleEditMode()" class="p-2 rounded-full hover:bg-gray-100 transition-colors">
-                    <ion-icon name="create-outline" class="text-xl text-gray-500"></ion-icon>
-                </button>
+                
                 <button onclick="closeProfileModal()" class="p-2 rounded-full hover:bg-gray-100 transition-colors">
                     <ion-icon name="close" class="text-xl text-gray-500"></ion-icon>
                 </button>
@@ -301,7 +300,16 @@
     </div>
 </div>
 
+<div class="container">
+            <h1>Welcome, <?php echo htmlspecialchars($data['user']['firstname'] . ' ' . $data['user']['lastname']); ?>!</h1>
 
+            <div class="user-info">
+                <p><strong>Email:</strong> <?php echo htmlspecialchars($data['user']['email']); ?></p>
+                <p><strong>Barangay:</strong> <?php echo htmlspecialchars($data['user']['barangay']); ?></p>
+            </div>
+
+            <a href="<?php echo URL_ROOT; ?>/auth/logout">Logout</a>
+        </div>
 
 
     <!-- HOME CONTENT -->
@@ -329,236 +337,9 @@
         <h1 class="text-center text-xs sm:text-sm">©WasteWise 2025 All Rights Reserved</h1>
     </footer>
 
-    
-<script>
-    function openNotificationModal() {
-    const modal = document.getElementById('notificationModal');
-    const modalContent = document.getElementById('notificationModalContent');
-    
-    // Close profile modal if open
-    closeProfileModal();
-    
-    // Reset the modal state
-    resetNotificationModal();
-    
-    modal.classList.remove('hidden');
-    
-    // Trigger animation - slide in from right
-    setTimeout(() => {
-        modalContent.classList.remove('translate-x-full', 'opacity-0');
-        modalContent.classList.add('translate-x-0', 'opacity-100');
-    }, 10);
-}
-
-function resetNotificationModal() {
-    const notificationContent = document.getElementById('notificationContent');
-    // Reset overflow to hidden when reopening modal
-    notificationContent.classList.remove('overflow-y-auto');
-    notificationContent.classList.add('overflow-y-hidden');
-    
-    // Hide all notifications beyond the first few
-    const allNotifications = document.querySelectorAll('#notificationContent > div:not(#emptyNotifications)');
-    const maxInitialNotifications = 3;
-    
-    allNotifications.forEach((notification, index) => {
-        if (index >= maxInitialNotifications) {
-            notification.classList.add('hidden');
-        } else {
-            notification.classList.remove('hidden');
-        }
-    });
-    
-    // Show the "View All Notifications" button if there are more notifications
-    const viewAllButton = document.getElementById('viewAllButtonContainer');
-    if (allNotifications.length > maxInitialNotifications) {
-        viewAllButton.classList.remove('hidden');
-    } else {
-        viewAllButton.classList.add('hidden');
-    }
-    
-    // Hide the empty state if it was shown
-    document.getElementById('emptyNotifications').classList.add('hidden');
-    
-    // Update notification count
-    updateNotificationCount();
-}
-
-function closeNotificationModal() {
-    const modal = document.getElementById('notificationModal');
-    const modalContent = document.getElementById('notificationModalContent');
-    
-    modalContent.classList.remove('translate-x-0', 'opacity-100');
-    modalContent.classList.add('translate-x-full', 'opacity-0');
-    
-    setTimeout(() => {
-        modal.classList.add('hidden');
-    }, 300);
-}
-
-function markAsRead(element) {
-    // Remove the blue dot indicator
-    const blueDot = element.querySelector('.bg-blue-500');
-    if (blueDot) {
-        blueDot.remove();
-        // Update notification count
-        updateNotificationCount();
-    }
-}
-
-function markAllAsRead() {
-    // Remove all blue dots
-    const blueDots = document.querySelectorAll('#notificationModal .bg-blue-500');
-    blueDots.forEach(dot => {
-        if (dot.classList.contains('w-2') && dot.classList.contains('h-2')) {
-            dot.remove();
-        }
-    });
-    
-    // Update notification count
-    updateNotificationCount();
-}
-
-function updateNotificationCount() {
-    const unreadDots = document.querySelectorAll('#notificationModal .bg-blue-500.w-2.h-2');
-    const count = unreadDots.length;
-    const badge = document.getElementById('notificationBadge');
-    const headerBadge = document.querySelector('#notificationModal .bg-red-500');
-    
-    if (count === 0) {
-        badge.style.display = 'none';
-        if (headerBadge) headerBadge.style.display = 'none';
-        
-        // Check if we should show empty state
-        const hasVisibleNotifications = document.querySelectorAll('#notificationContent > div:not(.hidden):not(#emptyNotifications)').length > 0;
-        const emptyState = document.getElementById('emptyNotifications');
-        
-        if (!hasVisibleNotifications) {
-            emptyState.classList.remove('hidden');
-        } else {
-            emptyState.classList.add('hidden');
-        }
-    } else {
-        badge.textContent = count;
-        badge.style.display = 'flex';
-        if (headerBadge) {
-            headerBadge.textContent = count;
-            headerBadge.style.display = 'inline-block';
-        }
-    }
-}
-
-function viewAllNotifications() {
-    // Show all hidden notifications
-    const hiddenNotifications = document.querySelectorAll('#notificationContent .hidden');
-    hiddenNotifications.forEach(notification => {
-        notification.classList.remove('hidden');
-    });
-    
-    // Change overflow to auto to enable scrolling
-    const notificationContent = document.getElementById('notificationContent');
-    notificationContent.classList.remove('overflow-y-hidden');
-    notificationContent.classList.add('overflow-y-auto');
-    
-    // Hide the "View All Notifications" button
-    document.getElementById('viewAllButtonContainer').classList.add('hidden');
-    
-    // Update notification count in case some were hidden
-    updateNotificationCount();
-}
-
-     
-    // Profile Modal Functions
-    function openProfileModal() {
-        const modal = document.getElementById('profileModal');
-        const modalContent = document.getElementById('modalContent');
-        
-        // Close notification modal if open
-        closeNotificationModal();
-        
-        modal.classList.remove('hidden');
-        
-        // Trigger animation - slide in from right
-        setTimeout(() => {
-            modalContent.classList.remove('translate-x-full', 'opacity-0');
-            modalContent.classList.add('translate-x-0', 'opacity-100');
-        }, 10);
-    }
-
-    function closeProfileModal() {
-        const modal = document.getElementById('profileModal');
-        const modalContent = document.getElementById('modalContent');
-        
-        if (!modal.classList.contains('hidden')) {
-            modalContent.classList.remove('translate-x-0', 'opacity-100');
-            modalContent.classList.add('translate-x-full', 'opacity-0');
-            
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                // Reset to menu view if in edit mode
-                if (!document.getElementById('editForm').classList.contains('hidden')) {
-                    cancelEdit();
-                }
-            }, 300);
-        }
-    }
-
-    function toggleEditMode() {
-        const menuItems = document.getElementById('menuItems');
-        const editForm = document.getElementById('editForm');
-        
-        menuItems.classList.toggle('hidden');
-        editForm.classList.toggle('hidden');
-    }
-
-    function saveProfile() {
-        // Here you would typically save the profile data
-        alert('Profile saved successfully!');
-        cancelEdit();
-    }
-
-    function cancelEdit() {
-        const menuItems = document.getElementById('menuItems');
-        const editForm = document.getElementById('editForm');
-        
-        menuItems.classList.remove('hidden');
-        editForm.classList.add('hidden');
-    }
-
-    function handleImageUpload(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('profileImage').src = e.target.result;
-                // Here you would typically upload the image to your server
-                alert('Profile picture updated!');
-            }
-            reader.readAsDataURL(file);
-        }
-    }
-
-    // Close modals when clicking outside
-    document.addEventListener('click', function(e) {
-        const profileModal = document.getElementById('profileModal');
-        const notificationModal = document.getElementById('notificationModal');
-        const profileImg = document.querySelector('img[onclick="openProfileModal()"]');
-        const notificationIcon = document.querySelector('ion-icon[onclick="openNotificationModal()"]');
-        
-        // Check profile modal
-        if (!profileModal.classList.contains('hidden') && 
-            !profileModal.contains(e.target) && 
-            e.target !== profileImg) {
-            closeProfileModal();
-        }
-        
-        // Check notification modal
-        if (!notificationModal.classList.contains('hidden') && 
-            !notificationModal.contains(e.target) && 
-            e.target !== notificationIcon) {
-            closeNotificationModal();
-        }
-    });
-
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js"></script>
+    <script src="<?php echo URL_ROOT; ?>/js/home.js"></script>
+    <script>
         // TYPEWRITER EFFECT
         document.addEventListener('DOMContentLoaded', function() {
             var typed = new Typed('#report', {
@@ -569,36 +350,6 @@ function viewAllNotifications() {
                 loop: true
             });
         });
-
-        // DROPDOWN FUNCTIONALITY
-        function toggleDropdown() {
-            const dropdown = document.getElementById("reportDropdown");
-            dropdown.classList.toggle("hidden");
-        }
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
-            const dropdown = document.getElementById("reportDropdown");
-            const button = event.target.closest('button[onclick="toggleDropdown()"]');
-
-            if (!button && !dropdown.classList.contains('hidden')) {
-                dropdown.classList.add("hidden");
-            }
-        });
-
-        // MOBILE MENU TOGGLE
-        function onToggleMenu(element) {
-            const navLinks = document.querySelector('.nav-links');
-            const icon = element.name;
-            
-            if (icon === 'menu') {
-                navLinks.style.top = '0';
-                element.name = 'close';
-            } else {
-                navLinks.style.top = '-100%';
-                element.name = 'menu';
-            }
-        }
     </script>
 </body>
 
