@@ -51,14 +51,14 @@
                         <a href="/home" class="text-green-500 hover:text-green-50"><button class="w-full  border-2 border-green-500 rounded p-2 text-base  text-green hover:bg-green-500 hover:text-green-50 transition-colors sm:w-auto sm:text-lg md:text-xl">Report Litterer</button></a>
                     </div>
                 </div>
-                <div class="w-full lg:min-w-[30%] flex items-center justify-center p-1 order-1 lg:order-2 relative mt-4 sm:mt-6 md:mt-8 h-48 sm:h-64 md:h-80">
+                <div class="w-full lg:min-w-[30%] flex items-center justify-center p-1 order-1 lg:order-2 relative mt-4 sm:mt-6 md:mt-8 h-64 sm:h-75 md:h-85">
                     <!-- Responsive tree image -->
                     <img src="<?php echo URL_ROOT; ?>/images/tree3.png" alt="Tree illustration" 
-                         class="w-16 h-16 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 object-contain transition-all duration-300">
-                    <div id="authModal" class="hidden absolute -mt-4 sm:-mt-8 md:-mt-12 inset-0 flex items-center justify-center z-50 p-1 sm:p-2 md:p-4">
+                         class="w-60 h-60 sm:w-75 sm:h-75 md:w-85 md:h-85 lg:w-96 lg:h-96 object-contain transition-all duration-300">
+                    <div id="authModal" class="hidden absolute inset-0 flex items-center justify-center z-50 p-1 sm:p-2 md:p-4">
                         <div class="relative z-10 w-full flex justify-center items-center">
                             <!-- Sign In Form -->
-                            <form id="signInForm" action="<?php echo URL_ROOT; ?>/auth/login" method="post" class="form-container form-visible flex flex-col gap-3 p-4 sm:p-4 md:p-6 lg:p-8  sm:gap-3 md:gap-4 bg-white rounded-lg sm:rounded-xl md:rounded-2xl shadow-lg w-full max-w-xs sm:max-w-sm md:max-w-md -mt-8 sm:-mt-12 md:-mt-16 lg:-mt-20">
+                            <form id="signInForm" action="<?php echo URL_ROOT; ?>/auth/login" method="post" class="form-container form-visible flex flex-col gap-3 p-4 sm:p-4 md:p-6 lg:p-8  sm:gap-3 md:gap-4 bg-white rounded-lg sm:rounded-xl md:rounded-2xl shadow-lg w-full max-w-xs sm:max-w-sm md:max-w-md  ">
                                 <h3 class="text-center text-green-800 font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl mb-2 sm:mb-3">Sign In</h3>
                                 <!-- Sign in error display -->
                                 <?php if (isset($data['error']) && $data['form'] === 'signin'): ?>
@@ -75,14 +75,12 @@
                                     </button>
                                 </div>
                                 <button type="submit" class="rounded-full bg-green-600 text-white hover:bg-green-700 p-1 sm:p-2 text-xs sm:text-sm font-semibold transition-colors">Sign In</button>
-                                <a href="">
-                                    <p class="text-blue-400 underline text-xs sm:text-sm">Forgot password?</p>
-                                </a>
+                                
                                 <p class="text-center text-green-800 text-xs sm:text-sm">Don't have an account? <button type="button" id="showSignUp" class="text-green-600 hover:text-green-700 font-medium underline">Sign Up</button></p>
                             </form>
 
                             <!-- Sign Up Form -->
-                            <form id="signUpForm" action="<?php echo URL_ROOT; ?>/auth/register" method="post" class="form-container form-hidden flex flex-col p-4 sm:p-4 md:p-6 lg:p-8 gap-3 sm:gap-3 md:gap-4 bg-white rounded-lg sm:rounded-xl md:rounded-2xl shadow-lg w-full max-w-xs sm:max-w-sm md:max-w-md -mt-8 sm:-mt-12 md:-mt-16 lg:-mt-20">
+                            <form id="signUpForm" action="<?php echo URL_ROOT; ?>/auth/register" method="post" class="form-container form-hidden flex flex-col px-6 py-2 sm:px-8 sm:py-3 gap-2  lg:gap-4 bg-white rounded-lg sm:rounded-xl md:rounded-2xl shadow-lg w-full max-w-xs sm:max-w-sm md:max-w-md ">
                                 <h3 class="text-center text-green-800 font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl mb-2 sm:mb-3">Sign Up</h3>
                                 <!-- Sign up error/success display -->
                                 <?php if (isset($data['error']) && $data['form'] === 'signup'): ?>
