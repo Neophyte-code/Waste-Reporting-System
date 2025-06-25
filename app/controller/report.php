@@ -8,7 +8,7 @@ class Report extends Controller
         $this->view("report/waste", []);
     }
 
-    public function literrer()
+    public function litterer()
     {
         $this->view("report/litterer", []);
     }

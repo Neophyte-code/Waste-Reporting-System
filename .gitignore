@@ -1,2 +1,5 @@
 #ignore node_modules folder to be push in github
 node_modules/
+
+#ignore profile uploads to be push in github
+/public/images/uploads/

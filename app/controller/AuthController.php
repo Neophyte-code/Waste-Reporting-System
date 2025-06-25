@@ -54,7 +54,7 @@ class AuthController extends Controller
             // Register the user
             $data['barangay_id'] = $barangay_id;
             if ($userModel->register($data)) {
-                $this->view("auth/index", ['success' => 'Registration successful! Please sign in with your credentials.', 'form' => 'signup']);
+                $this->view("auth/index", ['success' => 'Registration successful!', 'form' => 'signup']);
             } else {
                 $this->view("auth/index", ['error' => 'Registration failed', 'form' => 'signup']);
             }
@@ -87,18 +87,25 @@ class AuthController extends Controller
             // Validate password
             $user = $userModel->login($email, $password);
             if ($user) {
+                $profilePicture = !empty($user['profile_picture'])
+                    ? $user['profile_picture']
+                    : 'images/profile.png';
+                $profilePicture = ltrim($profilePicture, '/');
+
                 $_SESSION['user'] = [
                     'email' => $user['email'],
                     'firstname' => $user['firstname'],
                     'lastname' => $user['lastname'],
-                    'barangay' => $user['barangay_name']
+                    'barangay' => $user['barangay_name'],
+                    'profile_picture' => $profilePicture
                 ];
+
                 // Clear localStorage to reset modal state
                 echo '<script>localStorage.removeItem("modalState"); localStorage.removeItem("activeForm");</script>';
+
+                // Use URL_ROOT for consistent redirects
                 header('Location: ' . URL_ROOT . '/home');
                 exit;
-            } else {
-                $this->view("auth/index", ['error' => 'Incorrect password', 'form' => 'signin']);
             }
         } else {
             $this->view("auth/index", ['form' => 'signin']);

@@ -1,39 +1,39 @@
- function openNotificationModal() {
-            const modal = document.getElementById('notificationModal');
-            const modalContent = document.getElementById('notificationModalContent');
-            
-            // Close profile modal if open
-            closeProfileModal();
-            
-            // Reset the modal state
-            resetNotificationModal();
-            
-            modal.classList.remove('hidden');
-            
-            // Trigger animation - slide in from right
-            setTimeout(() => {
-                modalContent.classList.remove('translate-x-full', 'opacity-0');
-                modalContent.classList.add('translate-x-0', 'opacity-100');
-            }, 10);
-        }
+  function openNotificationModal() {
+    const modal = document.getElementById('notificationModal');
+    const modalContent = document.getElementById('notificationModalContent');
+    
+    // Close profile modal if open
+    closeProfileModal();
+    
+    // Reset the modal state
+    resetNotificationModal();
+    
+    modal.classList.remove('hidden');
+    
+    // Trigger animation - slide in from right
+    setTimeout(() => {
+        modalContent.classList.remove('translate-x-full', 'opacity-0');
+        modalContent.classList.add('translate-x-0', 'opacity-100');
+    }, 10);
+}
 
-        function resetNotificationModal() {
-            const notificationContent = document.getElementById('notificationContent');
-            // Reset overflow to hidden when reopening modal
-            notificationContent.classList.remove('overflow-y-auto');
-            notificationContent.classList.add('overflow-y-hidden');
-            
-            // Hide all notifications beyond the first few
-            const allNotifications = document.querySelectorAll('#notificationContent > div:not(#emptyNotifications)');
-            const maxInitialNotifications = 3;
-            
-            allNotifications.forEach((notification, index) => {
-                if (index >= maxInitialNotifications) {
-                    notification.classList.add('hidden');
-                } else {
-                    notification.classList.remove('hidden');
-                }
-        });
+function resetNotificationModal() {
+    const notificationContent = document.getElementById('notificationContent');
+    // Reset overflow to hidden when reopening modal
+    notificationContent.classList.remove('overflow-y-auto');
+    notificationContent.classList.add('overflow-y-hidden');
+    
+    // Hide all notifications beyond the first few
+    const allNotifications = document.querySelectorAll('#notificationContent > div:not(#emptyNotifications)');
+    const maxInitialNotifications = 3;
+    
+    allNotifications.forEach((notification, index) => {
+        if (index >= maxInitialNotifications) {
+            notification.classList.add('hidden');
+        } else {
+            notification.classList.remove('hidden');
+        }
+    });
     
     // Show the "View All Notifications" button if there are more notifications
     const viewAllButton = document.getElementById('viewAllButtonContainer');
@@ -225,35 +225,3 @@ function viewAllNotifications() {
             closeNotificationModal();
         }
     });
-
-       
-
-        // DROPDOWN FUNCTIONALITY
-        function toggleDropdown() {
-            const dropdown = document.getElementById("reportDropdown");
-            dropdown.classList.toggle("hidden");
-        }
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
-            const dropdown = document.getElementById("reportDropdown");
-            const button = event.target.closest('button[onclick="toggleDropdown()"]');
-
-            if (!button && !dropdown.classList.contains('hidden')) {
-                dropdown.classList.add("hidden");
-            }
-        });
-
-        // MOBILE MENU TOGGLE
-        function onToggleMenu(element) {
-            const navLinks = document.querySelector('.nav-links');
-            const icon = element.name;
-            
-            if (icon === 'menu') {
-                navLinks.style.top = '0';
-                element.name = 'close';
-            } else {
-                navLinks.style.top = '-100%';
-                element.name = 'menu';
-            }
-        }

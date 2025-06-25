@@ -37,8 +37,8 @@
                             </svg>
                         </button>
                         <div id="reportDropdown" class="absolute hidden bg-white shadow-lg mt-2 rounded w-44 z-20 text-sm">
-                            <a href="#" class="block px-4 py-2 hover:bg-green-100 text-black">Report Waste</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-green-100 text-black">Report Litterer</a>
+                            <a href="<?php echo URL_ROOT; ?>/report/waste" class="block px-4 py-2 hover:bg-green-100 text-black">Report Waste</a>
+                            <a href="<?php echo URL_ROOT; ?>/report/litterer" class="block px-4 py-2 hover:bg-green-100 text-black">Report Litterer</a>
                         </div>
                     </li>
                 </ul>
@@ -65,8 +65,8 @@
                 </div>
                 <div class="w-full lg:min-w-[30%] flex items-center justify-center p-1 order-1 lg:order-2 relative mt-4 sm:mt-6 md:mt-8 h-75 sm:h-90">
                     <!-- Responsive tree image -->
-                    <img src="<?php echo URL_ROOT; ?>/images/tree3.png" alt="Tree illustration" 
-                         class="w-60 h-60 sm:w-75 sm:h-75 md:w-85 md:h-85 lg:w-96 lg:h-96 object-contain transition-all duration-300">
+                    <img src="<?php echo URL_ROOT; ?>/images/tree3.png" alt="Tree illustration"
+                        class="w-60 h-60 sm:w-75 sm:h-75 md:w-85 md:h-85 lg:w-96 lg:h-96 object-contain transition-all duration-300">
                     <div id="authModal" class="hidden absolute inset-0 flex items-center justify-center z-6 p-1 sm:p-2 md:p-4">
                         <div class="relative z-10 w-full flex justify-center items-center">
                             <!-- Sign In Form -->
@@ -87,7 +87,7 @@
                                     </button>
                                 </div>
                                 <button type="submit" class="rounded-md bg-green-600 text-white hover:bg-green-700 p-1 sm:p-2 text-xs sm:text-sm font-semibold transition-colors">Sign In</button>
-                                
+
                                 <p class="text-center text-black text-xs sm:text-sm">Don't have an account? <button type="button" id="showSignUp" class="text-green-600 hover:text-green-700 font-medium underline">Sign Up</button></p>
                             </form>
 
