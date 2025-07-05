@@ -43,7 +43,20 @@
                     </li>
                 </ul>
             </div>
-            <div class="flex items-center gap-6">
+           <div class="flex items-center gap-3">
+                <div class="relative">
+                    <ion-icon name="notifications-outline" class="text-3xl cursor-pointer hover:text-green-500 transition-colors" onclick="openNotificationModal()"></ion-icon>
+                    <div id="notificationBadge" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center font-bold">3</div>
+                </div>
+                <div class="relative">
+                    <img src="<?php echo URL_ROOT . '/' . htmlspecialchars($data['user']['profile_picture'] ?? 'images/profile.png'); ?>"
+                        alt="Profile"
+                        class="w-10 h-10 rounded-full cursor-pointer border-2 border-gray-300 hover:border-green-500 transition-colors"
+                        onclick="openProfileModal()">
+                </div>
+                <ion-icon onclick="onToggleMenu(this)" name="menu" class="text-3xl cursor-pointer md:hidden z-10"></ion-icon>
+            </div>
+            <div class="hidden flex items-center gap-6">
                 <button id="signInBtn" class="bg-green-500 md:shadow-lg text-md px-2 py-1 text-white rounded hover:bg-green-600">Sign in</button>
                 <ion-icon onclick="onToggleMenu(this)" name="menu" class="text-3xl cursor-pointer md:hidden z-1"></ion-icon>
             </div>
@@ -52,12 +65,141 @@
 
     <!-- ANNOUNCEMENT CONTENT -->
 
-    <main class="flex-grow w-full">
-        <h1>this is for announcement page</h1>
+    <main class="flex justify-center  w-full ">
+        <div class="container flex flex-col justify-center items-center px-6 gap-10 py-6 mb-4">
+            <div class="flex justify-center items-center mt-4 gap-5 mb-0 sm:mb-2 ">
+                <h1 class="text-3xl sm:text-5xl lg:text-4xl font-bold ">Announcement</h1>
+            </div>
+
+            <div class="bg-gray-50 flex flex-col w-full sm:max-w-150 md:max-w-180 lg:max-w-200  p-4 gap-3 rounded-xl shadow-2xl">
+                <div class="flex flex-col ">
+                    <div class="flex items-center gap-2 ">
+                        <span class="text-green-500 text-lg">📢</span>
+                        <span>To: All Senior Citizen</span>
+                    </div>
+                    <div class="flex items-center gap-2  text-wrap">
+                        <span class="text-green-500 text-lg">🗓️</span>
+                        <span>Date: Sunday April 29, 2025</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-green-500 text-lg">⏰</span>
+                        <span>Time: 10:00 AM</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-green-500 text-lg">📍</span>
+                        <span>Location: Barangay Hall</span>
+                    </div>
+                </div>
+                <div class="flex flex-col p-6 gap-4 bg-gray-300 rounded-lg">
+                    <h1 class="font-bold">Dear senior citizens of Barangay Tapilon, </h1>
+                    <div>
+                        You are cordially invited to attend a community meeting scheduled for this coming Sunday. 
+                        The agenda will include updates on government assistance programs, healthcare services, and other matters 
+                        relevant to your welfare. Your participation and insights are highly valued, and we look forward to your presence.
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="bg-gray-50 flex flex-col w-full sm:max-w-150 md:max-w-180 lg:max-w-200 p-4 gap-3 rounded-xl shadow-2xl">
+                <div class="flex flex-col ">
+                    <div class="flex items-center gap-2 ">
+                        <span class="text-green-500 text-lg">📢</span>
+                        <span>To: All Senior Citizen</span>
+                    </div>
+                    <div class="flex items-center gap-2  text-wrap">
+                        <span class="text-green-500 text-lg">🗓️</span>
+                        <span>Date: Sunday April 29, 2025</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-green-500 text-lg">⏰</span>
+                        <span>Time: 10:00 AM</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-green-500 text-lg">📍</span>
+                        <span>Location: Barangay Hall</span>
+                    </div>
+                </div>
+                <div class="flex flex-col p-6 gap-4 bg-gray-300 rounded-lg">
+                    <h1 class="font-bold">Dear senior citizens of Barangay Tapilon, </h1>
+                    <div>
+                        You are cordially invited to attend a community meeting scheduled for this coming Sunday. 
+                        The agenda will include updates on government assistance programs, healthcare services, and other matters 
+                        relevant to your welfare. Your participation and insights are highly valued, and we look forward to your presence.
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="bg-gray-50 flex flex-col w-full sm:max-w-150 md:max-w-180 lg:max-w-200 p-4 gap-3 rounded-xl shadow-2xl">
+                <div class="flex flex-col ">
+                    <div class="flex items-center gap-2 ">
+                        <span class="text-green-500 text-lg">📢</span>
+                        <span>To: All Senior Citizen</span>
+                    </div>
+                    <div class="flex items-center gap-2  text-wrap">
+                        <span class="text-green-500 text-lg">🗓️</span>
+                        <span>Date: Sunday April 29, 2025</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-green-500 text-lg">⏰</span>
+                        <span>Time: 10:00 AM</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-green-500 text-lg">📍</span>
+                        <span>Location: Barangay Hall</span>
+                    </div>
+                </div>
+                <div class="flex flex-col p-6 gap-4 bg-gray-300 rounded-lg">
+                    <h1 class="font-bold">Dear senior citizens of Barangay Tapilon, </h1>
+                    <div>
+                        You are cordially invited to attend a community meeting scheduled for this coming Sunday. 
+                        The agenda will include updates on government assistance programs, healthcare services, and other matters 
+                        relevant to your welfare. Your participation and insights are highly valued, and we look forward to your presence.
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="bg-gray-50 flex flex-col w-full sm:max-w-150 md:max-w-180 lg:max-w-200 p-4 gap-3 rounded-xl shadow-2xl">
+                <div class="flex flex-col ">
+                    <div class="flex items-center gap-2 ">
+                        <span class="text-green-500 text-lg">📢</span>
+                        <span>To: All Senior Citizen</span>
+                    </div>
+                    <div class="flex items-center gap-2  text-wrap">
+                        <span class="text-green-500 text-lg">🗓️</span>
+                        <span>Date: Sunday April 29, 2025</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-green-500 text-lg">⏰</span>
+                        <span>Time: 10:00 AM</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-green-500 text-lg">📍</span>
+                        <span>Location: Barangay Hall</span>
+                    </div>
+                </div>
+                <div class="flex flex-col p-6 gap-4 bg-gray-300 rounded-lg">
+                    <h1 class="font-bold">Dear senior citizens of Barangay Tapilon, </h1>
+                    <div>
+                        You are cordially invited to attend a community meeting scheduled for this coming Sunday. 
+                        The agenda will include updates on government assistance programs, healthcare services, and other matters 
+                        relevant to your welfare. Your participation and insights are highly valued, and we look forward to your presence.
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        
+    
     </main>
+    
     <footer class="text-gray bg-green-50 py-2">
         <h1 class="text-center text-xs">&copyWasteWise 2025 All Rights Reserved</h1>
     </footer>
+
     <script src="<?php echo URL_ROOT; ?>/js/auth.js"></script>
     <script>
         // Modern JavaScript for dropdown functionality
