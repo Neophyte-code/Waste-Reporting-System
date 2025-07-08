@@ -106,6 +106,10 @@ class AuthController extends Controller
                 // Use URL_ROOT for consistent redirects
                 header('Location: ' . URL_ROOT . '/home');
                 exit;
+            } else {
+                //Handle incorrect password
+                $this->view('auth/index', ['error' => 'Incorrect password', 'form' => 'signin']);
+                return;
             }
         } else {
             $this->view("auth/index", ['form' => 'signin']);
