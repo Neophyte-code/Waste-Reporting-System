@@ -7,6 +7,7 @@
     <title></title>
     <link href="<?php echo URL_ROOT; ?>/css/output.css" rel="stylesheet">
     <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body class="font-[sans-serif] bg-gradient-to-r from-green-100 via-emerald-200 to-green-500 h-full w-full">
@@ -318,33 +319,43 @@
         <div class=" flex flex-col lg:flex-row gap-6 w-full max-w-5xl sm:items-center lg:items-start">
 
             <!-- Contact Form -->
-            <form class="flex-1 bg-white p-6 rounded-lg shadow-md space-y-4 sm:max-w-xl lg:px-6 ">
+            <form method="post" action="<?php echo URL_ROOT; ?>/contact/contactForm" class="flex-1 bg-white p-6 rounded-lg shadow-md space-y-4 sm:max-w-xl lg:px-6">
                 <div class="flex flex-col sm:flex-row gap-4">
                     <div class="flex-1">
                         <label class="block text-sm font-bold pb-0.5 lg:text-lg text-black">First Name</label>
-                        <input type="text" placeholder="Enter first name" class="w-full border-2 border-green-400 rounded p-2 bg-gray-200" />
+                        <input name="firstname" type="text" required placeholder="Enter first name" class="w-full border-2 border-green-400 rounded p-2 bg-gray-200" />
                     </div>
                     <div class="flex-1">
                         <label class="block text-sm font-bold pb-0.5 lg:text-lg text-black">Last Name</label>
-                        <input type="text" placeholder="Enter last name" class="w-full border-2 border-green-400 rounded p-2 bg-gray-200" />
+                        <input name="lastname" type="text" required placeholder="Enter last name" class="w-full border-2 border-green-400 rounded p-2 bg-gray-200" />
                     </div>
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-4">
                     <div class="flex-1">
                         <label class="block text-sm font-bold pb-0.5 lg:text-lg text-black">Gmail</label>
-                        <input type="email" placeholder="example@gmail.com" class="w-full border-2 border-green-400 rounded p-2 bg-gray-200" />
+                        <input name="gmail" type="email" required placeholder="example@gmail.com" class="w-full border-2 border-green-400 rounded p-2 bg-gray-200" />
                     </div>
                     <div class="flex-1">
                         <label class="block text-sm font-bold pb-0.5 lg:text-lg text-black">Mobile Number</label>
-                        <input type="tel" placeholder="09123456789" class="w-full border-2 border-green-400 rounded p-2 bg-gray-200" />
+                        <input name="phone" type="tel" required placeholder="09123456789" class="w-full border-2 border-green-400 rounded p-2 bg-gray-200" />
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-sm font-bold pb-0.5 lg:text-lg text-black">Message</label>
-                    <textarea placeholder="Type your message here" class="w-full border-2 border-green-400 rounded p-2 bg-gray-200 h-27 resize-none"></textarea>
+                    <textarea name="message" required placeholder="Type your message here" class="w-full border-2 border-green-400 rounded p-2 bg-gray-200 h-27 resize-none"></textarea>
                 </div>
+
+                <!-- submit error/success display -->
+                <?php if (!empty($data['success'])): ?>
+                    <p class="text-green-500 text-center text-xs sm:text-sm"><?php echo $data['success']; ?></p>
+                <?php endif; ?>
+
+                <?php if (!empty($data['error'])): ?>
+                    <p class="text-red-500 text-center text-xs sm:text-sm"><?php echo $data['error']; ?></p>
+                <?php endif; ?>
+
 
                 <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-full font-bold hover:bg-green-700 transition">SUBMIT</button>
             </form>
@@ -355,22 +366,22 @@
                 <div class="bg-white py-6 px-8 rounded-lg shadow-md sm:h-50 lg:h-50 lg:w-full">
                     <h2 class="text-lg lg:text-xl text-center font-semibold mb-4 text-gray-800">Contact Information</h2>
                     <div class="flex items-center gap-2 mb-2">
-                        <span class="text-green-500 text-xl">&#128241;</span>
-                        <span>0912345678</span>
+                        <span class="text-green-500 text-xl"><i class="fa-solid fa-phone" style="color: #39b828;"></i></span>
+                        <span><?= $data['barangayDetails']['phone'] ?></span>
                     </div>
                     <div class="flex items-center gap-2 mb-2 text-wrap">
-                        <span class="text-green-500 text-xl">&#128231;</span>
-                        <span>barangaytapilon123@gmail.com</span>
+                        <span class="text-green-500 text-xl"><i class="fa-solid fa-envelope" style="color: #39b828;"></i></span>
+                        <span><?= $data['barangayDetails']['gmail']  ?></span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <span class="text-green-500 text-xl">&#127968;</span>
-                        <span>Barangay Tapilon</span>
+                        <span class="text-green-500 text-xl"><i class="fa-brands fa-facebook" style="color: #39b828;"></i></span>
+                        <a href="<?= $data['barangayDetails']['facebook'] ?>" target="_blank"><?= $data['barangayDetails']['fbName'] ?></a>
                     </div>
                 </div>
 
                 <!-- Map Image -->
                 <div class="rounded-lg overflow-hidden shadow-2xl flex justify-center items-center lg:items-start sm:max-w-lg ">
-                    <iframe src="<?= $data['mapSrc'] ?>"
+                    <iframe src="<?= $data['barangayDetails']['map'] ?>"
                         class="w-full h-full sm:h-50 lg:h-60 lg:w-98.5"
                         style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>

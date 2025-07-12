@@ -4,8 +4,6 @@ class Home extends Controller
 {
     public function __construct()
     {
-        session_start();
-
         // Check if user is logged in, redirect to auth if not
         if (!isset($_SESSION['user'])) {
             header('Location: ' . URL_ROOT . '/auth');
