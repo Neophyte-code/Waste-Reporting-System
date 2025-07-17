@@ -330,6 +330,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js"></script>
     <script src="<?php echo URL_ROOT; ?>/js/profile.js"></script>
+    <script src="<?php echo URL_ROOT; ?>/js/auth.js"></script>
     <script>
         // TYPEWRITER EFFECT
         document.addEventListener('DOMContentLoaded', function() {

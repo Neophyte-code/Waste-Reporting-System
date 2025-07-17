@@ -17,7 +17,6 @@
             </div>
             <div class="flex items-center gap-4 sm:gap-6">
                 <button id="signInBtn" class="bg-green-500 md:shadow-lg text-sm sm:text-md px-2 py-1 text-white rounded hover:bg-green-600">Sign in</button>
-                <ion-icon onclick="onToggleMenu(this)" name="menu" class="text-2xl sm:text-3xl cursor-pointer md:hidden z-10"></ion-icon>
             </div>
         </nav>
     </header>

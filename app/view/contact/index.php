@@ -393,6 +393,7 @@
         <h1 class="text-center text-xs">&copyWasteWise 2025 All Rights Reserved</h1>
     </footer>
     <script src="<?php echo URL_ROOT; ?>/js/profile.js"></script>
+    <script src="<?php echo URL_ROOT; ?>/js/auth.js"></script>
     <script>
         // Modern JavaScript for dropdown functionality
         function toggleDropdown() {

@@ -94,6 +94,7 @@ class AuthController extends Controller
                     'email' => $user['email'],
                     'firstname' => $user['firstname'],
                     'lastname' => $user['lastname'],
+                    'barangay_id' => $user['barangay_id'],
                     'barangay' => $user['barangay_name'],
                     'profile_picture' => $profilePicture
                 ];
