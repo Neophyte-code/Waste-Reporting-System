@@ -2,10 +2,7 @@
 
 class AuthController extends Controller
 {
-    public function __construct()
-    {
-        session_start();
-    }
+    public function __construct() {}
 
     public function index()
     {
@@ -93,9 +90,11 @@ class AuthController extends Controller
                 $profilePicture = ltrim($profilePicture, '/');
 
                 $_SESSION['user'] = [
+                    'id' => $user['id'],
                     'email' => $user['email'],
                     'firstname' => $user['firstname'],
                     'lastname' => $user['lastname'],
+                    'barangay_id' => $user['barangay_id'],
                     'barangay' => $user['barangay_name'],
                     'profile_picture' => $profilePicture
                 ];
@@ -106,6 +105,10 @@ class AuthController extends Controller
                 // Use URL_ROOT for consistent redirects
                 header('Location: ' . URL_ROOT . '/home');
                 exit;
+            } else {
+                //Handle incorrect password
+                $this->view('auth/index', ['error' => 'Incorrect password', 'form' => 'signin']);
+                return;
             }
         } else {
             $this->view("auth/index", ['form' => 'signin']);

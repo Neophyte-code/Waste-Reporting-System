@@ -15,37 +15,8 @@
             <div>
                 <img class="w-27 cursor-pointer " src="<?php echo URL_ROOT; ?>/images/WasteWise.png" alt="...">
             </div>
-            <div class="nav-links duration-500 md:static absolute bg-white md:min-h-fit min-h-[38vh] left-0 top-[-100%] md:w-auto w-full flex items-center px-5 py-8 sm:py-0 z-10">
-                <ul class="w-full flex items-center justify-center md:flex-row flex-col md:text-md md:h-full md:items-center md:gap-[2vw] gap-8 font-bold">
-                    <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>">HOME</a>
-                    </li>
-                    <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/about">ABOUT</a>
-                    </li>
-                    <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/contact">CONTACT</a>
-                    </li>
-                    <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/announcement">ANNOUNCEMENT</a>
-                    </li>
-                    <li class="relative">
-                        <button onclick="toggleDropdown()" class="hover:text-green-500 cursor-pointer flex items-center gap-1 font-bold">
-                            REPORT
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.23 8.29a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                        <div id="reportDropdown" class="absolute hidden bg-white shadow-lg mt-2 rounded w-44 z-20 text-sm">
-                            <a href="<?php echo URL_ROOT; ?>/report/waste" class="block px-4 py-2 hover:bg-green-100 text-black">Report Waste</a>
-                            <a href="<?php echo URL_ROOT; ?>/report/litterer" class="block px-4 py-2 hover:bg-green-100 text-black">Report Litterer</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
             <div class="flex items-center gap-4 sm:gap-6">
                 <button id="signInBtn" class="bg-green-500 md:shadow-lg text-sm sm:text-md px-2 py-1 text-white rounded hover:bg-green-600">Sign in</button>
-                <ion-icon onclick="onToggleMenu(this)" name="menu" class="text-2xl sm:text-3xl cursor-pointer md:hidden z-10"></ion-icon>
             </div>
         </nav>
     </header>
@@ -59,8 +30,8 @@
                     <h3 class="text-1xl font-bold text-black mb-2 sm:text-2xl md:text-3xl ">Earn by reporting <span id="report" class="text-green-400"></span></h3>
                     <p class="mb-4 text-sm  text-black sm:text-lg md:text-xl ">WasteWise is a user-friendly system designed to help individuals and communities report waste effectively. Our platform enables users to easily log and track waste, providing valuable insights into waste management practices and identifying areas for improvement. By promoting transparency and accountability, WasteWise aims to contribute to a more sustainable future for our planet.</p>
                     <div class="flex flex-col  gap-4 sm:flex-row">
-                        <a href="/waste-reporting-system/public/" class="text-green-50 hover:text-green-500"><button class="w-full  border-2 border-green-500 rounded p-2 text-base  bg-green-500 hover:text-green hover:bg-transparent hover:border-2 hover:border-green-500 transition-colors sm:w-auto sm:text-lg md:text-xl">Report Waste</button></a>
-                        <a href="/home" class="text-green-500 hover:text-green-50"><button class="w-full  border-2 border-green-500 rounded p-2 text-base  text-green hover:bg-green-500 hover:text-green-50 transition-colors sm:w-auto sm:text-lg md:text-xl">Report Litterer</button></a>
+                        <a href="" onclick="showLoginAlert('You need to log in first to report waste.')" class="text-green-50 hover:text-green-500"><button class="w-full  border-2 border-green-500 rounded p-2 text-base  bg-green-500 hover:text-green hover:bg-transparent hover:border-2 hover:border-green-500 transition-colors sm:w-auto sm:text-lg md:text-xl">Report Waste</button></a>
+                        <a href="" onclick="showLoginAlert('You need to log in first to report a litterer.')" class="text-green-500 hover:text-green-50"><button class="w-full  border-2 border-green-500 rounded p-2 text-base  text-green hover:bg-green-500 hover:text-green-50 transition-colors sm:w-auto sm:text-lg md:text-xl">Report Litterer</button></a>
                     </div>
                 </div>
                 <div class="w-full lg:min-w-[30%] flex items-center justify-center p-1 order-1 lg:order-2 relative mt-4 sm:mt-6 md:mt-8 h-75 sm:h-90">
@@ -144,6 +115,7 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js"></script>
     <script src="<?php echo URL_ROOT; ?>/js/auth.js"></script>
+    <script src="<?php echo URL_ROOT; ?>/js/alert-handler.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var typed = new Typed('#report', {

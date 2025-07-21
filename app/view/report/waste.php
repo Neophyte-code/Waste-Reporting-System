@@ -9,7 +9,7 @@
     <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
 </head>
 
-<body class="font-[sans-serif] bg-gradient-to-r from-green-100 via-emerald-200 to-green-500 h-full w-full">
+<body class="flex flex-col font-[sans-serif] bg-gradient-to-r from-green-100 via-emerald-200 to-green-500 min-h-screen w-full">
     <header class="bg-white w-full">
         <nav class="flex justify-between items-center w-[92%] mx-auto">
             <div>
@@ -18,7 +18,7 @@
             <div class="nav-links duration-500 md:static absolute bg-white md:min-h-fit min-h-[38vh] left-0 top-[-100%] md:w-auto z-1 w-full flex items-center px-5">
                 <ul class="w-full flex items-center justify-center md:flex-row flex-col md:text-md md:h-full md:items-center md:gap-[2vw] gap-8 font-bold">
                     <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>">HOME</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/home">HOME</a>
                     </li>
                     <li>
                         <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/about">ABOUT</a>

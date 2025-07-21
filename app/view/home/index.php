@@ -1,4 +1,4 @@
-<html lang="en">
+<html lang="en" class="h-full">
 
 <head>
     <meta charset="UTF-8">
@@ -8,7 +8,7 @@
     <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
 </head>
 
-<body class="font-[sans-serif] bg-gradient-to-r from-green-100 via-emerald-200 to-green-500 h-full w-full">
+<body class="font-[sans-serif] bg-gradient-to-r from-green-100 via-emerald-200 to-green-500 flex flex-col min-h-full w-full">
     <header class="bg-white w-full py-0.5">
         <nav class="flex justify-between items-center w-[92%] mx-auto sm:py-0">
             <div>
@@ -305,19 +305,19 @@
         </div>
     </div>
 
-    <main class="flex-grow w-full">
-        <div class="p-4 h-screen flex justify-center w-full sm:p-6 md:p-0 md:gap-10">
-            <div class="flex flex-col gap-8 px-4 items-center justify-center w-full sm:mt-20 sm:px-6 md:flex-col md:max-w-full md:px-8 lg:flex-row lg:mt-0">
-                <div class="p-1 mt-15 w-full py-10 order-2 sm:p-6 md:p-8 md:order-2 md:min-w-[60%] lg:order-1">
-                    <h1 class="text-2xl -mt-[70px] font-bold text-black mb-2 sm:text-3xl md:text-4xl md:-mt-[10px]">Welcome to Waste<span class="text-green-500">Wise</span></h1>
+    <main class="flex-grow w-full ">
+        <div class="p-4 flex justify-center h-full  w-full sm:p-6 md:p-0 md:gap-10">
+            <div class=" flex flex-col gap-8 px-4 items-center justify-center w-full sm:mt-20 sm:px-6 md:flex-col md:max-w-full md:px-8 lg:flex-row lg:mt-0">
+                <div class=" p-1 w-full  order-2 sm:p-6 md:p-8 md:order-2 md:min-w-[60%] lg:order-1">
+                    <h1 class="text-2xl  font-bold text-black mb-2 sm:text-3xl md:text-4xl md:-mt-[10px]">Welcome to Waste<span class="text-green-500">Wise</span></h1>
                     <h3 class="text-1xl font-bold text-black mb-2 sm:text-2xl md:text-3xl">Earn by reporting <span id="report" class="text-green-400"></span></h3>
                     <p class="mb-4 text-sm text-black sm:text-lg md:text-xl">WasteWise is a user-friendly system designed to help individuals and communities report waste effectively. Our platform enables users to easily log and track waste, providing valuable insights into waste management practices and identifying areas for improvement. By promoting transparency and accountability, WasteWise aims to contribute to a more sustainable future for our planet.</p>
                     <div class="flex flex-col gap-4 sm:flex-row">
-                        <a href="/waste-reporting-system/public/" class="text-green-50 hover:text-green-500"><button class="w-full border-2 border-green-500 rounded p-2 text-base bg-green-500 hover:text-green hover:bg-transparent hover:border-2 hover:border-green-500 transition-colors sm:w-auto sm:text-lg md:text-xl">Report Waste</button></a>
-                        <a href="/home" class="text-green-500 hover:text-green-50"><button class="w-full border-2 border-green-500 rounded p-2 text-base text-green hover:bg-green-500 hover:text-green-50 transition-colors sm:w-auto sm:text-lg md:text-xl">Report Litterer</button></a>
+                        <a href="<?php echo URL_ROOT; ?>/report/waste" class="text-green-50 hover:text-green-500"><button class="w-full border-2 border-green-500 rounded p-2 text-base bg-green-500 hover:text-green hover:bg-transparent hover:border-2 hover:border-green-500 transition-colors sm:w-auto sm:text-lg md:text-xl">Report Waste</button></a>
+                        <a href="<?php echo URL_ROOT; ?>/report/litterer" class="text-green-500 hover:text-green-50"><button class="w-full border-2 border-green-500 rounded p-2 text-base text-green hover:bg-green-500 hover:text-green-50 transition-colors sm:w-auto sm:text-lg md:text-xl">Report Litterer</button></a>
                     </div>
                 </div>
-                <div class="w-full flex items-center justify-center p-1 order-1 h-full md:min-w-[30%] md:order-1 lg:mt-0 lg:order-2">
+                <div class=" w-full flex items-center justify-center p-1 order-1 md:min-w-[30%] md:order-1 lg:mt-0 lg:order-2 ">
                     <img src="<?php echo URL_ROOT; ?>/images/tree3.png" alt="Tree illustration" class="w-60 max-w-xs object-contain sm:w-72 md:w-80 lg:w-96 md:mt-0.5">
                 </div>
             </div>
@@ -329,7 +329,8 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js"></script>
-    <script src="<?php echo URL_ROOT; ?>/js/home.js"></script>
+    <script src="<?php echo URL_ROOT; ?>/js/profile.js"></script>
+    <script src="<?php echo URL_ROOT; ?>/js/auth.js"></script>
     <script>
         // TYPEWRITER EFFECT
         document.addEventListener('DOMContentLoaded', function() {
