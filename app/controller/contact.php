@@ -13,8 +13,6 @@ class Contact extends Controller
     }
     public function index()
     {
-        // DEBUG: Check what's in the session
-        error_log("Session contents: " . print_r($_SESSION, true));
 
         // Pass user data to the view
         $userData = $_SESSION['user'];

@@ -73,15 +73,12 @@
                 <h1 class=" text-md sm:text-2xl font-bold ">Report Literrer</h1>
 
                 <div class="flex justify-center items-center gap-2 sm:gap-4 h-full">
-                    
-                    <!-- <i class="fa-solid fa-list cursor-pointer text-green-600 text-lg sm:text-2xl"></i> -->
-                    <!-- <i class="fa-solid fa-clock-rotate-left cursor-pointer text-green-600 text-lg sm:text-2xl"></i> -->
                     <div class="bg-gray-100 flex items-center justify-center rounded-3xl shadow-2xl inset-shadow-sm inset-shadow-gray-500/50 gap-1 py-1 sm:py-1 px-2">
                         <div class="bg-green-500 flex justify-center items-center text-white text-xs sm:text-lg w-4 h-4 sm:w-6 sm:h-6 rounded-full">&#9733;</div>
                         <h1 class="text-xs sm:text-xl font-bold text-green-500 text-center">1000.00</h1>
                     </div>
-                    
-                    <div class="bg-gray-100 shadow-md flex justify-center items-center p-1 w-6 h-6 sm:w-9 sm:h-9 rounded-md">
+
+                    <div class="bg-gray-100 flex justify-center items-center p-1 w-6 h-6 sm:w-9 sm:h-9 rounded-md shadow-2xl inset-shadow-sm inset-shadow-gray-500/50">
                         <img class="transaction w-7 cursor-pointer " src="<?php echo URL_ROOT; ?>/images/icons/transaction-icon.png" alt="...">
                     </div>
 
@@ -93,13 +90,13 @@
             <div class="bg-gray-100 max-w-200 px-6 sm:px-8 py-6 sm:py-10 mb-6 w-full shadow-2xl rounded-lg">
                 <h1 class="font-semibold">Upload Literrer Image</h1>
 
-               <div class="relative h-48 sm:h-60 rounded-lg border-dashed border-2 border-green-500 bg-gray-100 flex justify-center items-center mt-2">
-    
+                <div class="relative h-48 sm:h-60 rounded-lg border-dashed border-2 border-green-500 bg-gray-100 flex justify-center items-center mt-2">
+
                     <!-- Upload Prompt -->
                     <div id="upload-prompt" class="absolute w-full px-2 max-w-full">
                         <div class="flex flex-col items-center text-center px-4">
                             <svg xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 -960 960 960" width="40" fill="#666666">
-                                <path d="M450-313v-371L330-564l-43-43 193-193 193 193-43 43-120-120v371h-60ZM220-160q-24 0-42-18t-18-42v-143h60v143h520v-143h60v143q0 24-18 42t-42 18H220Z"/>
+                                <path d="M450-313v-371L330-564l-43-43 193-193 193 193-43 43-120-120v371h-60ZM220-160q-24 0-42-18t-18-42v-143h60v143h520v-143h60v143q0 24-18 42t-42 18H220Z" />
                             </svg>
                             <h1 class="text-green-500 font-bold text-sm sm:text-base">Attach your files here</h1>
                             <p class="text-gray-400 text-xs sm:text-sm">PNG, JPG, JPEG up to 10 MB</p>
@@ -121,7 +118,7 @@
                     <input type="file" id="file-input" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept=".png,.jpg,.jpeg" name="file-upload">
 
                 </div>
-        
+
                 <div class="flex flex-col sm:flex-row gap-4 mt-6">
                     <div class="flex flex-col w-full gap-2">
                         <h1 class="text-gray-700 font-semibold">Name of the suspect (if applicable)</h1>
@@ -147,24 +144,24 @@
                         <input class=" px-4 bg-gray-300 rounded-md p-2 focus:outline-none" type="text" name="" id="" placeholder="(Tattoo, hair styles, hair color, skin tone)">
                     </div>
                 </div>
-                
+
                 <h1 class="text-gray-700 font-semibold mt-4">Location</h1>
                 <div class=" w-full h-50 rounded-lg mt-2">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4299.785857526809!2d124.03293002155506!3d11.276335936459962!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a877cdf2f92c03%3A0x5ebd702f1c7dd656!2sTapilon%20Barangay%20Hall!5e1!3m2!1sen!2sph!4v1751360802867!5m2!1sen!2sph" 
-                    class="w-full h-full rounded-lg"
-                    style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4299.785857526809!2d124.03293002155506!3d11.276335936459962!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a877cdf2f92c03%3A0x5ebd702f1c7dd656!2sTapilon%20Barangay%20Hall!5e1!3m2!1sen!2sph!4v1751360802867!5m2!1sen!2sph"
+                        class="w-full h-full rounded-lg"
+                        style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
 
                 <button id="submit-button" class="w-full bg-green-500 mt-6 rounded-md py-1 text-lg text-center text-white hover:bg-green-600" type="submit">Submit Report</button>
             </div>
 
-            
+
         </div>
 
         <!-- History Modal -->
         <div id="historyModal" class="fixed inset-0 z-50 bg-white/70 pt-10 mt-10 hidden">
             <!-- MODAL BOX -->
-           <div id="modalBox" class="w-[90%] max-w-lg mx-auto max-h-139 overflow-y-auto bg-white p-4 sm:p-6 rounded-xl shadow-2xl opacity-0 translate-y-10 scale-95 transition-all duration-300 ">
+            <div id="modalBox" class="w-[90%] max-w-lg mx-auto max-h-139 overflow-y-auto bg-white p-4 sm:p-6 rounded-xl shadow-2xl opacity-0 translate-y-10 scale-95 transition-all duration-300 ">
                 <hr class="w-1/4 mx-auto border-t-4 border-gray-500 rounded-full">
                 <div class="flex justify-between items-center pr-4">
                     <h1 class="mt-2 text-2xl">History</h1>
@@ -182,7 +179,7 @@
                 </div>
 
                 <div class="mt-6 space-y-4">
-                    
+
                     <div class="flex justify-between item-center border border-gray-300 rounded-md shadow-md px-3 py-4">
                         <div class="flex justify-between items-center gap-4">
                             <i class="fa-solid fa-clipboard-list text-green-500 text-4xl"></i>
@@ -325,7 +322,7 @@
                 <!-- FILE UPLOAD + PREVIEW -->
                 <form id="upload-form">
                     <div class="relative rounded-lg border-dashed border-2 border-green-500 bg-gray-100 flex justify-center items-center mt-2 w-full max-w-md mx-auto h-40 sm:h-48 md:h-56">
-                        
+
                         <!-- Upload Message -->
                         <div id="upload-redeem" class="absolute inset-0 flex flex-col items-center justify-center text-center px-2">
                             <span class="text-green-500 font-bold text-sm sm:text-base">Upload a file</span>
@@ -359,7 +356,7 @@
 
     </main>
 
-        
+
 
     <footer class="text-gray bg-green-50 py-2">
         <h1 class="text-center text-xs">&copyWasteWise 2025 All Rights Reserved</h1>
@@ -500,36 +497,36 @@
         });
 
         function handleRedeemSubmit() {
-        const number = gcashNumber.value.trim();
-        const name = document.getElementById('gcashName').value.trim();
-        const file = redeemFileInput.files[0];
+            const number = gcashNumber.value.trim();
+            const name = document.getElementById('gcashName').value.trim();
+            const file = redeemFileInput.files[0];
 
-        if (!number || !name || !file || !selectedConversion) {
-            alert('Please complete all required fields including selecting a conversion amount and uploading a file.');
-            return;
-        }
+            if (!number || !name || !file || !selectedConversion) {
+                alert('Please complete all required fields including selecting a conversion amount and uploading a file.');
+                return;
+            }
 
-        alert('Redemption Submitted Successfully!');
-        redeemModal.classList.add('hidden');
+            alert('Redemption Submitted Successfully!');
+            redeemModal.classList.add('hidden');
 
-        // Reset state
-        gcashNumber.value = '';
-        document.getElementById('gcashName').value = '';
-        resetRedeemFileInput();
-        conversionButtons.forEach(b => b.classList.remove('bg-green-200', 'ring-2', 'ring-green-500'));
-        selectedConversion = null;
+            // Reset state
+            gcashNumber.value = '';
+            document.getElementById('gcashName').value = '';
+            resetRedeemFileInput();
+            conversionButtons.forEach(b => b.classList.remove('bg-green-200', 'ring-2', 'ring-green-500'));
+            selectedConversion = null;
         }
 
 
 
         openRedeemBtn?.addEventListener("click", () => {
-        redeemModal.classList.remove('hidden');
-        document.body.classList.add('overflow-hidden'); // Disable background scroll
+            redeemModal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden'); // Disable background scroll
 
-        // Clear old listeners to prevent duplication
-        const newSubmit = submitRedeem.cloneNode(true);
-        submitRedeem.parentNode.replaceChild(newSubmit, submitRedeem);
-        newSubmit.addEventListener('click', handleRedeemSubmit);
+            // Clear old listeners to prevent duplication
+            const newSubmit = submitRedeem.cloneNode(true);
+            submitRedeem.parentNode.replaceChild(newSubmit, submitRedeem);
+            newSubmit.addEventListener('click', handleRedeemSubmit);
         });
 
 
@@ -538,11 +535,11 @@
             document.body.classList.remove('overflow-hidden'); // Re-enable scroll
         });
 
-        redeemFileInput?.addEventListener('change', function () {
+        redeemFileInput?.addEventListener('change', function() {
             const file = this.files[0];
             if (file && file.type.startsWith('image/')) {
                 const reader = new FileReader();
-                reader.onload = function (e) {
+                reader.onload = function(e) {
                     redeemPreviewImg.src = e.target.result;
                     redeemPreviewDiv.classList.remove('hidden');
                     redeemUploadDiv.classList.add('hidden');
@@ -555,33 +552,39 @@
             resetRedeemFileInput();
         });
 
-        submitRedeem?.addEventListener('click', handleRedeemSubmit, { once: true });
+        submitRedeem?.addEventListener('click', handleRedeemSubmit, {
+            once: true
+        });
 
-            function handleRedeemSubmit() {
-                const number = gcashNumber.value.trim();
-                const name = document.getElementById('gcashName').value.trim();
-                const file = redeemFileInput.files[0];
+        function handleRedeemSubmit() {
+            const number = gcashNumber.value.trim();
+            const name = document.getElementById('gcashName').value.trim();
+            const file = redeemFileInput.files[0];
 
-                if (!number || !name || !file || !selectedConversion) {
-                    alert('Please complete all required fields including selecting a conversion amount and uploading a file.');
-                    // Re-attach listener if validation fails
-                    submitRedeem.addEventListener('click', handleRedeemSubmit, { once: true });
-                    return;
-                }
-
-                alert('Redemption Submitted Successfully!');
-                redeemModal.classList.add('hidden');
-
-                // Reset everything
-                gcashNumber.value = '';
-                document.getElementById('gcashName').value = '';
-                resetRedeemFileInput();
-                conversionButtons.forEach(b => b.classList.remove('bg-green-200', 'ring-2', 'ring-green-500'));
-                selectedConversion = null;
-
-                // Re-attach listener for next time
-                submitRedeem.addEventListener('click', handleRedeemSubmit, { once: true });
+            if (!number || !name || !file || !selectedConversion) {
+                alert('Please complete all required fields including selecting a conversion amount and uploading a file.');
+                // Re-attach listener if validation fails
+                submitRedeem.addEventListener('click', handleRedeemSubmit, {
+                    once: true
+                });
+                return;
             }
+
+            alert('Redemption Submitted Successfully!');
+            redeemModal.classList.add('hidden');
+
+            // Reset everything
+            gcashNumber.value = '';
+            document.getElementById('gcashName').value = '';
+            resetRedeemFileInput();
+            conversionButtons.forEach(b => b.classList.remove('bg-green-200', 'ring-2', 'ring-green-500'));
+            selectedConversion = null;
+
+            // Re-attach listener for next time
+            submitRedeem.addEventListener('click', handleRedeemSubmit, {
+                once: true
+            });
+        }
 
 
         function resetRedeemFileInput() {
@@ -592,74 +595,73 @@
         }
 
 
-            // === Report Submission Logic ===
-            const reportFileInput = document.getElementById('file-input');
-            const reportPreviewContainer = document.getElementById('preview-container');
-            const reportPreviewImage = document.getElementById('preview-image');
-            const reportClosePreview = document.getElementById('close-preview');
-            const reportUploadPrompt = document.getElementById('upload-prompt');
-            const reportSubmitButton = document.getElementById('submit-button');
+        // === Report Submission Logic ===
+        const reportFileInput = document.getElementById('file-input');
+        const reportPreviewContainer = document.getElementById('preview-container');
+        const reportPreviewImage = document.getElementById('preview-image');
+        const reportClosePreview = document.getElementById('close-preview');
+        const reportUploadPrompt = document.getElementById('upload-prompt');
+        const reportSubmitButton = document.getElementById('submit-button');
 
-            let reportFileUploaded = false;
+        let reportFileUploaded = false;
 
-            // File Input Preview
-            reportFileInput?.addEventListener('change', function () {
-                const file = this.files[0];
-                if (file && file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        reportPreviewImage.src = e.target.result;
-                        reportPreviewContainer.classList.remove('hidden');
-                        reportUploadPrompt.classList.add('hidden');
-                        reportFileUploaded = true;
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    alert('Invalid file type. Please upload PNG, JPG, or JPEG.');
-                    this.value = '';
-                }
-            });
-
-            // Remove Preview Logic
-            reportClosePreview?.addEventListener('click', resetReportFileInput);
-
-            // Form Submission Logic
-            reportSubmitButton?.addEventListener('click', function (e) {
-                e.preventDefault();
-
-                const inputs = {
-                    wasteType: document.querySelector('input[placeholder*="Waste Type"]')?.value.trim(),
-                    estimatedWaste: document.querySelector('input[placeholder*="Estimated Weight"]')?.value.trim(),
-                    location: document.querySelector('input[placeholder*="Location"]')?.value.trim(),
-                    features: document.querySelector('input[placeholder*="Tattoo"]')?.value.trim(),
+        // File Input Preview
+        reportFileInput?.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    reportPreviewImage.src = e.target.result;
+                    reportPreviewContainer.classList.remove('hidden');
+                    reportUploadPrompt.classList.add('hidden');
+                    reportFileUploaded = true;
                 };
+                reader.readAsDataURL(file);
+            } else {
+                alert('Invalid file type. Please upload PNG, JPG, or JPEG.');
+                this.value = '';
+            }
+        });
 
-                if (!inputs.wasteType || !inputs.estimatedWaste || !inputs.location || !inputs.features || !reportFileUploaded) {
-                    alert('Please complete all fields and upload an image before submitting the report.');
-                    return;
-                }
+        // Remove Preview Logic
+        reportClosePreview?.addEventListener('click', resetReportFileInput);
 
-                alert('Report submitted successfully!');
+        // Form Submission Logic
+        reportSubmitButton?.addEventListener('click', function(e) {
+            e.preventDefault();
 
-                // Reset form
-                resetInputs();
-                resetReportFileInput();
-            });
+            const inputs = {
+                wasteType: document.querySelector('input[placeholder*="Waste Type"]')?.value.trim(),
+                estimatedWaste: document.querySelector('input[placeholder*="Estimated Weight"]')?.value.trim(),
+                location: document.querySelector('input[placeholder*="Location"]')?.value.trim(),
+                features: document.querySelector('input[placeholder*="Tattoo"]')?.value.trim(),
+            };
 
-            // Reset All Inputs
-            function resetInputs() {
-                document.querySelectorAll('.rounded-md').forEach(input => input.value = '');
+            if (!inputs.wasteType || !inputs.estimatedWaste || !inputs.location || !inputs.features || !reportFileUploaded) {
+                alert('Please complete all fields and upload an image before submitting the report.');
+                return;
             }
 
-            // Reset File Preview
-            function resetReportFileInput() {
-                reportPreviewImage.src = '';
-                reportPreviewContainer.classList.add('hidden');
-                reportUploadPrompt.classList.remove('hidden');
-                reportFileInput.value = '';
-                reportFileUploaded = false;
-            }
+            alert('Report submitted successfully!');
 
+            // Reset form
+            resetInputs();
+            resetReportFileInput();
+        });
+
+        // Reset All Inputs
+        function resetInputs() {
+            document.querySelectorAll('.rounded-md').forEach(input => input.value = '');
+        }
+
+        // Reset File Preview
+        function resetReportFileInput() {
+            reportPreviewImage.src = '';
+            reportPreviewContainer.classList.add('hidden');
+            reportUploadPrompt.classList.remove('hidden');
+            reportFileInput.value = '';
+            reportFileUploaded = false;
+        }
     </script>
 
 

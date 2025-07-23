@@ -44,6 +44,8 @@
                     </li>
                 </ul>
             </div>
+
+            <!-- profile and notifcation icon -->
             <div class="flex items-center gap-3">
                 <div class="relative">
                     <ion-icon name="notifications-outline" class="text-3xl cursor-pointer hover:text-green-500 transition-colors" onclick="openNotificationModal()"></ion-icon>
@@ -55,32 +57,269 @@
                         class="w-10 h-10 rounded-full cursor-pointer border-2 border-gray-300 hover:border-green-500 transition-colors"
                         onclick="openProfileModal()">
                 </div>
-                <ion-icon onclick="onToggleMenu(this)" name="menu" class="text-3xl cursor-pointer md:hidden z-10"></ion-icon>
-            </div>
-            <div class="hidden flex items-center gap-6">
-                <button id="signInBtn" class="bg-green-500 md:shadow-lg text-md px-2 py-1 text-white rounded hover:bg-green-600">Sign in</button>
-                <ion-icon onclick="onToggleMenu(this)" name="menu" class="text-3xl cursor-pointer md:hidden z-1"></ion-icon>
+                <ion-icon id="menuIcon" onclick="onToggleMenu(this)" name="menu" class="text-3xl cursor-pointer md:hidden z-10"></ion-icon>
             </div>
         </nav>
     </header>
 
-    <!-- WASTE CONTENT -->
+    <!-- Notification Modal -->
+    <div id="notificationModal" class="fixed top-16 right-2 z-50 hidden" style="width: 350px;">
+        <div class="bg-white rounded-2xl shadow-2xl transform transition-all duration-300 translate-x-full opacity-0" id="notificationModalContent">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-100 rounded-tr-2xl rounded-tl-2xl">
+                <div class="flex items-center gap-2">
+                    <ion-icon name="notifications" class="text-xl text-green-500"></ion-icon>
+                    <h2 class="text-lg font-bold text-gray-800">Notifications</h2>
+                    <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-bold">3</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="markAllAsRead()" class="text-sm text-green-500 hover:text-green-600 font-medium">
+                        Mark all read
+                    </button>
+                    <button onclick="closeNotificationModal()" class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+                        <ion-icon name="close" class="text-xl text-gray-500"></ion-icon>
+                    </button>
+                </div>
+            </div>
 
+            <!-- Notification Content -->
+            <div class="h-[27rem] overflow-y-hidden " id="notificationContent">
+                <!-- Notification Item 1 -->
+                <div class="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
+                    <div class="flex items-start gap-3">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                <ion-icon name="trash" class="text-green-600 text-lg"></ion-icon>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <h4 class="text-sm font-semibold text-gray-800">Waste Report Approved</h4>
+                                <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-1">Your waste report at Tapilon Street has been approved. You earned 50 points!</p>
+                            <p class="text-xs text-gray-400">2 hours ago</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notification Item 2 -->
+                <div class="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
+                    <div class="flex items-start gap-3">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                                <ion-icon name="warning" class="text-yellow-600 text-lg"></ion-icon>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <h4 class="text-sm font-semibold text-gray-800">Report Under Review</h4>
+                                <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-1">Your litterer report is currently being reviewed by our team.</p>
+                            <p class="text-xs text-gray-400">5 hours ago</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notification Item 3 -->
+                <div class="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
+                    <div class="flex items-start gap-3">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                <ion-icon name="medal" class="text-blue-600 text-lg"></ion-icon>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <h4 class="text-sm font-semibold text-gray-800">Achievement Unlocked!</h4>
+                                <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-1">Congratulations! You've reached 500 points and unlocked the "Eco Warrior" badge.</p>
+                            <p class="text-xs text-gray-400">1 day ago</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
+                    <div class="flex items-start gap-3">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                <ion-icon name="medal" class="text-blue-600 text-lg"></ion-icon>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <h4 class="text-sm font-semibold text-gray-800">Achievement Unlocked!</h4>
+                                <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-1">Congratulations! You've reached 500 points and unlocked the "Eco Warrior" badge.</p>
+                            <p class="text-xs text-gray-400">1 day ago</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="hidden p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
+                    <div class="flex items-start gap-3">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                <ion-icon name="trash" class="text-green-600 text-lg"></ion-icon>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <h4 class="text-sm font-semibold text-gray-800">New Waste Collection</h4>
+                                <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-1">A new waste collection point has been added near your location.</p>
+                            <p class="text-xs text-gray-400">2 days ago</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Hidden Notifications -->
+                <div class="hidden p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
+                    <div class="flex items-start gap-3">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                <ion-icon name="star" class="text-purple-600 text-lg"></ion-icon>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <h4 class="text-sm font-semibold text-gray-800">Weekly Leaderboard</h4>
+                                <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-1">You're in the top 10 contributors this week! Keep up the good work.</p>
+                            <p class="text-xs text-gray-400">3 days ago</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Empty State (hidden by default) -->
+                <div id="emptyNotifications" class="hidden p-8 text-center">
+                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <ion-icon name="notifications-off" class="text-2xl text-gray-400"></ion-icon>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">No notifications</h3>
+                    <p class="text-gray-500 text-sm">You're all caught up! Check back later for updates.</p>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 -mt-10 py-4 border-t border-gray-100" id="viewAllButtonContainer">
+                <button onclick="viewAllNotifications()" class="w-full text-center text-green-500 hover:text-green-600 font-medium text-sm">
+                    View All Notifications
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="fixed top-16 right-2 z-50 hidden" style="width: 320px;">
+        <div class="bg-white rounded-2xl shadow-2xl transform transition-all duration-300 translate-x-full opacity-0" id="modalContent">
+            <div class="flex items-center justify-between px-6 py-3 border-b border-gray-100 bg-gray-200 rounded-tr-2xl rounded-tl-2xl">
+                <h2 class="text-lg font-bold text-gray-800">My Profile</h2>
+                <button onclick="closeProfileModal()" class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+                    <ion-icon name="close" class="text-xl text-gray-500"></ion-icon>
+                </button>
+            </div>
+            <div class="p-6">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="relative group">
+                        <img src="<?php echo URL_ROOT . '/' . htmlspecialchars($data['user']['profile_picture'] ?? 'images/profile.png'); ?>"
+                            alt="Profile"
+                            class="w-20 h-20 rounded-full border-4 border-green-100 cursor-pointer"
+                            id="profileImage">
+                        <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+                            <ion-icon name="checkmark" class="text-white text-sm"></ion-icon>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-800" id="profileName"><?php echo htmlspecialchars($data['user']['firstname'] . ' ' . $data['user']['lastname'] ?? 'Guest User'); ?></h3>
+                        <p class="text-sm text-gray-500" id="profileEmail"><?php echo htmlspecialchars($data['user']['email'] ?? 'guest@example.com'); ?></p>
+                        <p class="text-sm text-gray-500" id="profileBarangay"><?php echo htmlspecialchars($data['user']['barangay'] ?? 'Unknown'); ?></p>
+                        <button class="mt-1 text-sm text-blue-500 hover:text-blue-600 font-medium" onclick="toggleEditMode()">Edit Profile</button>
+                    </div>
+                </div>
+                <div class="space-y-1" id="menuItems">
+                    <a href="<?php echo URL_ROOT; ?>/auth/logout" class="flex items-center gap-3 p-3 rounded-lg hover:bg-red-100 cursor-pointer transition-colors text-red-600">
+                        <ion-icon name="log-out-outline" class="text-xl"></ion-icon>
+                        <span class="-ml-8">Log Out</span>
+                        <ion-icon name="chevron-forward" class="text-red-400 ml-auto"></ion-icon>
+                    </a>
+                </div>
+                <form id="editForm" class="hidden" action="<?php echo URL_ROOT; ?>/home/updateProfile" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="old_email" value="<?php echo htmlspecialchars($data['user']['email'] ?? ''); ?>">
+                    <div>
+                        <label class="block text-sm font-sm text-gray-700 mb-1">Profile Picture</label>
+                        <div class="relative">
+                            <input type="file" id="profileImageInputForm" name="profile_picture" accept="image/*"
+                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                onchange="handleImageUpload(event)">
+                            <button type="button"
+                                class="w-full p-1 border border-gray-300 rounded-lg bg-gray-50 text-gray-700 text-sm font-medium hover:bg-gray-100 transition-colors focus:ring-2 focus:ring-green-500 focus:outline-none">
+                                Choose Image
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-sm text-gray-700 mb-1">First Name</label>
+                        <input type="text" name="firstname" value="<?php echo htmlspecialchars($data['user']['firstname'] ?? ''); ?>"
+                            class="w-full p-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-sm text-gray-700 mb-1">Last Name</label>
+                        <input type="text" name="lastname" value="<?php echo htmlspecialchars($data['user']['lastname'] ?? ''); ?>"
+                            class="w-full p-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-sm text-gray-700 mb-1">Email</label>
+                        <input type="email" name="email" value="<?php echo htmlspecialchars($data['user']['email'] ?? ''); ?>"
+                            class="w-full p-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-sm text-gray-700 mb-1">Barangay</label>
+                        <select name="barangay" class="w-full p-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none focus:border-transparent">
+                            <option value="Tapilon" <?php echo ($data['user']['barangay'] ?? '') === 'Tapilon' ? 'selected' : ''; ?>>Tapilon</option>
+                            <option value="Maya" <?php echo ($data['user']['barangay'] ?? '') === 'Maya' ? 'selected' : ''; ?>>Maya</option>
+                            <option value="Poblacion" <?php echo ($data['user']['barangay'] ?? '') === 'Poblacion' ? 'selected' : ''; ?>>Poblacion</option>
+                        </select>
+                    </div>
+                    <div class="flex gap-2 pt-2 mt-2">
+                        <button type="submit" class="flex-1 bg-green-500 text-white py-1 rounded-lg font-medium hover:bg-green-600 transition-colors">
+                            Save Changes
+                        </button>
+                        <button type="button" onclick="cancelEdit()" class="flex-1 border border-gray-300 text-gray-700 py-1 rounded-lg font-medium hover:bg-gray-50 transition-colors">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+                <?php if (isset($_SESSION['profile_success'])): ?>
+                    <p class="text-green-500 text-sm mt-2"><?php echo $_SESSION['profile_success'];
+                                                            unset($_SESSION['profile_success']); ?></p>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['profile_error'])): ?>
+                    <p class="text-red-500 text-sm mt-2"><?php echo $_SESSION['profile_error'];
+                                                            unset($_SESSION['profile_error']); ?></p>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+
+    <!-- WASTE CONTENT -->
     <main class="flex-grow flex flex-col justify-center items-center w-full">
-        <div class=" container flex flex-col justify-center items-center gap-4 px-6 sm:mt-10 sm:px-0 md:px-10"> 
+        <div class=" container flex flex-col justify-center items-center gap-4 px-6 sm:mt-10 sm:px-0 md:px-10">
             <div class=" flex w-full max-w-200 justify-between mt-6 sm:mt-8 items-center">
                 <h1 class=" text-md sm:text-2xl font-bold ">Waste Report</h1>
 
                 <div class="flex justify-center items-center gap-2 sm:gap-4 h-full">
-                    
-                    <!-- <i class="fa-solid fa-list cursor-pointer text-green-600 text-lg sm:text-2xl"></i> -->
-                    <!-- <i class="fa-solid fa-clock-rotate-left cursor-pointer text-green-600 text-lg sm:text-2xl"></i> -->
                     <div class="bg-gray-100 flex items-center justify-center rounded-3xl shadow-2xl inset-shadow-sm inset-shadow-gray-500/50 gap-1 py-1 sm:py-1 px-2">
                         <div class="bg-green-500 flex justify-center items-center text-white text-xs sm:text-lg w-4 h-4 sm:w-6 sm:h-6 rounded-full">&#9733;</div>
                         <h1 class="text-xs sm:text-xl font-bold text-green-500 text-center">1000.00</h1>
                     </div>
-                    
-                    <div class="bg-gray-100 shadow-md flex justify-center items-center p-1 w-6 h-6 sm:w-9 sm:h-9 rounded-md">
+
+                    <div class="bg-gray-100 flex justify-center items-center p-1 w-6 h-6 sm:w-9 sm:h-9 rounded-md shadow-2xl inset-shadow-sm inset-shadow-gray-500/50">
                         <img class="transaction w-7 cursor-pointer " src="<?php echo URL_ROOT; ?>/images/icons/transaction-icon.png" alt="...">
                     </div>
 
@@ -92,13 +331,13 @@
             <div class="bg-gray-100 max-w-200 px-6 sm:px-8 py-6 sm:py-10 mb-6 w-full shadow-2xl rounded-lg">
                 <h1 class="font-semibold">Upload Waste Image</h1>
 
-               <div class="relative h-48 sm:h-60 rounded-lg border-dashed border-2 border-green-500 bg-gray-100 flex justify-center items-center mt-2">
-    
+                <div class="relative h-48 sm:h-60 rounded-lg border-dashed border-2 border-green-500 bg-gray-100 flex justify-center items-center mt-2">
+
                     <!-- Upload Prompt -->
                     <div id="upload-prompt" class="absolute w-full px-2 max-w-full">
                         <div class="flex flex-col items-center text-center px-4">
                             <svg xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 -960 960 960" width="40" fill="#666666">
-                                <path d="M450-313v-371L330-564l-43-43 193-193 193 193-43 43-120-120v371h-60ZM220-160q-24 0-42-18t-18-42v-143h60v143h520v-143h60v143q0 24-18 42t-42 18H220Z"/>
+                                <path d="M450-313v-371L330-564l-43-43 193-193 193 193-43 43-120-120v371h-60ZM220-160q-24 0-42-18t-18-42v-143h60v143h520v-143h60v143q0 24-18 42t-42 18H220Z" />
                             </svg>
                             <h1 class="text-green-500 font-bold text-sm sm:text-base">Attach your files here</h1>
                             <p class="text-gray-400 text-xs sm:text-sm">PNG, JPG, JPEG up to 10 MB</p>
@@ -123,7 +362,7 @@
 
 
                 <button class="w-full bg-green-500 mt-6 rounded-md py-1 text-lg text-center text-white hover:bg-green-600" type="submit">Verify Waste</button>
-        
+
                 <div class="flex flex-col sm:flex-row gap-4 mt-6">
                     <div class="flex flex-col w-full gap-2">
                         <h1 class="text-gray-700 font-semibold">Waste Type</h1>
@@ -138,22 +377,22 @@
                 <div class="flex flex-col mt-4 gap-2">
                     <h1 class="text-gray-700 font-semibold">Location</h1>
                     <div class=" w-full h-50 rounded-lg">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4299.785857526809!2d124.03293002155506!3d11.276335936459962!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a877cdf2f92c03%3A0x5ebd702f1c7dd656!2sTapilon%20Barangay%20Hall!5e1!3m2!1sen!2sph!4v1751360802867!5m2!1sen!2sph" 
-                        class="w-full h-full rounded-lg"
-                        style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4299.785857526809!2d124.03293002155506!3d11.276335936459962!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a877cdf2f92c03%3A0x5ebd702f1c7dd656!2sTapilon%20Barangay%20Hall!5e1!3m2!1sen!2sph!4v1751360802867!5m2!1sen!2sph"
+                            class="w-full h-full rounded-lg"
+                            style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
 
                 <button id="submit-button" class="w-full bg-green-500 mt-6 rounded-md py-1 text-lg text-center text-white hover:bg-green-600" type="submit">Submit Report</button>
             </div>
 
-            
+
         </div>
 
         <!-- History Modal -->
         <div id="historyModal" class="fixed inset-0 z-50 bg-white/70 pt-10 mt-10 hidden">
             <!-- MODAL BOX -->
-           <div id="modalBox" class="w-[90%] max-w-lg mx-auto max-h-135 overflow-y-auto bg-white p-4 sm:p-6 rounded-xl shadow-2xl opacity-0 translate-y-10 scale-95 transition-all duration-300 ">
+            <div id="modalBox" class="w-[90%] max-w-lg mx-auto max-h-135 overflow-y-auto bg-white p-4 sm:p-6 rounded-xl shadow-2xl opacity-0 translate-y-10 scale-95 transition-all duration-300 ">
                 <hr class="w-1/4 mx-auto border-t-4 border-gray-500 rounded-full">
                 <div class="flex justify-between items-center pr-4">
                     <h1 class="mt-2 text-2xl">History</h1>
@@ -171,7 +410,7 @@
                 </div>
 
                 <div class="mt-6 space-y-4">
-                    
+
                     <div class="flex justify-between item-center border border-gray-300 rounded-md shadow-md px-3 py-4">
                         <div class="flex justify-between items-center gap-4">
                             <i class="fa-solid fa-clipboard-list text-green-500 text-4xl"></i>
@@ -259,7 +498,7 @@
             </div>
         </div>
 
-        
+
         <!-- Redeem Modal -->
         <div id="redeemModal" class="fixed inset-0 z-50 bg-white/70 overflow-y-auto hidden py-10  mt-10">
             <!-- MODAL BOX -->
@@ -331,7 +570,7 @@
                 <!-- FILE UPLOAD + PREVIEW -->
                 <form id="upload-form">
                     <div class="relative rounded-lg border-dashed border-2 border-green-500 bg-gray-100 flex justify-center items-center mt-2 w-full max-w-md mx-auto h-40 sm:h-48 md:h-56">
-                        
+
                         <!-- Upload Message -->
                         <div id="upload-redeem" class="absolute inset-0 flex flex-col items-center justify-center text-center px-2">
                             <span class="text-green-500 font-bold text-sm sm:text-base">Upload a file</span>
@@ -361,19 +600,17 @@
                     <button id="submitRedeem" type="button" class="w-full bg-green-500 text-white text-sm sm:text-lg py-2 rounded-md hover:bg-green-600">Submit Redemption</button>
                 </div>
             </div>
-        </div> 
+        </div>
 
     </main>
-
-        
 
     <footer class="text-gray bg-green-50 py-2">
         <h1 class="text-center text-xs">&copyWasteWise 2025 All Rights Reserved</h1>
     </footer>
 
     <script src="<?php echo URL_ROOT; ?>/js/auth.js"></script>
+    <script src="<?php echo URL_ROOT; ?>/js/profile.js"></script>
     <script>
-
         // DROP DOWN
         function toggleDropdown() {
             const dropdown = document.getElementById("reportDropdown");
@@ -475,7 +712,7 @@
         reportButton.addEventListener('click', () => filterHistory('report'));
         redeemButton.addEventListener('click', () => filterHistory('redeem'));
 
-        
+
 
         // === Redeem Modal ===
         const redeemModal = document.getElementById('redeemModal');
@@ -509,36 +746,36 @@
         });
 
         function handleRedeemSubmit() {
-        const number = gcashNumber.value.trim();
-        const name = document.getElementById('gcashName').value.trim();
-        const file = redeemFileInput.files[0];
+            const number = gcashNumber.value.trim();
+            const name = document.getElementById('gcashName').value.trim();
+            const file = redeemFileInput.files[0];
 
-        if (!number || !name || !file || !selectedConversion) {
-            alert('Please complete all required fields including selecting a conversion amount and uploading a file.');
-            return;
-        }
+            if (!number || !name || !file || !selectedConversion) {
+                alert('Please complete all required fields including selecting a conversion amount and uploading a file.');
+                return;
+            }
 
-        alert('Redemption Submitted Successfully!');
-        redeemModal.classList.add('hidden');
+            alert('Redemption Submitted Successfully!');
+            redeemModal.classList.add('hidden');
 
-        // Reset state
-        gcashNumber.value = '';
-        document.getElementById('gcashName').value = '';
-        resetRedeemFileInput();
-        conversionButtons.forEach(b => b.classList.remove('bg-green-200', 'ring-2', 'ring-green-500'));
-        selectedConversion = null;
+            // Reset state
+            gcashNumber.value = '';
+            document.getElementById('gcashName').value = '';
+            resetRedeemFileInput();
+            conversionButtons.forEach(b => b.classList.remove('bg-green-200', 'ring-2', 'ring-green-500'));
+            selectedConversion = null;
         }
 
 
 
         openRedeemBtn?.addEventListener("click", () => {
-        redeemModal.classList.remove('hidden');
-        document.body.classList.add('overflow-hidden'); // Disable background scroll
+            redeemModal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden'); // Disable background scroll
 
-        // Clear old listeners to prevent duplication
-        const newSubmit = submitRedeem.cloneNode(true);
-        submitRedeem.parentNode.replaceChild(newSubmit, submitRedeem);
-        newSubmit.addEventListener('click', handleRedeemSubmit);
+            // Clear old listeners to prevent duplication
+            const newSubmit = submitRedeem.cloneNode(true);
+            submitRedeem.parentNode.replaceChild(newSubmit, submitRedeem);
+            newSubmit.addEventListener('click', handleRedeemSubmit);
         });
 
 
@@ -547,11 +784,11 @@
             document.body.classList.remove('overflow-hidden'); // Re-enable scroll
         });
 
-        redeemFileInput?.addEventListener('change', function () {
+        redeemFileInput?.addEventListener('change', function() {
             const file = this.files[0];
             if (file && file.type.startsWith('image/')) {
                 const reader = new FileReader();
-                reader.onload = function (e) {
+                reader.onload = function(e) {
                     redeemPreviewImg.src = e.target.result;
                     redeemPreviewDiv.classList.remove('hidden');
                     redeemUploadDiv.classList.add('hidden');
@@ -564,33 +801,39 @@
             resetRedeemFileInput();
         });
 
-        submitRedeem?.addEventListener('click', handleRedeemSubmit, { once: true });
+        submitRedeem?.addEventListener('click', handleRedeemSubmit, {
+            once: true
+        });
 
-            function handleRedeemSubmit() {
-                const number = gcashNumber.value.trim();
-                const name = document.getElementById('gcashName').value.trim();
-                const file = redeemFileInput.files[0];
+        function handleRedeemSubmit() {
+            const number = gcashNumber.value.trim();
+            const name = document.getElementById('gcashName').value.trim();
+            const file = redeemFileInput.files[0];
 
-                if (!number || !name || !file || !selectedConversion) {
-                    alert('Please complete all required fields including selecting a conversion amount and uploading a file.');
-                    // Re-attach listener if validation fails
-                    submitRedeem.addEventListener('click', handleRedeemSubmit, { once: true });
-                    return;
-                }
-
-                alert('Redemption Submitted Successfully!');
-                redeemModal.classList.add('hidden');
-
-                // Reset everything
-                gcashNumber.value = '';
-                document.getElementById('gcashName').value = '';
-                resetRedeemFileInput();
-                conversionButtons.forEach(b => b.classList.remove('bg-green-200', 'ring-2', 'ring-green-500'));
-                selectedConversion = null;
-
-                // Re-attach listener for next time
-                submitRedeem.addEventListener('click', handleRedeemSubmit, { once: true });
+            if (!number || !name || !file || !selectedConversion) {
+                alert('Please complete all required fields including selecting a conversion amount and uploading a file.');
+                // Re-attach listener if validation fails
+                submitRedeem.addEventListener('click', handleRedeemSubmit, {
+                    once: true
+                });
+                return;
             }
+
+            alert('Redemption Submitted Successfully!');
+            redeemModal.classList.add('hidden');
+
+            // Reset everything
+            gcashNumber.value = '';
+            document.getElementById('gcashName').value = '';
+            resetRedeemFileInput();
+            conversionButtons.forEach(b => b.classList.remove('bg-green-200', 'ring-2', 'ring-green-500'));
+            selectedConversion = null;
+
+            // Re-attach listener for next time
+            submitRedeem.addEventListener('click', handleRedeemSubmit, {
+                once: true
+            });
+        }
 
 
         function resetRedeemFileInput() {
@@ -610,11 +853,11 @@
 
         let reportFileUploaded = false;
 
-        reportFileInput?.addEventListener('change', function () {
+        reportFileInput?.addEventListener('change', function() {
             const file = this.files[0];
             if (file && file.type.startsWith('image/')) {
                 const reader = new FileReader();
-                reader.onload = function (e) {
+                reader.onload = function(e) {
                     reportPreviewImage.src = e.target.result;
                     reportPreviewContainer.classList.remove('hidden');
                     reportUploadPrompt.classList.add('hidden');
@@ -627,11 +870,11 @@
             }
         });
 
-        reportClosePreview?.addEventListener('click', function () {
+        reportClosePreview?.addEventListener('click', function() {
             resetReportFileInput();
         });
 
-        reportSubmitButton?.addEventListener('click', function (e) {
+        reportSubmitButton?.addEventListener('click', function(e) {
             e.preventDefault(); // prevent form submission
 
             const wasteTypeInput = document.querySelector('input[placeholder*="Waste Type"]');
