@@ -14,7 +14,7 @@ class Report extends Controller
 
     public function waste()
     {
-        //pass the user date to the view
+        //pass the user data to the view
         $userData = $_SESSION['user'];
 
         $this->view("report/waste", [
@@ -24,6 +24,11 @@ class Report extends Controller
 
     public function litterer()
     {
-        $this->view("report/litterer", []);
+        //pass the user data to the view
+        $userData = $_SESSION['user'];
+
+        $this->view("report/litterer", [
+            'user' => $userData
+        ]);
     }
 }
