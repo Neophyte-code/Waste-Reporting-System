@@ -342,6 +342,23 @@
                 loop: true
             });
         });
+
+        // Modern JavaScript for dropdown functionality
+        function toggleDropdown() {
+            const dropdown = document.getElementById("reportDropdown");
+            dropdown.classList.toggle("hidden");
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById("reportDropdown");
+            const button = event.target.closest('button[onclick="toggleDropdown()"]');
+
+            // If click is not on the dropdown button, close the dropdown
+            if (!button && !dropdown.classList.contains('hidden')) {
+                dropdown.classList.add("hidden");
+            }
+        });
     </script>
 </body>
 
