@@ -37,8 +37,8 @@
                             </svg>
                         </button>
                         <div id="reportDropdown" class="absolute hidden bg-white shadow-lg mt-2 rounded w-44 z-20 text-sm">
-                            <a href="<?php echo URL_ROOT; ?>/report/waste" class="block px-4 py-2 hover:bg-green-100 text-black">Report Waste</a>
-                            <a href="<?php echo URL_ROOT; ?>/report/litterer" class="block px-4 py-2 hover:bg-green-100 text-black">Report Litterer</a>
+                            <a href="<?php echo URL_ROOT; ?>/waste" class="block px-4 py-2 hover:bg-green-100 text-black">Report Waste</a>
+                            <a href="<?php echo URL_ROOT; ?>/litterer" class="block px-4 py-2 hover:bg-green-100 text-black">Report Litterer</a>
                         </div>
                     </li>
                 </ul>
@@ -351,7 +351,7 @@
             <?php endif; ?>
         </div>
 
-        
+
 
     </main>
 
@@ -361,23 +361,22 @@
     <script src="<?php echo URL_ROOT; ?>/js/profile.js"></script>
     <script src="<?php echo URL_ROOT; ?>/js/auth.js"></script>
     <script>
-
         function onToggleMenu(icon) {
-        const navLinks = document.querySelector('.nav-links');
-        const menuIcon = document.getElementById('menuIcon');
+            const navLinks = document.querySelector('.nav-links');
+            const menuIcon = document.getElementById('menuIcon');
 
-        navLinks.classList.toggle('hidden');
-        navLinks.classList.toggle('top-[9%]');
-        navLinks.classList.toggle('-top-full');
+            navLinks.classList.toggle('hidden');
+            navLinks.classList.toggle('top-[9%]');
+            navLinks.classList.toggle('-top-full');
 
-        // Toggle icon
-        if (menuIcon.name === 'menu') {
-            menuIcon.name = 'close';
-        } else {
-            menuIcon.name = 'menu';
+            // Toggle icon
+            if (menuIcon.name === 'menu') {
+                menuIcon.name = 'close';
+            } else {
+                menuIcon.name = 'menu';
+            }
         }
-    }
-    
+
         // Modern JavaScript for dropdown functionality
         function toggleDropdown() {
             const dropdown = document.getElementById("reportDropdown");

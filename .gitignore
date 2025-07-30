@@ -3,3 +3,9 @@ node_modules/
 
 #ignore profile uploads to be push in github
 /public/images/uploads/
+
+#ignore vendor folder to be push in github
+/vendor
+
+#ignore .env file to be push in github
+.env

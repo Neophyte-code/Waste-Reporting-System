@@ -1,6 +1,6 @@
 <?php
 
-class Report extends Controller
+class Litterer extends Controller
 {
 
     public function __construct()
@@ -12,22 +12,12 @@ class Report extends Controller
         }
     }
 
-    public function waste()
+    public function index()
     {
         //pass the user data to the view
         $userData = $_SESSION['user'];
 
-        $this->view("report/waste", [
-            'user' => $userData
-        ]);
-    }
-
-    public function litterer()
-    {
-        //pass the user data to the view
-        $userData = $_SESSION['user'];
-
-        $this->view("report/litterer", [
+        $this->view("litterer/index", [
             'user' => $userData
         ]);
     }
