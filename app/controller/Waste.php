@@ -25,8 +25,16 @@ class Waste extends Controller
         //pass the user data to the view
         $userData = $_SESSION['user'];
 
+        $success = $_SESSION['report_success'] ?? '';
+        $error = $_SESSION['report_error'] ?? '';
+
+        unset($_SESSION['report_error']);
+        unset($_SESSION['report_success']);
+
         $this->view("waste/index", [
-            'user' => $userData
+            'user' => $userData,
+            'success' => $success,
+            'error' => $error
         ]);
     }
 
@@ -106,7 +114,7 @@ class Waste extends Controller
                     'wasteWeight' => $wasteWeight
                 ]);
             } catch (Exception $e) {
-                http_response_code(400); // Set appropriate HTTP status code
+                http_response_code(400);
                 echo json_encode([
                     'error' => $e->getMessage(),
                     'status' => 'error'
@@ -115,6 +123,85 @@ class Waste extends Controller
             }
         } else {
             echo json_encode(['error' => 'No image uploaded or invalid request method']);
+        }
+    }
+
+    //function for reporting waste
+    public function submitWasteReport()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $user = $_SESSION['user'];
+
+            $data = [
+                'user_id' => htmlspecialchars(trim($user['id'])),
+                'image' => null,
+                'wasteType' => htmlspecialchars(trim($_POST['wasteType'])),
+                'estimatedWeight' => htmlspecialchars(trim($_POST['estimatedWeight'])),
+                'latitude' => filter_var($_POST['latitude'] ?? '', FILTER_VALIDATE_FLOAT),
+                'longitude' => filter_var($_POST['longitude'] ?? '', FILTER_VALIDATE_FLOAT)
+            ];
+
+            // FIRST: Check if image was uploaded
+            if (!isset($_FILES['wasteImage']) || $_FILES['wasteImage']['error'] !== UPLOAD_ERR_OK) {
+                $_SESSION['report_error'] = 'Please upload an image.';
+                header('Location: ' . URL_ROOT . '/waste');
+                exit;
+            }
+
+            // SECOND: Validate text fields
+            if (empty($data['wasteType']) || empty($data['estimatedWeight']) || $data['latitude'] === false || $data['longitude'] === false) {
+                $_SESSION['report_error'] = 'All fields are required.';
+                header('Location: ' . URL_ROOT . '/waste');
+                exit;
+            }
+
+            // THIRD: Handle file upload
+            $uploadDir = __DIR__ . '/../../public/images/reportWaste/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
+            // Validate file type and size
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            $maxSize = 5 * 1024 * 1024;
+            $fileType = $_FILES['wasteImage']['type'];
+            $fileSize = $_FILES['wasteImage']['size'];
+
+            if (!in_array($fileType, $allowedTypes)) {
+                $_SESSION['report_error'] = 'Invalid file type. Only JPEG, PNG, and GIF are allowed.';
+                header('Location: ' . URL_ROOT . '/waste');
+                exit;
+            }
+
+            if ($fileSize > $maxSize) {
+                $_SESSION['report_error'] = 'File size too large. Maximum 5MB allowed.';
+                header('Location: ' . URL_ROOT . '/waste');
+                exit;
+            }
+
+            // Generate unique filename and upload
+            $fileName = uniqid() . '-' . basename($_FILES['wasteImage']['name']);
+            $uploadPath = $uploadDir . $fileName;
+
+            if (move_uploaded_file($_FILES['wasteImage']['tmp_name'], $uploadPath)) {
+                $data['image'] = 'images/reportWaste/' . $fileName;
+            } else {
+                $_SESSION['report_error'] = 'Failed to upload file. Please try again later.';
+                header('Location: ' . URL_ROOT . '/waste');
+                exit;
+            }
+
+            // FOURTH: Submit to database
+            $wasteReportModel = $this->model('ReportModel');
+
+            if ($wasteReportModel->submitWasteReport($data)) {
+                $_SESSION['report_success'] = 'Your report has been submitted successfully!';
+            } else {
+                $_SESSION['report_error'] = 'Failed to submit your report. Please try again.';
+            }
+
+            header('Location: ' . URL_ROOT . '/waste');
+            exit;
         }
     }
 }

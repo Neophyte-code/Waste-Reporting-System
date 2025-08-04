@@ -8,6 +8,8 @@
     <link href="<?php echo URL_ROOT; ?>/css/output.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=upload" />
     <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+    <!-- Local Leaflet CSS -->
+    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/js/leaflet/leaflet.css" />
 </head>
 
 <body class="flex flex-col font-[sans-serif] bg-gradient-to-r from-green-100 via-emerald-200 to-green-500 min-h-screen w-full transition-all duration-300">
@@ -84,6 +86,7 @@
 
             <!-- Notification Content -->
             <div class="h-[27rem] overflow-y-hidden " id="notificationContent">
+
                 <!-- Notification Item 1 -->
                 <div class="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
                     <div class="flex items-start gap-3">
@@ -330,9 +333,10 @@
 
             <div class="bg-gray-100 max-w-200 px-6 sm:px-8 py-6 sm:py-10 mb-6 w-full shadow-2xl rounded-lg">
 
-                <h1 class="font-semibold">Upload Waste Image</h1>
+                <form id="wasteReportForm" method="post" action="<?php echo URL_ROOT; ?>/waste/submitWasteReport" enctype="multipart/form-data">
+                    <h1 class="font-semibold">Upload Waste Image</h1>
 
-                <form id="uploadForm" enctype="multipart/form-data">
+                    <!-- Image Upload Section -->
                     <div class="relative h-48 sm:h-60 rounded-lg border-dashed border-2 border-green-500 bg-gray-100 flex justify-center items-center mt-2">
 
                         <!-- Upload Prompt -->
@@ -350,47 +354,57 @@
                         <div id="preview-container" class="absolute w-full h-full max-w-full hidden flex justify-center items-center px-2">
                             <div class="relative inline-block">
                                 <img id="preview-image" class="max-h-32 sm:max-h-40 object-contain rounded-md" src="" alt="Preview">
-                                <!-- X Button inside img wrapper -->
                                 <span id="close-preview"
                                     class="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 size-6 sm:size-7 bg-red-500 flex items-center justify-center text-white rounded-full text-xs sm:text-sm font-bold z-10 hover:bg-red-600 cursor-pointer"
                                     title="Close">X</span>
                             </div>
                         </div>
 
-                        <!-- Invisible File Input -->
-                        <input type="file" id="wasteImage" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept=".png,.jpg,.jpeg" name="wasteImage" required>
+                        <!-- File Input -->
+                        <input type="file" id="wasteImage" name="wasteImage" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept=".png,.jpg,.jpeg" required>
                     </div>
 
                     <!-- Error Message -->
                     <div id="error" class="text-red-500 text-sm mt-4 text-center"></div>
 
-                    <!-- verify button -->
-                    <button class="w-full bg-green-500 mt-6 rounded-md py-1 text-lg text-center text-white hover:bg-green-600" type="submit" id="verifyBtn">Verify Waste</button>
+                    <!-- Verify Button -->
+                    <button class="w-full bg-green-500 mt-6 rounded-md py-1 text-lg text-center text-white hover:bg-green-600" type="button" id="verifyBtn">Verify Waste</button>
+
+                    <!-- Form Fields -->
+                    <div class="flex flex-col sm:flex-row gap-4 mt-6">
+                        <div class="flex flex-col w-full gap-2">
+                            <label for="wasteType" class="text-gray-700 font-semibold">Waste Type</label>
+                            <input class="px-4 bg-gray-300 rounded-md p-2 focus:outline-none" type="text" name="wasteType" id="wasteType" placeholder="Enter Waste Type (Plastics, Metal, Glass, ect.)" required>
+                        </div>
+                        <div class="flex flex-col w-full gap-2">
+                            <label for="estimatedWeight" class="text-gray-700 font-semibold">Estimated Weight</label>
+                            <input class="px-4 bg-gray-300 rounded-md p-2 focus:outline-none" type="text" name="estimatedWeight" id="estimatedWeight" placeholder="Enter Estimated Weight (5 kg, 10kg, etc.)" required>
+                        </div>
+                    </div>
+
+                    <!-- Location Section -->
+                    <div class="flex flex-col mt-4 gap-2">
+                        <h1 class="text-gray-700 font-semibold">Location</h1>
+                        <div class="w-full h-[300px] rounded-lg">
+                            <!-- location marker map -->
+                            <div id="map" class="h-full z-0"></div>
+                            <input type="hidden" id="latitude" name="latitude" required>
+                            <input type="hidden" id="longitude" name="longitude" required>
+                        </div>
+                    </div>
+
+                    <!-- submit error/success display -->
+                    <?php if (!empty($data['success'])): ?>
+                        <p class="text-green-500 text-center mt-4 text-xs sm:text-sm"><?php echo $data['success'] ?></p>
+                    <?php endif; ?>
+
+                    <?php if (!empty($data['error'])): ?>
+                        <p class="text-red-500 text-center mt-4 text-xs sm:text-sm"><?php echo $data['error']; ?></p>
+                    <?php endif; ?>
+
+                    <button id="submit-button" class="w-full bg-green-500 mt-6 rounded-md py-1 text-lg text-center text-white hover:bg-green-600" type="submit">Submit Report</button>
                 </form>
-
-                <div class="flex flex-col sm:flex-row gap-4 mt-6">
-                    <div class="flex flex-col w-full gap-2">
-                        <label for="wasteDescription" class="text-gray-700 font-semibold">Waste Type</label>
-                        <input class="px-4 bg-gray-300 rounded-md p-2 focus:outline-none" type="text" name="" id="wasteDescription" placeholder="Enter Waste Type (Plactics, Metal, Glass, ect.)">
-                    </div>
-                    <div class="flex flex-col w-full gap-2">
-                        <label for="wasteWeight" class="text-gray-700 font-semibold">Estimated Weight</label>
-                        <input class="px-4 bg-gray-300 rounded-md p-2 focus:outline-none" type="text" name="" id="wasteWeight" placeholder="Enter Estimated Weight (5 kg, 10kg, etc.)">
-                    </div>
-                </div>
-
-                <div class="flex flex-col mt-4 gap-2">
-                    <h1 class="text-gray-700 font-semibold">Location</h1>
-                    <div class=" w-full h-50 rounded-lg">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4299.785857526809!2d124.03293002155506!3d11.276335936459962!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a877cdf2f92c03%3A0x5ebd702f1c7dd656!2sTapilon%20Barangay%20Hall!5e1!3m2!1sen!2sph!4v1751360802867!5m2!1sen!2sph"
-                            class="w-full h-full rounded-lg"
-                            style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    </div>
-                </div>
-
-                <button id="submit-button" class="w-full bg-green-500 mt-6 rounded-md py-1 text-lg text-center text-white hover:bg-green-600" type="submit">Submit Report</button>
             </div>
-
 
         </div>
 
@@ -617,11 +631,11 @@
     <script src="<?php echo URL_ROOT; ?>/js/profile.js"></script>
     <script src="<?php echo URL_ROOT; ?>/js/history.js"></script>
     <script src="<?php echo URL_ROOT; ?>/js/redeem.js"></script>
-    <script src="<?php echo URL_ROOT; ?>/js/report-submit.js"></script>
     <script>
         const URL_ROOT = '<?php echo URL_ROOT; ?>';
     </script>
     <script src="<?php echo URL_ROOT; ?>/js/verify-waste.js"></script>
+    <script src="<?php echo URL_ROOT; ?>/js/leaflet/leaflet.js"></script>
     <script>
         // DROP DOWN
         function toggleDropdown() {
@@ -638,6 +652,31 @@
             if (!button && !dropdown.classList.contains('hidden')) {
                 dropdown.classList.add("hidden");
             }
+        });
+    </script>
+    <script>
+        L.Icon.Default.imagePath = '<?php echo URL_ROOT; ?>/js/leaflet/images/';
+        // Initialize the map
+        const map = L.map('map').setView([11.255255, 124.029840], 13);
+
+        // Add tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        let marker = null;
+
+        // Add click event to place marker
+        map.on('click', function(e) {
+            if (marker) {
+                map.removeLayer(marker);
+            }
+
+            marker = L.marker(e.latlng).addTo(map);
+
+            // Update form fields
+            document.getElementById('latitude').value = e.latlng.lat;
+            document.getElementById('longitude').value = e.latlng.lng;
         });
     </script>
 </body>

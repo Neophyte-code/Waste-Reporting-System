@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 25, 2025 at 06:13 AM
+-- Generation Time: Aug 03, 2025 at 06:33 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -35,17 +35,18 @@ CREATE TABLE `users` (
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `profile_picture` varchar(255) DEFAULT NULL
+  `profile_picture` varchar(255) DEFAULT NULL,
+  `points` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `firstname`, `lastname`, `barangay_id`, `email`, `password`, `created_at`, `profile_picture`) VALUES
-(1, 'Jerwin', 'Noval', 1, 'jerwinnoval645@gmail.com', '$2y$10$fZcHB6UVHv4.S0CxYFROy.TgT017Vrt7ajZAZU8Rb99HrxxqhHMZq', '2025-06-13 08:15:27', 'images/uploads/6856629c4a1bb-491197203_9603661269713196_2713955384735654909_n.jpg'),
-(8, 'Jerico', 'Ducante', 1, 'jericoducante@gmail.com', '$2y$10$gIhr3ZcBI95kAagPOG3xo.RQc/Xn4ZjxHMox5VxdDHGpTjb7ZGdNK', '2025-06-19 05:40:47', 'images/uploads/685b6db68dca7-janice.jpg'),
-(9, 'ella', 'pasohil', 2, 'ellapasohil@gmail.com', '$2y$10$H2F8A7wj9osqa7tY93Ty2OotOCibn93ozNqbUOpf1z.C7jw4EtFZG', '2025-06-25 03:40:40', 'images/uploads/685b6ff58d2ea-sun.jpg');
+INSERT INTO `users` (`id`, `firstname`, `lastname`, `barangay_id`, `email`, `password`, `created_at`, `profile_picture`, `points`) VALUES
+(1, 'Jerwin', 'Noval', 1, 'jerwinnoval645@gmail.com', '$2y$10$fZcHB6UVHv4.S0CxYFROy.TgT017Vrt7ajZAZU8Rb99HrxxqhHMZq', '2025-06-13 08:15:27', 'images/uploads/6856629c4a1bb-491197203_9603661269713196_2713955384735654909_n.jpg', 0),
+(8, 'Jerico', 'Ducante', 1, 'jericoducante@gmail.com', '$2y$10$gIhr3ZcBI95kAagPOG3xo.RQc/Xn4ZjxHMox5VxdDHGpTjb7ZGdNK', '2025-06-19 05:40:47', 'images/uploads/685b6db68dca7-janice.jpg', 0),
+(9, 'ella', 'pasohil', 2, 'ellapasohil@gmail.com', '$2y$10$H2F8A7wj9osqa7tY93Ty2OotOCibn93ozNqbUOpf1z.C7jw4EtFZG', '2025-06-25 03:40:40', 'images/uploads/685b6ff58d2ea-sun.jpg', 0);
 
 --
 -- Indexes for dumped tables

@@ -5,5 +5,8 @@
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.8",
     "tailwindcss": "^4.1.8"
+  },
+  "dependencies": {
+    "leaflet": "^1.9.4"
   }
 }
