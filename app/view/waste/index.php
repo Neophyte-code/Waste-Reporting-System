@@ -203,7 +203,7 @@
                 <div class="flex justify-center items-center gap-2 sm:gap-4 h-full">
                     <div class="bg-gray-100 flex items-center justify-center rounded-3xl shadow-2xl inset-shadow-sm inset-shadow-gray-500/50 gap-1 py-1 sm:py-1 px-2">
                         <div class="bg-green-500 flex justify-center items-center text-white text-xs sm:text-lg w-4 h-4 sm:w-6 sm:h-6 rounded-full">&#9733;</div>
-                        <h1 class="text-xs sm:text-xl font-bold text-green-500 text-center">1000.00</h1>
+                        <h1 class="text-xs sm:text-xl font-bold text-green-500 text-center"><?php echo htmlspecialchars($data['user']['points'] ?? '0.00'); ?></h1>
                     </div>
                     <div class="bg-gray-100 flex justify-center items-center p-1 w-6 h-6 sm:w-9 sm:h-9 rounded-md shadow-2xl inset-shadow-sm inset-shadow-gray-500/50">
                         <img class="transaction w-7 cursor-pointer" src="<?php echo URL_ROOT; ?>/images/icons/transaction-icon.png" alt="...">
@@ -278,18 +278,11 @@
         <!-- History Modal -->
         <div id="historyModal" class="fixed inset-0 z-50 bg-white/70 pt-10 mt-10 hidden">
             <!-- MODAL BOX -->
-            <div id="modalBox" class="w-[90%] max-w-lg mx-auto max-h-135 overflow-y-auto bg-white p-4 sm:p-6 rounded-xl shadow-2xl opacity-0 translate-y-10 scale-95 transition-all duration-300">
+            <div id="modalBox" class="w-[90%] max-w-lg mx-auto max-h-135 overflow-y-auto bg-white p-4 sm:p-6 rounded-xl shadow-2xl opacity-0 translate-y-10 scale-95 transition-all duration-300 scrollbar-none">
                 <hr class="w-1/4 mx-auto border-t-4 border-gray-500 rounded-full">
                 <div class="flex justify-between items-center pr-4">
-                    <h1 class="mt-2 text-2xl">History</h1>
+                    <h1 class="mt-2 text-2xl">Transactions</h1>
                     <img class="close w-5 cursor-pointer" src="<?php echo URL_ROOT; ?>/images/icons/close-icon.png" alt="...">
-                </div>
-                <div class="flex justify-between gap-4 mt-4">
-                    <button id="filter-all" class="bg-green-400 tab-item cursor-pointer px-4 rounded-xl">All</button>
-                    <div class="flex gap-4">
-                        <button id="filter-report" class="tab-item cursor-pointer px-4 rounded-xl">Report</button>
-                        <button id="filter-redeem" class="tab-item cursor-pointer px-4 rounded-xl">Redeem</button>
-                    </div>
                 </div>
                 <div class="mt-6 space-y-4">
                     <div class="flex justify-between item-center border border-gray-300 rounded-md shadow-md px-3 py-4">

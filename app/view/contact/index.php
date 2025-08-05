@@ -45,11 +45,11 @@
                 </ul>
             </div>
 
-            <!-- profile and notifcation icon -->
-            <div class="flex gap-3">
+            <!-- profile and notification icon -->
+            <div class="flex items-center gap-3">
                 <div class="relative">
                     <ion-icon name="notifications-outline" class="text-3xl cursor-pointer hover:text-green-500 transition-colors" onclick="openNotificationModal()"></ion-icon>
-                    <div id="notificationBadge" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center font-bold">3</div>
+                    <div id="notificationBadge" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center font-bold">0</div>
                 </div>
                 <div class="relative">
                     <img src="<?php echo URL_ROOT . '/' . htmlspecialchars($data['user']['profile_picture'] ?? 'images/profile.png'); ?>"
@@ -57,7 +57,7 @@
                         class="w-10 h-10 rounded-full cursor-pointer border-2 border-gray-300 hover:border-green-500 transition-colors"
                         onclick="openProfileModal()">
                 </div>
-                <ion-icon onclick="onToggleMenu(this)" name="menu" class="text-3xl cursor-pointer md:hidden z-10"></ion-icon>
+                <ion-icon id="menuIcon" onclick="onToggleMenu(this)" name="menu" class="text-3xl cursor-pointer md:hidden z-10"></ion-icon>
             </div>
         </nav>
     </header>
@@ -70,7 +70,7 @@
                 <div class="flex items-center gap-2">
                     <ion-icon name="notifications" class="text-xl text-green-500"></ion-icon>
                     <h2 class="text-lg font-bold text-gray-800">Notifications</h2>
-                    <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-bold">3</span>
+                    <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-bold" id="notificationCount">0</span>
                 </div>
                 <div class="flex items-center gap-2">
                     <button onclick="markAllAsRead()" class="text-sm text-green-500 hover:text-green-600 font-medium">
@@ -83,121 +83,13 @@
             </div>
 
             <!-- Notification Content -->
-            <div class="h-[27rem] overflow-y-hidden " id="notificationContent">
-                <!-- Notification Item 1 -->
-                <div class="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
-                    <div class="flex items-start gap-3">
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                                <ion-icon name="trash" class="text-green-600 text-lg"></ion-icon>
-                            </div>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-1">
-                                <h4 class="text-sm font-semibold text-gray-800">Waste Report Approved</h4>
-                                <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
-                            </div>
-                            <p class="text-sm text-gray-600 mb-1">Your waste report at Tapilon Street has been approved. You earned 50 points!</p>
-                            <p class="text-xs text-gray-400">2 hours ago</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="h-[27rem] overflow-y-auto">
 
-                <!-- Notification Item 2 -->
-                <div class="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
-                    <div class="flex items-start gap-3">
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
-                                <ion-icon name="warning" class="text-yellow-600 text-lg"></ion-icon>
-                            </div>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-1">
-                                <h4 class="text-sm font-semibold text-gray-800">Report Under Review</h4>
-                                <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
-                            </div>
-                            <p class="text-sm text-gray-600 mb-1">Your litterer report is currently being reviewed by our team.</p>
-                            <p class="text-xs text-gray-400">5 hours ago</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Notification Item 3 -->
-                <div class="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
-                    <div class="flex items-start gap-3">
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                <ion-icon name="medal" class="text-blue-600 text-lg"></ion-icon>
-                            </div>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-1">
-                                <h4 class="text-sm font-semibold text-gray-800">Achievement Unlocked!</h4>
-                                <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
-                            </div>
-                            <p class="text-sm text-gray-600 mb-1">Congratulations! You've reached 500 points and unlocked the "Eco Warrior" badge.</p>
-                            <p class="text-xs text-gray-400">1 day ago</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="hidden p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
-                    <div class="flex items-start gap-3">
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                <ion-icon name="medal" class="text-blue-600 text-lg"></ion-icon>
-                            </div>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-1">
-                                <h4 class="text-sm font-semibold text-gray-800">Achievement Unlocked!</h4>
-                                <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
-                            </div>
-                            <p class="text-sm text-gray-600 mb-1">Congratulations! You've reached 500 points and unlocked the "Eco Warrior" badge.</p>
-                            <p class="text-xs text-gray-400">1 day ago</p>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="hidden p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
-                    <div class="flex items-start gap-3">
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                                <ion-icon name="trash" class="text-green-600 text-lg"></ion-icon>
-                            </div>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-1">
-                                <h4 class="text-sm font-semibold text-gray-800">New Waste Collection</h4>
-                                <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
-                            </div>
-                            <p class="text-sm text-gray-600 mb-1">A new waste collection point has been added near your location.</p>
-                            <p class="text-xs text-gray-400">2 days ago</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Hidden Notifications -->
-                <div class="hidden p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
-                    <div class="flex items-start gap-3">
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                                <ion-icon name="star" class="text-purple-600 text-lg"></ion-icon>
-                            </div>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-1">
-                                <h4 class="text-sm font-semibold text-gray-800">Weekly Leaderboard</h4>
-                                <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
-                            </div>
-                            <p class="text-sm text-gray-600 mb-1">You're in the top 10 contributors this week! Keep up the good work.</p>
-                            <p class="text-xs text-gray-400">3 days ago</p>
-                        </div>
-                    </div>
-                </div>
+                <!-- Notifications list goes here -->
+                <div id="notificationContent"></div>
 
                 <!-- Empty State (hidden by default) -->
-                <div id="emptyNotifications" class="hidden p-8 text-center">
+                <div id="emptyNotifications" class="p-8 text-center hidden">
                     <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <ion-icon name="notifications-off" class="text-2xl text-gray-400"></ion-icon>
                     </div>
@@ -206,12 +98,6 @@
                 </div>
             </div>
 
-            <!-- Modal Footer -->
-            <div class="px-6 -mt-10 py-4 border-t border-gray-100" id="viewAllButtonContainer">
-                <button onclick="viewAllNotifications()" class="w-full text-center text-green-500 hover:text-green-600 font-medium text-sm">
-                    View All Notifications
-                </button>
-            </div>
         </div>
     </div>
 
@@ -394,6 +280,10 @@
     <footer class="text-gray bg-green-50 py-2 mt-2">
         <h1 class="text-center text-xs">&copyWasteWise 2025 All Rights Reserved</h1>
     </footer>
+    <script>
+        const URL_ROOT = '<?php echo URL_ROOT; ?>';
+    </script>
+    <script src="<?php echo URL_ROOT; ?>/js/notifications.js"></script>
     <script src="<?php echo URL_ROOT; ?>/js/profile.js"></script>
     <script src="<?php echo URL_ROOT; ?>/js/auth.js"></script>
     <script>

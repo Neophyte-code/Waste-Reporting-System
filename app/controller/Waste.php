@@ -10,6 +10,9 @@ use Dotenv\Dotenv;
 
 class Waste extends Controller
 {
+
+
+
     public function __construct()
     {
         // Check if user is logged in, redirect to auth if not
@@ -23,6 +26,12 @@ class Waste extends Controller
     {
         // Pass the user data to the view
         $userData = $_SESSION['user'];
+
+        $userModel = $this->model('User');
+        $userPoints = $userModel->getUserPoints($userData['id']);
+
+        // Ensure points is a numeric value before formatting
+        $userData['points'] = is_numeric($userPoints) ? number_format((float)$userPoints, 2) : 'not wokring';
 
         $success = $_SESSION['report_success'] ?? '';
         $error = $_SESSION['report_error'] ?? '';
