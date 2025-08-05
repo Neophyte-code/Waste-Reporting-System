@@ -10,10 +10,9 @@ use Dotenv\Dotenv;
 
 class Waste extends Controller
 {
-
     public function __construct()
     {
-        //check if user is logged in, redirect to auth if not
+        // Check if user is logged in, redirect to auth if not
         if (!isset($_SESSION['user'])) {
             header('Location: ' . URL_ROOT . '/auth');
             exit;
@@ -22,7 +21,7 @@ class Waste extends Controller
 
     public function index()
     {
-        //pass the user data to the view
+        // Pass the user data to the view
         $userData = $_SESSION['user'];
 
         $success = $_SESSION['report_success'] ?? '';
@@ -38,10 +37,10 @@ class Waste extends Controller
         ]);
     }
 
-    //funtion to validate the image using AI
+    // Function to validate the image using AI
     public function process()
     {
-        //load the api key - FIXED: Point to root directory where .env file is located
+        // Load the API key
         $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
         $dotenv->load();
 
@@ -126,81 +125,110 @@ class Waste extends Controller
         }
     }
 
-    //function for reporting waste
     public function submitWasteReport()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $user = $_SESSION['user'];
+            // Load the ReportModel
+            $reportModel = $this->model('ReportModel');
 
+            // Sanitize and prepare data
             $data = [
-                'user_id' => htmlspecialchars(trim($user['id'])),
-                'image' => null,
-                'wasteType' => htmlspecialchars(trim($_POST['wasteType'])),
-                'estimatedWeight' => htmlspecialchars(trim($_POST['estimatedWeight'])),
-                'latitude' => filter_var($_POST['latitude'] ?? '', FILTER_VALIDATE_FLOAT),
-                'longitude' => filter_var($_POST['longitude'] ?? '', FILTER_VALIDATE_FLOAT)
+                'user_id' => $_SESSION['user']['id'],
+                'wasteType' => filter_var($_POST['wasteType']),
+                'estimatedWeight' => filter_var($_POST['estimatedWeight']),
+                'latitude' => filter_var($_POST['latitude'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+                'longitude' => filter_var($_POST['longitude'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+                'image' => ''
             ];
 
-            // FIRST: Check if image was uploaded
-            if (!isset($_FILES['wasteImage']) || $_FILES['wasteImage']['error'] !== UPLOAD_ERR_OK) {
-                $_SESSION['report_error'] = 'Please upload an image.';
-                header('Location: ' . URL_ROOT . '/waste');
-                exit;
-            }
+            // Handle file upload
+            if (isset($_FILES['wasteImage']) && $_FILES['wasteImage']['error'] === UPLOAD_ERR_OK) {
+                $uploadDir = '../public/images/uploads/';
+                $fileName = time() . '_' . basename($_FILES['wasteImage']['name']);
+                $uploadPath = $uploadDir . $fileName;
 
-            // SECOND: Validate text fields
-            if (empty($data['wasteType']) || empty($data['estimatedWeight']) || $data['latitude'] === false || $data['longitude'] === false) {
-                $_SESSION['report_error'] = 'All fields are required.';
-                header('Location: ' . URL_ROOT . '/waste');
-                exit;
-            }
-
-            // THIRD: Handle file upload
-            $uploadDir = __DIR__ . '/../../public/images/reportWaste/';
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0755, true);
-            }
-
-            // Validate file type and size
-            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-            $maxSize = 5 * 1024 * 1024;
-            $fileType = $_FILES['wasteImage']['type'];
-            $fileSize = $_FILES['wasteImage']['size'];
-
-            if (!in_array($fileType, $allowedTypes)) {
-                $_SESSION['report_error'] = 'Invalid file type. Only JPEG, PNG, and GIF are allowed.';
-                header('Location: ' . URL_ROOT . '/waste');
-                exit;
-            }
-
-            if ($fileSize > $maxSize) {
-                $_SESSION['report_error'] = 'File size too large. Maximum 5MB allowed.';
-                header('Location: ' . URL_ROOT . '/waste');
-                exit;
-            }
-
-            // Generate unique filename and upload
-            $fileName = uniqid() . '-' . basename($_FILES['wasteImage']['name']);
-            $uploadPath = $uploadDir . $fileName;
-
-            if (move_uploaded_file($_FILES['wasteImage']['tmp_name'], $uploadPath)) {
-                $data['image'] = 'images/reportWaste/' . $fileName;
+                if (move_uploaded_file($_FILES['wasteImage']['tmp_name'], $uploadPath)) {
+                    $data['image'] = 'images/uploads/' . $fileName;
+                } else {
+                    $_SESSION['report_error'] = 'Failed to upload image.';
+                    header('Location: ' . URL_ROOT . '/waste');
+                    exit;
+                }
             } else {
-                $_SESSION['report_error'] = 'Failed to upload file. Please try again later.';
+                $_SESSION['report_error'] = 'Please upload a valid image.';
                 header('Location: ' . URL_ROOT . '/waste');
                 exit;
             }
 
-            // FOURTH: Submit to database
-            $wasteReportModel = $this->model('ReportModel');
-
-            if ($wasteReportModel->submitWasteReport($data)) {
-                $_SESSION['report_success'] = 'Your report has been submitted successfully!';
+            // Submit the report
+            if ($reportModel->submitWasteReport($data)) {
+                $_SESSION['report_success'] = 'Report submitted successfully!';
+                header('Location: ' . URL_ROOT . '/waste');
+                exit;
             } else {
-                $_SESSION['report_error'] = 'Failed to submit your report. Please try again.';
+                $_SESSION['report_error'] = 'Failed to submit report. Please try again.';
+                header('Location: ' . URL_ROOT . '/waste');
+                exit;
             }
+        }
+    }
 
-            header('Location: ' . URL_ROOT . '/waste');
+    public function getNotifications()
+    {
+        $reportModel = $this->model('ReportModel');
+        $user_id = $_SESSION['user']['id'];
+
+        try {
+            $notifications = $reportModel->getNotifications($user_id);
+
+            header('Content-Type: application/json');
+            echo json_encode($notifications);
+        } catch (Exception $e) {
+            error_log('Error fetching notifications: ' . $e->getMessage());
+            header('Content-Type: application/json');
+            echo json_encode([]);
+        }
+        exit;
+    }
+
+    public function markNotificationAsRead()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $input = json_decode(file_get_contents('php://input'), true);
+            $notification_id = filter_var($input['id'], FILTER_SANITIZE_NUMBER_INT);
+            $user_id = $_SESSION['user']['id'];
+
+            try {
+                $reportModel = $this->model('ReportModel');
+                $success = $reportModel->markNotificationAsRead($notification_id, $user_id);
+
+                header('Content-Type: application/json');
+                echo json_encode(['success' => $success]);
+            } catch (Exception $e) {
+                error_log('Error marking notification as read: ' . $e->getMessage());
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false]);
+            }
+            exit;
+        }
+    }
+
+    public function markAllNotificationsAsRead()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $user_id = $_SESSION['user']['id'];
+
+            try {
+                $reportModel = $this->model('ReportModel');
+                $success = $reportModel->markAllNotificationsAsRead($user_id);
+
+                header('Content-Type: application/json');
+                echo json_encode(['success' => $success]);
+            } catch (Exception $e) {
+                error_log('Error marking all notifications as read: ' . $e->getMessage());
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false]);
+            }
             exit;
         }
     }
