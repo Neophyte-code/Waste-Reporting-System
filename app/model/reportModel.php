@@ -126,13 +126,39 @@ class ReportModel
         }
     }
 
+
+    // validate redemptions request (enough points and user id)
+    public function validateRedemptionRequest($data)
+    {
+        try {
+            // Check if user has enough points
+            $stmt = $this->db->prepare("SELECT points FROM users WHERE id = :user_id");
+            $stmt->bindParam(':user_id', $data['user_id'], PDO::PARAM_INT);
+            $stmt->execute();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$user) {
+                return ['success' => false, 'message' => 'User not found'];
+            }
+
+            if ($user['points'] < $data['points_amount']) {
+                return ['success' => false, 'message' => 'Insufficient points for redemption'];
+            }
+
+            return ['success' => true];
+        } catch (PDOException $e) {
+            error_log('Redemption validation error: ' . $e->getMessage());
+            return ['success' => false, 'message' => 'Database error occurred'];
+        }
+    }
+
     // Function to suubmit redemption request
     public function submitRedemptionRequest($data)
     {
         try {
             $this->db->beginTransaction();
 
-            // First check if user has enough points
+            // Re-check points with FOR UPDATE lock
             $stmt = $this->db->prepare("SELECT points FROM users WHERE id = :user_id FOR UPDATE");
             $stmt->bindParam(':user_id', $data['user_id'], PDO::PARAM_INT);
             $stmt->execute();
@@ -186,11 +212,11 @@ class ReportModel
                 );
 
                 $this->db->commit();
-                return true;
+                return ['success' => true];
             }
 
             $this->db->rollBack();
-            return false;
+            return ['success' => false, 'message' => 'Failed to save redemption request'];
         } catch (PDOException $e) {
             $this->db->rollBack();
             error_log('Redemption request error: ' . $e->getMessage());

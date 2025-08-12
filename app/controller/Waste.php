@@ -251,50 +251,67 @@ class Waste extends Controller
     }
 
     //function to redeem points
+    //function to redeem points
     public function redeemPoints()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Sanitize and prepare data
-            $data = [
-                'user_id' => $_SESSION['user']['id'],
-                'points_amount' => filter_var($_POST['points'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
-                'gcash_number' => htmlspecialchars(trim($_POST['gcashNumber'])),
-                'gcash_name' => htmlspecialchars(trim($_POST['gcashName'])),
-                'qr_code_path' => ''
-            ];
-
-            // Handle file upload
-            if (isset($_FILES['gcashQR']) && $_FILES['gcashQR']['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = '../public/images/qrCode/';
-                if (!file_exists($uploadDir)) {
-                    mkdir($uploadDir, 0777, true);
-                }
-
-                $fileName = time() . '_' . basename($_FILES['gcashQR']['name']);
-                $uploadPath = $uploadDir . $fileName;
-
-                if (move_uploaded_file($_FILES['gcashQR']['tmp_name'], $uploadPath)) {
-                    $data['qr_code_path'] = 'images/qrCode/' . $fileName;
-                } else {
-                    $_SESSION['redeem_error'] = 'Failed to upload image.';
-                    header('Location: ' . URL_ROOT . '/waste');
-                    exit;
-                }
-            } else {
+            // Validate file upload first (but don't move it yet)
+            if (!isset($_FILES['gcashQR']) || $_FILES['gcashQR']['error'] !== UPLOAD_ERR_OK) {
                 $_SESSION['redeem_error'] = 'Please upload a valid image.';
                 header('Location: ' . URL_ROOT . '/waste');
                 exit;
             }
 
+            // Sanitize and prepare data (without qr_code_path for now)
+            $data = [
+                'user_id' => $_SESSION['user']['id'],
+                'points_amount' => filter_var($_POST['points'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+                'gcash_number' => htmlspecialchars(trim($_POST['gcashNumber'])),
+                'gcash_name' => htmlspecialchars(trim($_POST['gcashName'])),
+            ];
+
             $redeemModel = $this->model('ReportModel');
-            // Submit the redemption
+
+            // First validate the redemption (points, user existence, etc.) without file upload
+            $validationResult = $redeemModel->validateRedemptionRequest($data);
+
+            if (!($validationResult['success'] ?? false)) {
+                $_SESSION['redeem_error'] = $validationResult['message'] ?? 'Validation failed.';
+                header('Location: ' . URL_ROOT . '/waste');
+                exit;
+            }
+
+            // Only upload file after validation passes
+            $uploadDir = '../public/images/qrCode/';
+            if (!file_exists($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            $fileName = time() . '_' . basename($_FILES['gcashQR']['name']);
+            $uploadPath = $uploadDir . $fileName;
+
+            if (!move_uploaded_file($_FILES['gcashQR']['tmp_name'], $uploadPath)) {
+                $_SESSION['redeem_error'] = 'Failed to upload image.';
+                header('Location: ' . URL_ROOT . '/waste');
+                exit;
+            }
+
+            // Add the file path to data after successful upload
+            $data['qr_code_path'] = 'images/qrCode/' . $fileName;
+
+            // Submit the redemption with file path
             $result = $redeemModel->submitRedemptionRequest($data);
 
             if ($result['success'] ?? false) {
                 $_SESSION['redeem_success'] = 'Redemption request submitted successfully!';
             } else {
+                // If submission fails, clean up the uploaded file
+                if (file_exists($uploadPath)) {
+                    unlink($uploadPath);
+                }
                 $_SESSION['redeem_error'] = $result['message'] ?? 'Failed to submit redemption request. Please try again.';
             }
+
             header('Location: ' . URL_ROOT . '/waste');
             exit;
         }
