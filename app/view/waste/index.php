@@ -275,7 +275,7 @@
             </div>
         </div>
 
-        <!-- History Modal -->
+        <!-- Transaction Modal -->
         <div id="historyModal" class="fixed inset-0 z-50 bg-white/70 pt-10 mt-10 hidden">
             <!-- MODAL BOX -->
             <div id="modalBox" class="w-[90%] max-w-lg mx-auto max-h-135 overflow-y-auto bg-white p-4 sm:p-6 rounded-xl shadow-2xl opacity-0 translate-y-10 scale-95 transition-all duration-300 scrollbar-none">
@@ -379,65 +379,73 @@
                     <h1 class="text-md font-bold">Select Convertion</h1>
                     <div class="flex justify-between max-w-30 h-full items-center rounded-3xl shadow-2xl inset-shadow-sm inset-shadow-gray-500/50 gap-1 px-2">
                         <div class="bg-green-500 flex justify-center items-center text-sm text-white size-4 rounded-full">&#9733;</div>
-                        <h1 class="text-center text-md sm:text-lg font-bold text-green-500">0.00</h1>
+                        <h1 class="text-center text-md sm:text-lg font-bold text-green-500"><?php echo htmlspecialchars($data['user']['points'] ?? '0.00'); ?></h1>
                     </div>
                 </div>
+
                 <!-- AMOUNT OPTIONS -->
-                <div class="space-y-2 mb-4">
-                    <button class="conversion-btn w-full flex justify-between items-center bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-300">
-                        <div class="flex gap-2 px-2 items-center">
-                            <div class="bg-green-500 flex justify-center items-center text-md text-white size-5 rounded-full">&#9733;</div>
-                            <h1 class="text-md font-bold text-green-500">25.00</h1>
-                        </div>
-                        <div class="flex w-18">
-                            <span class="font-bold">&#8369; 25.00</span>
-                        </div>
-                    </button>
-                    <button class="conversion-btn w-full flex justify-between items-center bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-300">
-                        <div class="flex gap-2 px-2 items-center">
-                            <div class="bg-green-500 flex justify-center items-center text-md text-white size-5 rounded-full">&#9733;</div>
-                            <h1 class="text-md font-bold text-green-500">50.00</h1>
-                        </div>
-                        <div class="flex w-18">
-                            <span class="font-bold">&#8369; 50.00</span>
-                        </div>
-                    </button>
-                    <button class="conversion-btn w-full flex justify-between items-center bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-300">
-                        <div class="flex gap-2 px-2 items-center">
-                            <div class="bg-green-500 flex justify-center items-center text-md text-white size-5 rounded-full">&#9733;</div>
-                            <h1 class="text-md font-bold text-green-500">75.00</h1>
-                        </div>
-                        <div class="flex w-18">
-                            <span class="font-bold">&#8369; 75.00</span>
-                        </div>
-                    </button>
-                    <button class="conversion-btn w-full flex justify-between items-center bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-300">
-                        <div class="flex gap-2 px-2 items-center">
-                            <div class="bg-green-500 flex justify-center items-center text-md text-white size-5 rounded-full">&#9733;</div>
-                            <h1 class="text-md font-bold text-green-500">100.00</h1>
-                        </div>
-                        <div class="flex w-18">
-                            <span class="font-bold">&#8369; 100.00</span>
-                        </div>
-                    </button>
-                </div>
-                <!-- FORM INPUTS -->
-                <div class="flex flex-col gap-2">
-                    <h1 class="text-md font-bold">Enter Mobile Number</h1>
-                    <input type="text" id="gcashNumber" placeholder="Enter Mobile Number" class="w-full p-2 bg-gray-200 rounded" />
-                </div>
-                <div class="flex flex-col gap-2 mt-2 mb-6">
-                    <h1 class="text-md font-bold">Enter Gcash Name</h1>
-                    <input type="text" id="gcashName" placeholder="Gcash Name" class="w-full p-2 bg-gray-200 rounded" />
-                </div>
-                <!-- FILE UPLOAD + PREVIEW -->
-                <form id="upload-form">
+                <form id="redeem-form" method="post" action="<?php echo URL_ROOT; ?>/waste/redeemPoints" enctype="multipart/form-data">
+                    <div class="space-y-2 mb-4">
+                        <button type="button" class="conversion-btn w-full flex justify-between items-center bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-300" data-points="25.00">
+                            <div class="flex gap-2 px-2 items-center">
+                                <div class="bg-green-500 flex justify-center items-center text-md text-white size-5 rounded-full">&#9733;</div>
+                                <h1 class="text-md font-bold text-green-500">25.00</h1>
+                            </div>
+                            <div class="flex w-18">
+                                <span class="font-bold">&#8369; 25.00</span>
+                            </div>
+                        </button>
+                        <button type="button" class="conversion-btn w-full flex justify-between items-center bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-300" data-points="50.00">
+                            <div class="flex gap-2 px-2 items-center">
+                                <div class="bg-green-500 flex justify-center items-center text-md text-white size-5 rounded-full">&#9733;</div>
+                                <h1 class="text-md font-bold text-green-500">50.00</h1>
+                            </div>
+                            <div class="flex w-18">
+                                <span class="font-bold">&#8369; 50.00</span>
+                            </div>
+                        </button>
+                        <button type="button" class="conversion-btn w-full flex justify-between items-center bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-300" data-points="75.00">
+                            <div class="flex gap-2 px-2 items-center">
+                                <div class="bg-green-500 flex justify-center items-center text-md text-white size-5 rounded-full">&#9733;</div>
+                                <h1 class="text-md font-bold text-green-500">75.00</h1>
+                            </div>
+                            <div class="flex w-18">
+                                <span class="font-bold">&#8369; 75.00</span>
+                            </div>
+                        </button>
+                        <button type="button" class="conversion-btn w-full flex justify-between items-center bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-300" data-points="100.00">
+                            <div class="flex gap-2 px-2 items-center">
+                                <div class="bg-green-500 flex justify-center items-center text-md text-white size-5 rounded-full">&#9733;</div>
+                                <h1 class="text-md font-bold text-green-500">100.00</h1>
+                            </div>
+                            <div class="flex w-18">
+                                <span class="font-bold">&#8369; 100.00</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Hidden input for points -->
+                    <input type="hidden" id="points" name="points" value="">
+
+                    <!-- FORM INPUTS -->
+                    <div class="flex flex-col gap-2">
+                        <h1 class="text-md font-bold">Enter Mobile Number</h1>
+                        <input type="text" id="gcashNumber" name="gcashNumber" placeholder="Enter Mobile Number" class="w-full p-2 bg-gray-200 rounded" maxlength="11" required />
+                    </div>
+                    <div class="flex flex-col gap-2 mt-2 mb-6">
+                        <h1 class="text-md font-bold">Enter Gcash Name</h1>
+                        <input type="text" id="gcashName" name="gcashName" placeholder="Gcash Name" class="w-full p-2 bg-gray-200 rounded" required />
+                    </div>
+
+                    <!-- FILE UPLOAD + PREVIEW -->
+                    <h1 class="text-md font-bold">Upload Gcash QR Code</h1>
                     <div class="relative rounded-lg border-dashed border-2 border-green-500 bg-gray-100 flex justify-center items-center mt-2 w-full max-w-md mx-auto h-40 sm:h-48 md:h-56">
                         <!-- Upload Message -->
                         <div id="upload-redeem" class="absolute inset-0 flex flex-col items-center justify-center text-center px-2">
                             <span class="text-green-500 font-bold text-sm sm:text-base">Upload a file</span>
                             <h1 class="text-gray-400 text-xs sm:text-sm">PNG, JPG, JPEG up to 10 MB</h1>
                         </div>
+
                         <!-- Preview Image -->
                         <div id="preview-redeem" class="absolute inset-0 hidden flex justify-center items-center">
                             <div class="relative">
@@ -447,17 +455,27 @@
                                     title="Cancel">X</span>
                             </div>
                         </div>
+
                         <!-- File Input -->
                         <input type="file" id="file-input-redeem"
                             class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                            accept=".png,.jpg,.jpeg" name="file-upload">
+                            accept=".png,.jpg,.jpeg" name="gcashQR" required>
+                    </div>
+
+                    <!-- submit error/success display -->
+                    <?php if (!empty($data['redeemSuccess'])): ?>
+                        <p class="text-green-500 text-center mt-4 text-xs sm:text-sm"><?php echo $data['redeemSuccess'] ?></p>
+                    <?php endif; ?>
+                    <?php if (!empty($data['redeemError'])): ?>
+                        <p class="text-red-500 text-center mt-4 text-xs sm:text-sm"><?php echo $data['redeemError']; ?></p>
+                    <?php endif; ?>
+
+                    <!-- ACTION BUTTONS -->
+                    <div class="flex justify-between gap-4 mt-6">
+                        <button id="closeRedeemModal" type="button" class="w-full bg-gray-300 text-gray-800 text-sm sm:text-lg py-2 rounded-md hover:bg-gray-400">Close</button>
+                        <button id="submitRedeem" type="submit" class="w-full bg-green-500 text-white text-sm sm:text-lg py-2 rounded-md hover:bg-green-600">Submit Redemption</button>
                     </div>
                 </form>
-                <!-- ACTION BUTTONS -->
-                <div class="flex justify-between gap-4 mt-6">
-                    <button id="closeRedeemModal" type="button" class="w-full bg-gray-300 text-gray-800 text-sm sm:text-lg py-2 rounded-md hover:bg-gray-400">Close</button>
-                    <button id="submitRedeem" type="button" class="w-full bg-green-500 text-white text-sm sm:text-lg py-2 rounded-md hover:bg-green-600">Submit Redemption</button>
-                </div>
             </div>
         </div>
     </main>

@@ -1,12 +1,6 @@
 
 async function fetchNotifications() {
     try {
-        
-        console.log('Fetching notifications from:', `${URL_ROOT}/waste/getNotifications`);
-        
-        // Debug: Check if URL_ROOT is defined
-        console.log('URL_ROOT value:', URL_ROOT);
-        
         const response = await fetch(`${URL_ROOT}/waste/getNotifications`, {
             method: 'GET',
             headers: {
@@ -35,7 +29,6 @@ async function fetchNotifications() {
         notificationContent.innerHTML = '';
 
         if (!notifications || notifications.length === 0) {
-            console.log('No notifications found'); // Debug log
             emptyNotifications.classList.remove('hidden');
             notificationBadge.textContent = '0';
             notificationCount.textContent = '0';

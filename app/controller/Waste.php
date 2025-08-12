@@ -31,18 +31,24 @@ class Waste extends Controller
         $userPoints = $userModel->getUserPoints($userData['id']);
 
         // Ensure points is a numeric value before formatting
-        $userData['points'] = is_numeric($userPoints) ? number_format((float)$userPoints, 2) : 'not wokring';
+        $userData['points'] = is_numeric($userPoints) ? number_format((float)$userPoints) : '0.00';
 
         $success = $_SESSION['report_success'] ?? '';
         $error = $_SESSION['report_error'] ?? '';
+        $redeemSuccess = $_SESSION['redeem_success'] ?? '';
+        $redeemError = $_SESSION['redeem_error'] ?? '';
 
         unset($_SESSION['report_error']);
         unset($_SESSION['report_success']);
+        unset($_SESSION['redeem_error']);
+        unset($_SESSION['redeem_success']);
 
         $this->view("waste/index", [
             'user' => $userData,
             'success' => $success,
-            'error' => $error
+            'error' => $error,
+            'redeemSuccess' => $redeemSuccess,
+            'redeemError' => $redeemError,
         ]);
     }
 
@@ -152,12 +158,12 @@ class Waste extends Controller
 
             // Handle file upload
             if (isset($_FILES['wasteImage']) && $_FILES['wasteImage']['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = '../public/images/uploads/';
+                $uploadDir = '../public/images/reportWaste/';
                 $fileName = time() . '_' . basename($_FILES['wasteImage']['name']);
                 $uploadPath = $uploadDir . $fileName;
 
                 if (move_uploaded_file($_FILES['wasteImage']['tmp_name'], $uploadPath)) {
-                    $data['image'] = 'images/uploads/' . $fileName;
+                    $data['image'] = 'images/reportWaste/' . $fileName;
                 } else {
                     $_SESSION['report_error'] = 'Failed to upload image.';
                     header('Location: ' . URL_ROOT . '/waste');
@@ -200,6 +206,7 @@ class Waste extends Controller
         exit;
     }
 
+    //function to mark the notification as read
     public function markNotificationAsRead()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -222,6 +229,7 @@ class Waste extends Controller
         }
     }
 
+    //function to mark all the notification as read
     public function markAllNotificationsAsRead()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -240,5 +248,72 @@ class Waste extends Controller
             }
             exit;
         }
+    }
+
+    //function to redeem points
+    public function redeemPoints()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Sanitize and prepare data
+            $data = [
+                'user_id' => $_SESSION['user']['id'],
+                'points_amount' => filter_var($_POST['points'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+                'gcash_number' => htmlspecialchars(trim($_POST['gcashNumber'])),
+                'gcash_name' => htmlspecialchars(trim($_POST['gcashName'])),
+                'qr_code_path' => ''
+            ];
+
+            // Handle file upload
+            if (isset($_FILES['gcashQR']) && $_FILES['gcashQR']['error'] === UPLOAD_ERR_OK) {
+                $uploadDir = '../public/images/qrCode/';
+                if (!file_exists($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+
+                $fileName = time() . '_' . basename($_FILES['gcashQR']['name']);
+                $uploadPath = $uploadDir . $fileName;
+
+                if (move_uploaded_file($_FILES['gcashQR']['tmp_name'], $uploadPath)) {
+                    $data['qr_code_path'] = 'images/qrCode/' . $fileName;
+                } else {
+                    $_SESSION['redeem_error'] = 'Failed to upload image.';
+                    header('Location: ' . URL_ROOT . '/waste');
+                    exit;
+                }
+            } else {
+                $_SESSION['redeem_error'] = 'Please upload a valid image.';
+                header('Location: ' . URL_ROOT . '/waste');
+                exit;
+            }
+
+            $redeemModel = $this->model('ReportModel');
+            // Submit the redemption
+            $result = $redeemModel->submitRedemptionRequest($data);
+
+            if ($result['success'] ?? false) {
+                $_SESSION['redeem_success'] = 'Redemption request submitted successfully!';
+            } else {
+                $_SESSION['redeem_error'] = $result['message'] ?? 'Failed to submit redemption request. Please try again.';
+            }
+            header('Location: ' . URL_ROOT . '/waste');
+            exit;
+        }
+    }
+
+    //function to get the transaction history
+    public function getUserRedemptions()
+    {
+        if (!isset($_SESSION['user'])) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Unauthorized']);
+            exit;
+        }
+
+        $redeemModel = $this->model('RedeemModel');
+        $redemptions = $redeemModel->getUserRedemptions($_SESSION['user']['id']);
+
+        header('Content-Type: application/json');
+        echo json_encode($redemptions);
+        exit;
     }
 }
