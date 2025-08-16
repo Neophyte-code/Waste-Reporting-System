@@ -10,12 +10,12 @@
 </head>
 
 <body class="relative flex flex-col font-[sans-serif] bg-gradient-to-r from-green-100 via-emerald-200 to-green-500 min-h-screen w-full">
-    <header class="bg-white sticky top-0 w-full py-0.5">
-        <nav class="flex justify-between items-center w-[92%] mx-auto sm:py-0">
+    <header class="bg-white w-full">
+        <nav class="flex justify-between items-center w-[92%] mx-auto">
             <div>
-                <img class="w-[100px] cursor-pointer" src="<?php echo URL_ROOT; ?>/images/WasteWise.png" alt="WasteWise Logo">
+                <img class="w-27 cursor-pointer " src="<?php echo URL_ROOT; ?>/images/WasteWise.png" alt="...">
             </div>
-            <div class="nav-links duration-500 md:static absolute bg-white md:min-h-fit min-h-[38vh] left-0 top-[-100%] md:w-auto w-full flex items-center px-5 py-8 sm:py-0 z-10">
+            <div class="nav-links duration-500 md:static absolute bg-white md:min-h-fit min-h-[38vh] left-0 top-[-100%] md:w-auto z-1 w-full flex items-center px-5 py-8 sm:py-0">
                 <ul class="w-full flex items-center justify-center md:flex-row flex-col md:text-md md:h-full md:items-center md:gap-[2vw] gap-8 font-bold">
                     <li>
                         <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/home">HOME</a>

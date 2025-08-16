@@ -4,14 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Report-Waste</title>
     <link href="<?php echo URL_ROOT; ?>/css/output.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=upload" />
     <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+    <!-- Local Leaflet CSS -->
+    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/js/leaflet/leaflet.css" />
 </head>
 
-<body class="flex flex-col font-[sans-serif] bg-gradient-to-r from-green-100 via-emerald-200 to-green-500 min-h-screen w-full">
+<body class="flex flex-col font-[sans-serif] bg-gradient-to-r from-green-100 via-emerald-200 to-green-500 min-h-screen w-full transition-all duration-300">
     <header class="bg-white w-full">
         <nav class="flex justify-between items-center w-[92%] mx-auto">
             <div>
@@ -46,11 +47,11 @@
                 </ul>
             </div>
 
-            <!-- profile and notifcation icon -->
+            <!-- profile and notification icon -->
             <div class="flex items-center gap-3">
                 <div class="relative">
                     <ion-icon name="notifications-outline" class="text-3xl cursor-pointer hover:text-green-500 transition-colors" onclick="openNotificationModal()"></ion-icon>
-                    <div id="notificationBadge" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center font-bold">3</div>
+                    <div id="notificationBadge" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center font-bold">0</div>
                 </div>
                 <div class="relative">
                     <img src="<?php echo URL_ROOT . '/' . htmlspecialchars($data['user']['profile_picture'] ?? 'images/profile.png'); ?>"
@@ -71,7 +72,7 @@
                 <div class="flex items-center gap-2">
                     <ion-icon name="notifications" class="text-xl text-green-500"></ion-icon>
                     <h2 class="text-lg font-bold text-gray-800">Notifications</h2>
-                    <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-bold">3</span>
+                    <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-bold" id="notificationCount">0</span>
                 </div>
                 <div class="flex items-center gap-2">
                     <button onclick="markAllAsRead()" class="text-sm text-green-500 hover:text-green-600 font-medium">
@@ -84,121 +85,13 @@
             </div>
 
             <!-- Notification Content -->
-            <div class="h-[27rem] overflow-y-hidden " id="notificationContent">
-                <!-- Notification Item 1 -->
-                <div class="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
-                    <div class="flex items-start gap-3">
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                                <ion-icon name="trash" class="text-green-600 text-lg"></ion-icon>
-                            </div>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-1">
-                                <h4 class="text-sm font-semibold text-gray-800">Waste Report Approved</h4>
-                                <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
-                            </div>
-                            <p class="text-sm text-gray-600 mb-1">Your waste report at Tapilon Street has been approved. You earned 50 points!</p>
-                            <p class="text-xs text-gray-400">2 hours ago</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="h-[27rem] overflow-y-auto">
 
-                <!-- Notification Item 2 -->
-                <div class="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
-                    <div class="flex items-start gap-3">
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
-                                <ion-icon name="warning" class="text-yellow-600 text-lg"></ion-icon>
-                            </div>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-1">
-                                <h4 class="text-sm font-semibold text-gray-800">Report Under Review</h4>
-                                <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
-                            </div>
-                            <p class="text-sm text-gray-600 mb-1">Your litterer report is currently being reviewed by our team.</p>
-                            <p class="text-xs text-gray-400">5 hours ago</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Notification Item 3 -->
-                <div class="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
-                    <div class="flex items-start gap-3">
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                <ion-icon name="medal" class="text-blue-600 text-lg"></ion-icon>
-                            </div>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-1">
-                                <h4 class="text-sm font-semibold text-gray-800">Achievement Unlocked!</h4>
-                                <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
-                            </div>
-                            <p class="text-sm text-gray-600 mb-1">Congratulations! You've reached 500 points and unlocked the "Eco Warrior" badge.</p>
-                            <p class="text-xs text-gray-400">1 day ago</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="hidden p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
-                    <div class="flex items-start gap-3">
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                <ion-icon name="medal" class="text-blue-600 text-lg"></ion-icon>
-                            </div>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-1">
-                                <h4 class="text-sm font-semibold text-gray-800">Achievement Unlocked!</h4>
-                                <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
-                            </div>
-                            <p class="text-sm text-gray-600 mb-1">Congratulations! You've reached 500 points and unlocked the "Eco Warrior" badge.</p>
-                            <p class="text-xs text-gray-400">1 day ago</p>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="hidden p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
-                    <div class="flex items-start gap-3">
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                                <ion-icon name="trash" class="text-green-600 text-lg"></ion-icon>
-                            </div>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-1">
-                                <h4 class="text-sm font-semibold text-gray-800">New Waste Collection</h4>
-                                <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
-                            </div>
-                            <p class="text-sm text-gray-600 mb-1">A new waste collection point has been added near your location.</p>
-                            <p class="text-xs text-gray-400">2 days ago</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Hidden Notifications -->
-                <div class="hidden p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors" onclick="markAsRead(this)">
-                    <div class="flex items-start gap-3">
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                                <ion-icon name="star" class="text-purple-600 text-lg"></ion-icon>
-                            </div>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-1">
-                                <h4 class="text-sm font-semibold text-gray-800">Weekly Leaderboard</h4>
-                                <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
-                            </div>
-                            <p class="text-sm text-gray-600 mb-1">You're in the top 10 contributors this week! Keep up the good work.</p>
-                            <p class="text-xs text-gray-400">3 days ago</p>
-                        </div>
-                    </div>
-                </div>
+                <!-- Notifications list goes here -->
+                <div id="notificationContent"></div>
 
                 <!-- Empty State (hidden by default) -->
-                <div id="emptyNotifications" class="hidden p-8 text-center">
+                <div id="emptyNotifications" class="p-8 text-center hidden">
                     <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <ion-icon name="notifications-off" class="text-2xl text-gray-400"></ion-icon>
                     </div>
@@ -207,12 +100,6 @@
                 </div>
             </div>
 
-            <!-- Modal Footer -->
-            <div class="px-6 -mt-10 py-4 border-t border-gray-100" id="viewAllButtonContainer">
-                <button onclick="viewAllNotifications()" class="w-full text-center text-green-500 hover:text-green-600 font-medium text-sm">
-                    View All Notifications
-                </button>
-            </div>
         </div>
     </div>
 
@@ -308,8 +195,7 @@
         </div>
     </div>
 
-    <!-- WASTE CONTENT -->
-
+    <!-- LITTERER CONTENT -->
     <main class="flex-grow flex flex-col justify-center items-center w-full">
         <div class=" container flex flex-col justify-center items-center gap-4 px-6 mt-4 sm:mt-10 sm:px-0 md:px-10">
             <div class=" flex w-full max-w-200 justify-between mt-6 sm:mt-8 items-center">
@@ -318,7 +204,7 @@
                 <div class="flex justify-center items-center gap-2 sm:gap-4 h-full">
                     <div class="bg-gray-100 flex items-center justify-center rounded-3xl shadow-2xl inset-shadow-sm inset-shadow-gray-500/50 gap-1 py-1 sm:py-1 px-2">
                         <div class="bg-green-500 flex justify-center items-center text-white text-xs sm:text-lg w-4 h-4 sm:w-6 sm:h-6 rounded-full">&#9733;</div>
-                        <h1 class="text-xs sm:text-xl font-bold text-green-500 text-center">1000.00</h1>
+                        <h1 class="text-xs sm:text-xl font-bold text-green-500 text-center"><?php echo htmlspecialchars($data['user']['points'] ?? '0.00'); ?></h1>
                     </div>
 
                     <div class="bg-gray-100 flex justify-center items-center p-1 w-6 h-6 sm:w-9 sm:h-9 rounded-md shadow-2xl inset-shadow-sm inset-shadow-gray-500/50">
@@ -330,242 +216,191 @@
 
             </div>
 
+            <!-- form for submitting litterer report -->
             <div class="bg-gray-100 max-w-200 px-6 sm:px-8 py-6 sm:py-10 mb-6 w-full shadow-2xl rounded-lg">
                 <h1 class="font-semibold">Upload Literrer Image</h1>
+                <form action="<?php echo URL_ROOT; ?>/Litterer/submitLittererReport" method="post" enctype="multipart/form-data">
+                    <div class="relative h-48 sm:h-60 rounded-lg border-dashed border-2 border-green-500 bg-gray-100 flex justify-center items-center mt-2">
 
-                <div class="relative h-48 sm:h-60 rounded-lg border-dashed border-2 border-green-500 bg-gray-100 flex justify-center items-center mt-2">
+                        <!-- Upload Prompt -->
+                        <div id="upload-prompt" class="absolute w-full px-2 max-w-full">
+                            <div class="flex flex-col items-center text-center px-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 -960 960 960" width="40" fill="#666666">
+                                    <path d="M450-313v-371L330-564l-43-43 193-193 193 193-43 43-120-120v371h-60ZM220-160q-24 0-42-18t-18-42v-143h60v143h520v-143h60v143q0 24-18 42t-42 18H220Z" />
+                                </svg>
+                                <h1 class="text-green-500 font-bold text-sm sm:text-base">Attach your files here</h1>
+                                <p class="text-gray-400 text-xs sm:text-sm">PNG, JPG, JPEG up to 10 MB</p>
+                            </div>
+                        </div>
 
-                    <!-- Upload Prompt -->
-                    <div id="upload-prompt" class="absolute w-full px-2 max-w-full">
-                        <div class="flex flex-col items-center text-center px-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 -960 960 960" width="40" fill="#666666">
-                                <path d="M450-313v-371L330-564l-43-43 193-193 193 193-43 43-120-120v371h-60ZM220-160q-24 0-42-18t-18-42v-143h60v143h520v-143h60v143q0 24-18 42t-42 18H220Z" />
-                            </svg>
-                            <h1 class="text-green-500 font-bold text-sm sm:text-base">Attach your files here</h1>
-                            <p class="text-gray-400 text-xs sm:text-sm">PNG, JPG, JPEG up to 10 MB</p>
+                        <!-- Preview Container -->
+                        <div id="preview-container" class="absolute w-full h-full max-w-full hidden flex justify-center items-center px-2">
+                            <div class="relative inline-block">
+                                <img id="preview-image" class="max-h-32 sm:max-h-40 object-contain rounded-md" src="" alt="Preview">
+                                <!-- X Button inside img wrapper -->
+                                <span id="close-preview"
+                                    class="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 size-6 sm:size-7 bg-red-500 flex items-center justify-center text-white rounded-full text-xs sm:text-sm font-bold z-10 hover:bg-red-600 cursor-pointer"
+                                    title="Close">X</span>
+                            </div>
+                        </div>
+
+                        <!-- Invisible File Input -->
+                        <input type="file" id="file-input" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept=".png,.jpg,.jpeg" name="littererImage">
+
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4 mt-6">
+                        <div class="flex flex-col w-full gap-2">
+                            <h1 class="text-gray-700 font-semibold">Name of the suspect (if applicable)</h1>
+                            <input class=" px-4 bg-gray-300 rounded-md p-2 focus:outline-none" type="text" name="name" id="" placeholder="Name of the suspect">
+                        </div>
+                        <div class="flex flex-col w-full gap-2">
+                            <h1 class="text-gray-700 font-semibold">Estimated Age</h1>
+                            <input class=" px-4 bg-gray-300 rounded-md p-2 focus:outline-none" type="text" name="age" id="" placeholder="Enter age">
                         </div>
                     </div>
 
-                    <!-- Preview Container -->
-                    <div id="preview-container" class="absolute w-full h-full max-w-full hidden flex justify-center items-center px-2">
-                        <div class="relative inline-block">
-                            <img id="preview-image" class="max-h-32 sm:max-h-40 object-contain rounded-md" src="" alt="Preview">
-                            <!-- X Button inside img wrapper -->
-                            <span id="close-preview"
-                                class="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 size-6 sm:size-7 bg-red-500 flex items-center justify-center text-white rounded-full text-xs sm:text-sm font-bold z-10 hover:bg-red-600 cursor-pointer"
-                                title="Close">X</span>
+                    <div class="flex flex-col sm:flex-row gap-4 mt-6">
+                        <div class="flex flex-col w-full gap-2">
+                            <h1 class="text-gray-700 font-semibold">Gender</h1>
+                            <select name="gender" id="gender" class="text-green-900 px-4 bg-gray-300 rounded-md p-2 focus:outline-none sm:py-3 sm:px-4 font-medium  transition-colors " aria-label="Gender">
+                                <option value="" selected>Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col w-full gap-2">
+                            <h1 class="text-gray-700 font-semibold">Distinguishing features</h1>
+                            <input class=" px-4 bg-gray-300 rounded-md p-2 focus:outline-none" type="text" name="features" id="" placeholder="(Tattoo, hair styles, hair color, skin tone)">
                         </div>
                     </div>
 
-                    <!-- Invisible File Input -->
-                    <input type="file" id="file-input" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept=".png,.jpg,.jpeg" name="file-upload">
-
-                </div>
-
-                <div class="flex flex-col sm:flex-row gap-4 mt-6">
-                    <div class="flex flex-col w-full gap-2">
-                        <h1 class="text-gray-700 font-semibold">Name of the suspect (if applicable)</h1>
-                        <input class=" px-4 bg-gray-300 rounded-md p-2 focus:outline-none" type="text" name="" id="" placeholder="Name of the suspect">
+                    <!-- Location Section -->
+                    <div class="flex flex-col mt-4 gap-2">
+                        <h1 class="text-gray-700 font-semibold">Location</h1>
+                        <div class="w-full h-[300px] rounded-lg">
+                            <!-- location marker map -->
+                            <div id="map" class="h-full z-0"></div>
+                            <input type="hidden" id="latitude" name="latitude" required>
+                            <input type="hidden" id="longitude" name="longitude" required>
+                        </div>
                     </div>
-                    <div class="flex flex-col w-full gap-2">
-                        <h1 class="text-gray-700 font-semibold">Estimated Age</h1>
-                        <input class=" px-4 bg-gray-300 rounded-md p-2 focus:outline-none" type="text" name="" id="" placeholder="Enter age">
-                    </div>
-                </div>
 
-                <div class="flex flex-col sm:flex-row gap-4 mt-6">
-                    <div class="flex flex-col w-full gap-2">
-                        <h1 class="text-gray-700 font-semibold">Gender</h1>
-                        <select name="gender" id="gender" class="text-green-900 px-4 bg-gray-300 rounded-md p-2 focus:outline-none sm:py-3 sm:px-4 font-medium  transition-colors " aria-label="Gender">
-                            <option value="" selected>Select Gender</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                        </select>
-                    </div>
-                    <div class="flex flex-col w-full gap-2">
-                        <h1 class="text-gray-700 font-semibold">Distinguishing features</h1>
-                        <input class=" px-4 bg-gray-300 rounded-md p-2 focus:outline-none" type="text" name="" id="" placeholder="(Tattoo, hair styles, hair color, skin tone)">
-                    </div>
-                </div>
+                    <!-- submit error/success display -->
+                    <?php if (!empty($data['success'])): ?>
+                        <p class="text-green-500 text-center mt-4 text-xs sm:text-sm"><?php echo $data['success'] ?></p>
+                    <?php endif; ?>
+                    <?php if (!empty($data['error'])): ?>
+                        <p class="text-red-500 text-center mt-4 text-xs sm:text-sm"><?php echo $data['error']; ?></p>
+                    <?php endif; ?>
 
-                <h1 class="text-gray-700 font-semibold mt-4">Location</h1>
-                <div class=" w-full h-50 rounded-lg mt-2">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4299.785857526809!2d124.03293002155506!3d11.276335936459962!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a877cdf2f92c03%3A0x5ebd702f1c7dd656!2sTapilon%20Barangay%20Hall!5e1!3m2!1sen!2sph!4v1751360802867!5m2!1sen!2sph"
-                        class="w-full h-full rounded-lg"
-                        style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div>
-
-                <button id="submit-button" class="w-full bg-green-500 mt-6 rounded-md py-1 text-lg text-center text-white hover:bg-green-600" type="submit">Submit Report</button>
+                    <button id="submit-button" class="w-full bg-green-500 mt-6 rounded-md py-1 text-lg text-center text-white hover:bg-green-600" type="submit">Submit Report</button>
+                </form>
             </div>
-
 
         </div>
 
-        <!-- History Modal -->
+        <!-- Transaction Modal -->
         <div id="historyModal" class="fixed inset-0 z-50 bg-white/70 pt-10 mt-10 hidden">
             <!-- MODAL BOX -->
-            <div id="modalBox" class="w-[90%] max-w-lg mx-auto max-h-139 overflow-y-auto bg-white p-4 sm:p-6 rounded-xl shadow-2xl opacity-0 translate-y-10 scale-95 transition-all duration-300 ">
+            <div id="modalBox" class="w-[90%] max-w-lg mx-auto max-h-135 overflow-y-auto bg-white p-4 sm:p-6 rounded-xl shadow-2xl opacity-0 translate-y-10 scale-95 transition-all duration-300 scrollbar-none">
                 <hr class="w-1/4 mx-auto border-t-4 border-gray-500 rounded-full">
                 <div class="flex justify-between items-center pr-4">
-                    <h1 class="mt-2 text-2xl">History</h1>
+                    <h1 class="mt-2 text-2xl">Transactions</h1>
                     <img class="close w-5 cursor-pointer" src="<?php echo URL_ROOT; ?>/images/icons/close-icon.png" alt="...">
-                    <!-- <i class="fa-solid fa-xmark text-gray-400 text-2xl cursor-pointer"></i> -->
                 </div>
 
-                <div class="flex justify-between gap-4  mt-4">
-                    <button id="filter-all" class="bg-green-400 tab-item cursor-pointer px-4 rounded-xl">All</button>
-                    <div class="flex gap-4">
-                        <button id="filter-report" class="tab-item cursor-pointer px-4 rounded-xl">Report</button>
-                        <button id="filter-redeem" class="tab-item cursor-pointer px-4 rounded-xl">Redeem</button>
+                <!-- Loading state (initially shown) -->
+                <div id="loadingHistory" class="mt-6 space-y-4">
+                    <div class="p-8 text-center">
+                        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fa-solid fa-spinner fa-spin text-2xl text-gray-400"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Loading transactions...</h3>
+                        <p class="text-gray-500 text-sm">Please wait while we fetch your history.</p>
                     </div>
-
                 </div>
 
+                <!-- Dynamic content container (populated by AJAX) -->
                 <div class="mt-6 space-y-4">
-
-                    <div class="flex justify-between item-center border border-gray-300 rounded-md shadow-md px-3 py-4">
-                        <div class="flex justify-between items-center gap-4">
-                            <i class="fa-solid fa-clipboard-list text-green-500 text-4xl"></i>
-                            <div class="flex flex-col space-y-1">
-                                <h1 class="text-sm font-bold">Waste-Report</h1>
-                                <p class="text-xs text-gray-500">Mixed Waste (Bottles, Glass, Plastics, Metals)</p>
-                                <div class="flex gap-2 text-xs text-gray-400">
-                                    <p>Today</p>
-                                    <p>8:00 am</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex justify-center items-center ">
-                            <p class="text-green-500 text-sm w-24 font-bold text-center py-1 rounded-2xl">Successful</p>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between item-center border border-gray-300 rounded-md shadow-md px-3 py-4">
-                        <div class="flex justify-between items-center gap-4">
-                            <i class="fa-solid fa-circle-dollar-to-slot text-green-500 text-4xl"></i>
-                            <div class="flex flex-col space-y-1">
-                                <h1 class="text-sm font-bold">Redeem Points</h1>
-                                <div class="flex gap-2 text-xs text-gray-400">
-                                    <p>Today</p>
-                                    <p>8:00 am</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex justify-center items-center ">
-                            <p class="text-red-500 text-sm w-24 font-bold text-center py-1 rounded-2xl">- 50</p>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between item-center border border-gray-300 rounded-md shadow-md px-3 py-4">
-                        <div class="flex justify-between items-center gap-4">
-                            <i class="fa-solid fa-circle-dollar-to-slot text-green-500 text-4xl"></i>
-                            <div class="flex flex-col space-y-1">
-                                <h1 class="text-sm font-bold">Redeem Points</h1>
-                                <div class="flex gap-2 text-xs text-gray-400">
-                                    <p>Today</p>
-                                    <p>8:00 am</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex justify-center items-center ">
-                            <p class="text-green-500 text-sm w-24 font-bold text-center py-1 rounded-2xl">+ 50</p>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between item-center border border-gray-300 rounded-md shadow-md px-3 py-4">
-                        <div class="flex justify-between items-center gap-4">
-                            <i class="fa-solid fa-clipboard-list text-green-500 text-4xl"></i>
-                            <div class="flex flex-col space-y-1">
-                                <h1 class="text-sm font-bold">Report-Literrer</h1>
-                                <p class="text-xs text-gray-500">Mixed Waste (Bottles, Glass, Plastics, Metals)</p>
-                                <div class="flex gap-2 text-xs text-gray-400">
-                                    <p>Today</p>
-                                    <p>8:00 am</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex justify-center items-center ">
-                            <p class="text-red-500 text-sm w-24 font-bold text-center py-1 rounded-2xl">Failed</p>
-                        </div>
-                    </div>
-
+                    <!-- This will be populated by the fetchHistory() function -->
                 </div>
             </div>
         </div>
 
-
         <!-- Redeem Modal -->
-        <div id="redeemModal" class="fixed inset-0 z-50 bg-white/70 overflow-y-auto hidden py-10  mt-10">
+        <div id="redeemModal" class="fixed inset-0 z-50 bg-white/70 overflow-y-auto hidden py-10 mt-10">
             <!-- MODAL BOX -->
             <div class="w-[90%] max-w-md mx-auto bg-white p-6 rounded-xl shadow-2xl">
-
-                <div class=" flex justify-center items-center w-full py-1">
-                    <h1 class=" w-90 rounded-md bg-gray-300 text-center p-1 font-semibold text-xl">Redeem Points</h1>
+                <div class="flex justify-center items-center w-full py-1">
+                    <h1 class="w-90 rounded-md bg-gray-300 text-center p-1 font-semibold text-xl">Redeem Points</h1>
                 </div>
                 <!-- CONVERTION OPTIONS -->
                 <div class="flex w-full justify-between mt-8 mb-4 items-center">
                     <h1 class="text-md font-bold">Select Convertion</h1>
-                    <div class=" flex justify-between max-w-30 h-full items-center rounded-3xl shadow-2xl inset-shadow-sm inset-shadow-gray-500/50 gap-1 px-2">
+                    <div class="flex justify-between max-w-30 h-full items-center rounded-3xl shadow-2xl inset-shadow-sm inset-shadow-gray-500/50 gap-1 px-2">
                         <div class="bg-green-500 flex justify-center items-center text-sm text-white size-4 rounded-full">&#9733;</div>
-                        <h1 class="text-center text-md sm:text-lg font-bold text-green-500">0.00</h1>
+                        <h1 class="text-center text-md sm:text-lg font-bold text-green-500"><?php echo htmlspecialchars($data['user']['points'] ?? '0.00'); ?></h1>
                     </div>
                 </div>
 
                 <!-- AMOUNT OPTIONS -->
-                <div class="space-y-2 mb-4">
-                    <!-- Repeat for each value -->
-                    <button class="conversion-btn w-full flex justify-between items-center bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-300">
-                        <div class="flex gap-2 px-2 items-center">
-                            <div class="bg-green-500 flex justify-center items-center text-md text-white size-5 rounded-full">&#9733;</div>
-                            <h1 class="text-md font-bold text-green-500">25.00</h1>
-                        </div>
-                        <div class="flex w-18">
-                            <span class="font-bold">&#8369; 25.00</span>
-                        </div>
-                    </button>
-                    <button class="conversion-btn w-full flex justify-between items-center bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-300">
-                        <div class="flex gap-2 px-2 items-center">
-                            <div class="bg-green-500 flex justify-center items-center text-md text-white size-5 rounded-full">&#9733;</div>
-                            <h1 class="text-md font-bold text-green-500">50.00</h1>
-                        </div>
-                        <div class="flex w-18">
-                            <span class="font-bold">&#8369; 50.00</span>
-                        </div>
-                    </button>
-                    <button class="conversion-btn w-full flex justify-between items-center bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-300">
-                        <div class="flex gap-2 px-2 items-center">
-                            <div class="bg-green-500 flex justify-center items-center text-md text-white size-5 rounded-full">&#9733;</div>
-                            <h1 class="text-md font-bold text-green-500">75.00</h1>
-                        </div>
-                        <div class="flex w-18">
-                            <span class="font-bold">&#8369; 75.00</span>
-                        </div>
-                    </button>
-                    <button class="conversion-btn w-full flex justify-between items-center bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-300">
-                        <div class="flex gap-2 px-2 items-center">
-                            <div class="bg-green-500 flex justify-center items-center text-md text-white size-5 rounded-full">&#9733;</div>
-                            <h1 class="text-md font-bold text-green-500">100.00</h1>
-                        </div>
-                        <div class="flex w-18">
-                            <span class="font-bold">&#8369; 100.00</span>
-                        </div>
-                    </button>
-                </div>
+                <form id="redeem-form" method="post" action="<?php echo URL_ROOT; ?>/waste/redeemPoints" enctype="multipart/form-data">
+                    <div class="space-y-2 mb-4">
+                        <button type="button" class="conversion-btn w-full flex justify-between items-center bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-300" data-points="25.00">
+                            <div class="flex gap-2 px-2 items-center">
+                                <div class="bg-green-500 flex justify-center items-center text-md text-white size-5 rounded-full">&#9733;</div>
+                                <h1 class="text-md font-bold text-green-500">25.00</h1>
+                            </div>
+                            <div class="flex w-18">
+                                <span class="font-bold">&#8369; 25.00</span>
+                            </div>
+                        </button>
+                        <button type="button" class="conversion-btn w-full flex justify-between items-center bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-300" data-points="50.00">
+                            <div class="flex gap-2 px-2 items-center">
+                                <div class="bg-green-500 flex justify-center items-center text-md text-white size-5 rounded-full">&#9733;</div>
+                                <h1 class="text-md font-bold text-green-500">50.00</h1>
+                            </div>
+                            <div class="flex w-18">
+                                <span class="font-bold">&#8369; 50.00</span>
+                            </div>
+                        </button>
+                        <button type="button" class="conversion-btn w-full flex justify-between items-center bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-300" data-points="75.00">
+                            <div class="flex gap-2 px-2 items-center">
+                                <div class="bg-green-500 flex justify-center items-center text-md text-white size-5 rounded-full">&#9733;</div>
+                                <h1 class="text-md font-bold text-green-500">75.00</h1>
+                            </div>
+                            <div class="flex w-18">
+                                <span class="font-bold">&#8369; 75.00</span>
+                            </div>
+                        </button>
+                        <button type="button" class="conversion-btn w-full flex justify-between items-center bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-300" data-points="100.00">
+                            <div class="flex gap-2 px-2 items-center">
+                                <div class="bg-green-500 flex justify-center items-center text-md text-white size-5 rounded-full">&#9733;</div>
+                                <h1 class="text-md font-bold text-green-500">100.00</h1>
+                            </div>
+                            <div class="flex w-18">
+                                <span class="font-bold">&#8369; 100.00</span>
+                            </div>
+                        </button>
+                    </div>
 
-                <!-- FORM INPUTS -->
-                <div class="flex flex-col gap-2">
-                    <h1 class="text-md font-bold">Enter Mobile Number</h1>
-                    <input type="text" id="gcashNumber" placeholder="Enter Mobile Number" class="w-full p-2 bg-gray-200 rounded" />
-                </div>
-                <div class="flex flex-col gap-2 mt-2 mb-6">
-                    <h1 class="text-md font-bold">Enter Gcash Name</h1>
-                    <input type="text" id="gcashName" placeholder="Gcash Name" class="w-full p-2 bg-gray-200 rounded" />
-                </div>
+                    <!-- Hidden input for points -->
+                    <input type="hidden" id="points" name="points" value="">
 
-                <!-- FILE UPLOAD + PREVIEW -->
-                <form id="upload-form">
+                    <!-- FORM INPUTS -->
+                    <div class="flex flex-col gap-2">
+                        <h1 class="text-md font-bold">Enter Mobile Number</h1>
+                        <input type="text" id="gcashNumber" name="gcashNumber" placeholder="Enter Mobile Number" class="w-full p-2 bg-gray-200 rounded" maxlength="11" required />
+                    </div>
+                    <div class="flex flex-col gap-2 mt-2 mb-6">
+                        <h1 class="text-md font-bold">Enter Gcash Name</h1>
+                        <input type="text" id="gcashName" name="gcashName" placeholder="Gcash Name" class="w-full p-2 bg-gray-200 rounded" required />
+                    </div>
+
+                    <!-- FILE UPLOAD + PREVIEW -->
+                    <h1 class="text-md font-bold">Upload Gcash QR Code</h1>
                     <div class="relative rounded-lg border-dashed border-2 border-green-500 bg-gray-100 flex justify-center items-center mt-2 w-full max-w-md mx-auto h-40 sm:h-48 md:h-56">
-
                         <!-- Upload Message -->
                         <div id="upload-redeem" class="absolute inset-0 flex flex-col items-center justify-center text-center px-2">
                             <span class="text-green-500 font-bold text-sm sm:text-base">Upload a file</span>
@@ -585,30 +420,42 @@
                         <!-- File Input -->
                         <input type="file" id="file-input-redeem"
                             class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                            accept=".png,.jpg,.jpeg" name="file-upload">
+                            accept=".png,.jpg,.jpeg" name="gcashQR" required>
+                    </div>
+
+                    <!-- submit error/success display -->
+                    <?php if (!empty($data['redeemSuccess'])): ?>
+                        <p class="text-green-500 text-center mt-4 text-xs sm:text-sm"><?php echo $data['redeemSuccess'] ?></p>
+                    <?php endif; ?>
+                    <?php if (!empty($data['redeemError'])): ?>
+                        <p class="text-red-500 text-center mt-4 text-xs sm:text-sm"><?php echo $data['redeemError']; ?></p>
+                    <?php endif; ?>
+
+                    <!-- ACTION BUTTONS -->
+                    <div class="flex justify-between gap-4 mt-6">
+                        <button id="closeRedeemModal" type="button" class="w-full bg-gray-300 text-gray-800 text-sm sm:text-lg py-2 rounded-md hover:bg-gray-400">Close</button>
+                        <button id="submitRedeem" type="submit" class="w-full bg-green-500 text-white text-sm sm:text-lg py-2 rounded-md hover:bg-green-600">Submit Redemption</button>
                     </div>
                 </form>
-
-                <!-- ACTION BUTTONS -->
-                <div class="flex justify-between gap-4 mt-6">
-                    <button id="closeRedeemModal" type="button" class="w-full bg-gray-300 text-gray-800 text-sm sm:text-lg py-2 rounded-md hover:bg-gray-400">Close</button>
-                    <button id="submitRedeem" type="button" class="w-full bg-green-500 text-white text-sm sm:text-lg py-2 rounded-md hover:bg-green-600">Submit Redemption</button>
-                </div>
             </div>
         </div>
-
     </main>
-
-
 
     <footer class="text-gray bg-green-50 py-2">
         <h1 class="text-center text-xs">&copyWasteWise 2025 All Rights Reserved</h1>
     </footer>
-
+    <script>
+        const URL_ROOT = '<?php echo URL_ROOT; ?>';
+    </script>
     <script src="<?php echo URL_ROOT; ?>/js/auth.js"></script>
     <script src="<?php echo URL_ROOT; ?>/js/profile.js"></script>
+    <script src="<?php echo URL_ROOT; ?>/js/redeem.js"></script>
+    <script src="<?php echo URL_ROOT; ?>/js/notifications.js"></script>
+    <script src="<?php echo URL_ROOT; ?>/js/transaction.js"></script>
+    <script src="<?php echo URL_ROOT; ?>/js/litterer-report.js"></script>
+    <script src="<?php echo URL_ROOT; ?>/js/leaflet/leaflet.js"></script>
     <script>
-        // Modern JavaScript for dropdown functionality
+        // DROP DOWN
         function toggleDropdown() {
             const dropdown = document.getElementById("reportDropdown");
             dropdown.classList.toggle("hidden");
@@ -624,291 +471,34 @@
                 dropdown.classList.add("hidden");
             }
         });
-
-        // HISTORY MODAL
-
-        const tabItems = document.querySelectorAll('.tab-item');
-
-        tabItems.forEach(item => {
-            item.addEventListener('click', () => {
-                tabItems.forEach(el => el.classList.remove('bg-green-400')); // remove active class from all
-                item.classList.add('bg-green-400'); // add active class to clicked
-            });
-        });
-
-        const modal = document.getElementById('historyModal');
-        const modalBox = document.getElementById('modalBox');
-        const openBtn = document.querySelector('.transaction');
-        const closeBtn = document.querySelector('.close');
-
-        // Open Modal
-        openBtn.addEventListener('click', () => {
-            modal.classList.remove('hidden');
-            document.body.classList.add('overflow-hidden');
-
-            // Trigger animation after small delay to allow DOM render
-            setTimeout(() => {
-                modalBox.classList.remove('opacity-0', 'translate-y-10', 'scale-95');
-                modalBox.classList.add('opacity-100', 'translate-y-0', 'scale-100');
-            }, 10);
-
-            // Always show all history when modal opens
-            filterHistory('all');
-
-            // Optionally, reset active tab styling to 'All'
-            tabItems.forEach(el => el.classList.remove('bg-green-400'));
-            allButton.classList.add('bg-green-400');
-        });
-
-        // Close Modal
-        closeBtn.addEventListener('click', () => {
-            // Animate out
-            modalBox.classList.remove('opacity-100', 'translate-y-0', 'scale-100');
-            modalBox.classList.add('opacity-0', 'translate-y-10', 'scale-95');
-
-            // Wait for animation to finish before hiding
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                document.body.classList.remove('overflow-hidden');
-            }, 200); // match transition duration
-        });
-
-        // Filtering logic
-        const allButton = document.getElementById('filter-all');
-        const reportButton = document.getElementById('filter-report');
-        const redeemButton = document.getElementById('filter-redeem');
-
-
-        // Grab all history entries
-        const historyItems = document.querySelectorAll('#historyModal .space-y-4 > div');
-
-        // Helper function to filter
-        function filterHistory(type) {
-            historyItems.forEach(item => {
-                const title = item.querySelector('h1').textContent.toLowerCase();
-                if (type === 'all') {
-                    item.classList.remove('hidden');
-                } else if (type === 'report') {
-                    if (title.includes('waste-report') || title.includes('report-literrer')) {
-                        item.classList.remove('hidden');
-                    } else {
-                        item.classList.add('hidden');
-                    }
-                } else if (type === 'redeem') {
-                    if (title.includes('redeem')) {
-                        item.classList.remove('hidden');
-                    } else {
-                        item.classList.add('hidden');
-                    }
-                }
-            });
-        }
-
-        // Event listeners for filter buttons
-        allButton.addEventListener('click', () => filterHistory('all'));
-        reportButton.addEventListener('click', () => filterHistory('report'));
-        redeemButton.addEventListener('click', () => filterHistory('redeem'));
-
-        // === Redeem Modal ===
-        const redeemModal = document.getElementById('redeemModal');
-        const openRedeemBtn = document.getElementById('openRedeemModal');
-        const closeRedeemBtn = document.getElementById('closeRedeemModal');
-        const redeemFileInput = document.getElementById('file-input-redeem');
-        const redeemPreviewDiv = document.getElementById('preview-redeem');
-        const redeemUploadDiv = document.getElementById('upload-redeem');
-        const redeemPreviewImg = document.getElementById('preview-image-redeem');
-        const redeemClosePreview = document.getElementById('close-preview-redeem');
-        const submitRedeem = document.getElementById('submitRedeem');
-        const conversionButtons = document.querySelectorAll('.conversion-btn');
-        let selectedConversion = null;
-
-        // Handle button selection
-        conversionButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Remove active style from all buttons
-                conversionButtons.forEach(b => b.classList.remove('bg-green-200', 'ring-2', 'ring-green-500'));
-
-                // Add active style to clicked button
-                btn.classList.add('bg-green-200', 'ring-2', 'ring-green-500');
-                selectedConversion = btn;
-            });
-        });
-
-        // Allow only numbers in mobile number input
-        const gcashNumber = document.getElementById('gcashNumber');
-        gcashNumber.addEventListener('input', () => {
-            gcashNumber.value = gcashNumber.value.replace(/\D/g, ''); // Remove non-digits
-        });
-
-        function handleRedeemSubmit() {
-            const number = gcashNumber.value.trim();
-            const name = document.getElementById('gcashName').value.trim();
-            const file = redeemFileInput.files[0];
-
-            if (!number || !name || !file || !selectedConversion) {
-                alert('Please complete all required fields including selecting a conversion amount and uploading a file.');
-                return;
-            }
-
-            alert('Redemption Submitted Successfully!');
-            redeemModal.classList.add('hidden');
-
-            // Reset state
-            gcashNumber.value = '';
-            document.getElementById('gcashName').value = '';
-            resetRedeemFileInput();
-            conversionButtons.forEach(b => b.classList.remove('bg-green-200', 'ring-2', 'ring-green-500'));
-            selectedConversion = null;
-        }
-
-
-
-        openRedeemBtn?.addEventListener("click", () => {
-            redeemModal.classList.remove('hidden');
-            document.body.classList.add('overflow-hidden'); // Disable background scroll
-
-            // Clear old listeners to prevent duplication
-            const newSubmit = submitRedeem.cloneNode(true);
-            submitRedeem.parentNode.replaceChild(newSubmit, submitRedeem);
-            newSubmit.addEventListener('click', handleRedeemSubmit);
-        });
-
-
-        closeRedeemBtn?.addEventListener("click", () => {
-            redeemModal.classList.add('hidden');
-            document.body.classList.remove('overflow-hidden'); // Re-enable scroll
-        });
-
-        redeemFileInput?.addEventListener('change', function() {
-            const file = this.files[0];
-            if (file && file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    redeemPreviewImg.src = e.target.result;
-                    redeemPreviewDiv.classList.remove('hidden');
-                    redeemUploadDiv.classList.add('hidden');
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        redeemClosePreview?.addEventListener('click', () => {
-            resetRedeemFileInput();
-        });
-
-        submitRedeem?.addEventListener('click', handleRedeemSubmit, {
-            once: true
-        });
-
-        function handleRedeemSubmit() {
-            const number = gcashNumber.value.trim();
-            const name = document.getElementById('gcashName').value.trim();
-            const file = redeemFileInput.files[0];
-
-            if (!number || !name || !file || !selectedConversion) {
-                alert('Please complete all required fields including selecting a conversion amount and uploading a file.');
-                // Re-attach listener if validation fails
-                submitRedeem.addEventListener('click', handleRedeemSubmit, {
-                    once: true
-                });
-                return;
-            }
-
-            alert('Redemption Submitted Successfully!');
-            redeemModal.classList.add('hidden');
-
-            // Reset everything
-            gcashNumber.value = '';
-            document.getElementById('gcashName').value = '';
-            resetRedeemFileInput();
-            conversionButtons.forEach(b => b.classList.remove('bg-green-200', 'ring-2', 'ring-green-500'));
-            selectedConversion = null;
-
-            // Re-attach listener for next time
-            submitRedeem.addEventListener('click', handleRedeemSubmit, {
-                once: true
-            });
-        }
-
-
-        function resetRedeemFileInput() {
-            redeemPreviewImg.src = '';
-            redeemPreviewDiv.classList.add('hidden');
-            redeemUploadDiv.classList.remove('hidden');
-            redeemFileInput.value = '';
-        }
-
-
-        // === Report Submission Logic ===
-        const reportFileInput = document.getElementById('file-input');
-        const reportPreviewContainer = document.getElementById('preview-container');
-        const reportPreviewImage = document.getElementById('preview-image');
-        const reportClosePreview = document.getElementById('close-preview');
-        const reportUploadPrompt = document.getElementById('upload-prompt');
-        const reportSubmitButton = document.getElementById('submit-button');
-
-        let reportFileUploaded = false;
-
-        // File Input Preview
-        reportFileInput?.addEventListener('change', function() {
-            const file = this.files[0];
-            if (file && file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    reportPreviewImage.src = e.target.result;
-                    reportPreviewContainer.classList.remove('hidden');
-                    reportUploadPrompt.classList.add('hidden');
-                    reportFileUploaded = true;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                alert('Invalid file type. Please upload PNG, JPG, or JPEG.');
-                this.value = '';
-            }
-        });
-
-        // Remove Preview Logic
-        reportClosePreview?.addEventListener('click', resetReportFileInput);
-
-        // Form Submission Logic
-        reportSubmitButton?.addEventListener('click', function(e) {
-            e.preventDefault();
-
-            const inputs = {
-                wasteType: document.querySelector('input[placeholder*="Waste Type"]')?.value.trim(),
-                estimatedWaste: document.querySelector('input[placeholder*="Estimated Weight"]')?.value.trim(),
-                location: document.querySelector('input[placeholder*="Location"]')?.value.trim(),
-                features: document.querySelector('input[placeholder*="Tattoo"]')?.value.trim(),
-            };
-
-            if (!inputs.wasteType || !inputs.estimatedWaste || !inputs.location || !inputs.features || !reportFileUploaded) {
-                alert('Please complete all fields and upload an image before submitting the report.');
-                return;
-            }
-
-            alert('Report submitted successfully!');
-
-            // Reset form
-            resetInputs();
-            resetReportFileInput();
-        });
-
-        // Reset All Inputs
-        function resetInputs() {
-            document.querySelectorAll('.rounded-md').forEach(input => input.value = '');
-        }
-
-        // Reset File Preview
-        function resetReportFileInput() {
-            reportPreviewImage.src = '';
-            reportPreviewContainer.classList.add('hidden');
-            reportUploadPrompt.classList.remove('hidden');
-            reportFileInput.value = '';
-            reportFileUploaded = false;
-        }
     </script>
 
+    <!-- script for leatlet map -->
+    <script>
+        L.Icon.Default.imagePath = '<?php echo URL_ROOT; ?>/js/leaflet/images/';
+        // Initialize the map
+        const map = L.map('map').setView([11.255255, 124.029840], 13);
 
+        // Add tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        let marker = null;
+
+        // Add click event to place marker
+        map.on('click', function(e) {
+            if (marker) {
+                map.removeLayer(marker);
+            }
+
+            marker = L.marker(e.latlng).addTo(map);
+
+            // Update form fields
+            document.getElementById('latitude').value = e.latlng.lat;
+            document.getElementById('longitude').value = e.latlng.lng;
+        });
+    </script>
 </body>
 
 </html>

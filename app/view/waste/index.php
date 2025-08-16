@@ -253,6 +253,7 @@
                             <input class="px-4 bg-gray-300 rounded-md p-2 focus:outline-none" type="text" name="estimatedWeight" id="estimatedWeight" placeholder="Enter Estimated Weight (5 kg, 10kg, etc.)" required>
                         </div>
                     </div>
+
                     <!-- Location Section -->
                     <div class="flex flex-col mt-4 gap-2">
                         <h1 class="text-gray-700 font-semibold">Location</h1>
@@ -284,85 +285,21 @@
                     <h1 class="mt-2 text-2xl">Transactions</h1>
                     <img class="close w-5 cursor-pointer" src="<?php echo URL_ROOT; ?>/images/icons/close-icon.png" alt="...">
                 </div>
+
+                <!-- Loading state (initially shown) -->
+                <div id="loadingHistory" class="mt-6 space-y-4">
+                    <div class="p-8 text-center">
+                        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fa-solid fa-spinner fa-spin text-2xl text-gray-400"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Loading transactions...</h3>
+                        <p class="text-gray-500 text-sm">Please wait while we fetch your history.</p>
+                    </div>
+                </div>
+
+                <!-- Dynamic content container (populated by AJAX) -->
                 <div class="mt-6 space-y-4">
-                    <div class="flex justify-between item-center border border-gray-300 rounded-md shadow-md px-3 py-4">
-                        <div class="flex justify-between items-center gap-4">
-                            <i class="fa-solid fa-clipboard-list text-green-500 text-4xl"></i>
-                            <div class="flex flex-col space-y-1">
-                                <h1 class="text-sm font-bold">Waste-Report</h1>
-                                <p class="text-xs text-gray-500">Mixed Waste (Bottles, Glass, Plastics, Metals)</p>
-                                <div class="flex gap-2 text-xs text-gray-400">
-                                    <p>Today</p>
-                                    <p>8:00 am</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex justify-center items-center">
-                            <p class="text-green-500 text-sm w-24 font-bold text-center py-1 rounded-2xl">Successful</p>
-                        </div>
-                    </div>
-                    <div class="flex justify-between item-center border border-gray-300 rounded-md shadow-md px-3 py-4">
-                        <div class="flex justify-between items-center gap-4">
-                            <i class="fa-solid fa-clipboard-list text-green-500 text-4xl"></i>
-                            <div class="flex flex-col space-y-1">
-                                <h1 class="text-sm font-bold">Waste-Report</h1>
-                                <p class="text-xs text-gray-500">Mixed Waste (Bottles, Glass, Plastics, Metals)</p>
-                                <div class="flex gap-2 text-xs text-gray-400">
-                                    <p>Today</p>
-                                    <p>8:00 am</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex justify-center items-center">
-                            <p class="text-yellow-500 text-sm w-24 font-bold text-center py-1 rounded-2xl">Pending</p>
-                        </div>
-                    </div>
-                    <div class="flex justify-between item-center border border-gray-300 rounded-md shadow-md px-3 py-4">
-                        <div class="flex justify-between items-center gap-4">
-                            <i class="fa-solid fa-circle-dollar-to-slot text-green-500 text-4xl"></i>
-                            <div class="flex flex-col space-y-1">
-                                <h1 class="text-sm font-bold">Redeem Points</h1>
-                                <div class="flex gap-2 text-xs text-gray-400">
-                                    <p>Today</p>
-                                    <p>8:00 am</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex justify-center items-center">
-                            <p class="text-red-500 text-sm w-24 font-bold text-center py-1 rounded-2xl">- 50</p>
-                        </div>
-                    </div>
-                    <div class="flex justify-between item-center border border-gray-300 rounded-md shadow-md px-3 py-4">
-                        <div class="flex justify-between items-center gap-4">
-                            <i class="fa-solid fa-circle-dollar-to-slot text-green-500 text-4xl"></i>
-                            <div class="flex flex-col space-y-1">
-                                <h1 class="text-sm font-bold">Redeem Points</h1>
-                                <div class="flex gap-2 text-xs text-gray-400">
-                                    <p>Today</p>
-                                    <p>8:00 am</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex justify-center items-center">
-                            <p class="text-green-500 text-sm w-24 font-bold text-center py-1 rounded-2xl">+ 50</p>
-                        </div>
-                    </div>
-                    <div class="flex justify-between item-center border border-gray-300 rounded-md shadow-md px-3 py-4">
-                        <div class="flex justify-between items-center gap-4">
-                            <i class="fa-solid fa-clipboard-list text-green-500 text-4xl"></i>
-                            <div class="flex flex-col space-y-1">
-                                <h1 class="text-sm font-bold">Report-Literrer</h1>
-                                <p class="text-xs text-gray-500">Mixed Waste (Bottles, Glass, Plastics, Metals)</p>
-                                <div class="flex gap-2 text-xs text-gray-400">
-                                    <p>Today</p>
-                                    <p>8:00 am</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex justify-center items-center">
-                            <p class="text-red-500 text-sm w-24 font-bold text-center py-1 rounded-2xl">Failed</p>
-                        </div>
-                    </div>
+                    <!-- This will be populated by the fetchHistory() function -->
                 </div>
             </div>
         </div>
@@ -488,9 +425,9 @@
     </script>
     <script src="<?php echo URL_ROOT; ?>/js/auth.js"></script>
     <script src="<?php echo URL_ROOT; ?>/js/profile.js"></script>
-    <script src="<?php echo URL_ROOT; ?>/js/history.js"></script>
     <script src="<?php echo URL_ROOT; ?>/js/redeem.js"></script>
     <script src="<?php echo URL_ROOT; ?>/js/notifications.js"></script>
+    <script src="<?php echo URL_ROOT; ?>/js/transaction.js"></script>
     <script src="<?php echo URL_ROOT; ?>/js/verify-waste.js"></script>
     <script src="<?php echo URL_ROOT; ?>/js/leaflet/leaflet.js"></script>
     <script>
@@ -511,6 +448,8 @@
             }
         });
     </script>
+
+    <!-- script for leatlet map -->
     <script>
         L.Icon.Default.imagePath = '<?php echo URL_ROOT; ?>/js/leaflet/images/';
         // Initialize the map

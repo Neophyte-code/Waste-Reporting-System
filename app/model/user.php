@@ -98,22 +98,4 @@ class User
         // Corrected return statement with proper parentheses
         return ($result && isset($result['points'])) ? (float)$result['points'] : 0.00;
     }
-
-    // Add points to user
-    public function addPoints($user_id, $points)
-    {
-        $stmt = $this->db->prepare("UPDATE users SET points = points + :points WHERE id = :user_id");
-        $stmt->bindParam(':points', $points, PDO::PARAM_STR);
-        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        return $stmt->execute();
-    }
-
-    // Deduct points from user
-    public function deductPoints($user_id, $points)
-    {
-        $stmt = $this->db->prepare("UPDATE users SET points = points - :points WHERE id = :user_id");
-        $stmt->bindParam(':points', $points, PDO::PARAM_STR);
-        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        return $stmt->execute();
-    }
 }

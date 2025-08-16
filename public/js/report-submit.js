@@ -1,5 +1,5 @@
   
-        // === Report Submission ===
+        // === Report waste Submission ===
         const reportFileInput = document.getElementById('file-input');
         const reportPreviewContainer = document.getElementById('preview-container');
         const reportPreviewImage = document.getElementById('preview-image');

@@ -11,8 +11,6 @@ use Dotenv\Dotenv;
 class Waste extends Controller
 {
 
-
-
     public function __construct()
     {
         // Check if user is logged in, redirect to auth if not
@@ -27,9 +25,9 @@ class Waste extends Controller
         // Pass the user data to the view
         $userData = $_SESSION['user'];
 
+        //use to display points to the UI
         $userModel = $this->model('User');
         $userPoints = $userModel->getUserPoints($userData['id']);
-
         // Ensure points is a numeric value before formatting
         $userData['points'] = is_numeric($userPoints) ? number_format((float)$userPoints) : '0.00';
 
@@ -48,7 +46,7 @@ class Waste extends Controller
             'success' => $success,
             'error' => $error,
             'redeemSuccess' => $redeemSuccess,
-            'redeemError' => $redeemError,
+            'redeemError' => $redeemError
         ]);
     }
 
@@ -140,6 +138,7 @@ class Waste extends Controller
         }
     }
 
+    //function to submit the waste report
     public function submitWasteReport()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -155,6 +154,13 @@ class Waste extends Controller
                 'longitude' => filter_var($_POST['longitude'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
                 'image' => ''
             ];
+
+            //validate the form if all fields have value
+            if (empty($data['estimatedWeight']) || empty($data['wasteType']) || empty($data['latitude']) || empty($data['longitude'])) {
+                $_SESSION['report_error'] = 'All fields are required';
+                header('Location: ' . URL_ROOT . '/waste');
+                exit;
+            }
 
             // Handle file upload
             if (isset($_FILES['wasteImage']) && $_FILES['wasteImage']['error'] === UPLOAD_ERR_OK) {
@@ -188,6 +194,7 @@ class Waste extends Controller
         }
     }
 
+    //function to get notification
     public function getNotifications()
     {
         $reportModel = $this->model('ReportModel');
@@ -251,11 +258,10 @@ class Waste extends Controller
     }
 
     //function to redeem points
-    //function to redeem points
     public function redeemPoints()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Validate file upload first (but don't move it yet)
+            // Validate file upload first
             if (!isset($_FILES['gcashQR']) || $_FILES['gcashQR']['error'] !== UPLOAD_ERR_OK) {
                 $_SESSION['redeem_error'] = 'Please upload a valid image.';
                 header('Location: ' . URL_ROOT . '/waste');
@@ -270,7 +276,7 @@ class Waste extends Controller
                 'gcash_name' => htmlspecialchars(trim($_POST['gcashName'])),
             ];
 
-            $redeemModel = $this->model('ReportModel');
+            $redeemModel = $this->model('RedeemModel');
 
             // First validate the redemption (points, user existence, etc.) without file upload
             $validationResult = $redeemModel->validateRedemptionRequest($data);
@@ -317,20 +323,29 @@ class Waste extends Controller
         }
     }
 
-    //function to get the transaction history
-    public function getUserRedemptions()
+    //function to get the transaction history via AJAX
+    public function getHistory()
     {
+        // Check if user is authenticated
         if (!isset($_SESSION['user'])) {
             http_response_code(401);
             echo json_encode(['error' => 'Unauthorized']);
             exit;
         }
 
-        $redeemModel = $this->model('RedeemModel');
-        $redemptions = $redeemModel->getUserRedemptions($_SESSION['user']['id']);
+        try {
+            $reportModel = $this->model('RedeemModel');
+            $history = $reportModel->getHistory($_SESSION['user']['id']);
 
-        header('Content-Type: application/json');
-        echo json_encode($redemptions);
-        exit;
+            // Set proper content type for JSON response
+            header('Content-Type: application/json');
+            echo json_encode($history);
+            exit;
+        } catch (Exception $e) {
+            error_log('Error fetching history: ' . $e->getMessage());
+            http_response_code(500);
+            echo json_encode(['error' => 'Internal server error']);
+            exit;
+        }
     }
 }

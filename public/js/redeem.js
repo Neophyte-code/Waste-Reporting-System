@@ -12,6 +12,17 @@ const conversionButtons = document.querySelectorAll('.conversion-btn');
 const gcashNumber = document.getElementById('gcashNumber');
 const pointsInput = document.getElementById('points');
 
+// Check if modal should be shown after page load (after form submission)
+document.addEventListener('DOMContentLoaded', () => {
+    // Check localStorage for modal state
+    const shouldShowModal = localStorage.getItem('showRedeemModal');
+    if (shouldShowModal === 'true') {
+        showRedeemModal();
+        // Clear the flag after showing modal
+        localStorage.removeItem('showRedeemModal');
+    }
+});
+
 // Handle button selection
 conversionButtons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -31,11 +42,15 @@ gcashNumber.addEventListener('input', () => {
     gcashNumber.value = gcashNumber.value.replace(/\D/g, ''); 
 });
 
-// Open modal
-openRedeemBtn?.addEventListener("click", () => {
+// Function to show modal (extracted for reuse)
+function showRedeemModal() {
     redeemModal.classList.remove('hidden');
     document.body.classList.add('overflow-hidden');
+}
 
+// Open modal
+openRedeemBtn?.addEventListener("click", () => {
+    showRedeemModal();
     // Reset form on open
     resetRedeemForm();
 });
@@ -132,4 +147,7 @@ redeemForm.addEventListener('submit', (event) => {
         event.preventDefault();
         return;
     }
+
+    // Set localStorage flag to keep modal open after page refresh
+    localStorage.setItem('showRedeemModal', 'true');
 });
