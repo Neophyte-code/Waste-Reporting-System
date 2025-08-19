@@ -2,10 +2,7 @@
 
 class AuthController extends Controller
 {
-    public function __construct()
-    {
-        session_start();
-    }
+    public function __construct() {}
 
     public function index()
     {
@@ -87,18 +84,31 @@ class AuthController extends Controller
             // Validate password
             $user = $userModel->login($email, $password);
             if ($user) {
+                $profilePicture = !empty($user['profile_picture'])
+                    ? $user['profile_picture']
+                    : 'images/profile.png';
+                $profilePicture = ltrim($profilePicture, '/');
+
                 $_SESSION['user'] = [
+                    'id' => $user['id'],
                     'email' => $user['email'],
                     'firstname' => $user['firstname'],
                     'lastname' => $user['lastname'],
-                    'barangay' => $user['barangay_name']
+                    'barangay_id' => $user['barangay_id'],
+                    'barangay' => $user['barangay_name'],
+                    'profile_picture' => $profilePicture
                 ];
+
                 // Clear localStorage to reset modal state
                 echo '<script>localStorage.removeItem("modalState"); localStorage.removeItem("activeForm");</script>';
+
+                // Use URL_ROOT for consistent redirects
                 header('Location: ' . URL_ROOT . '/home');
                 exit;
             } else {
-                $this->view("auth/index", ['error' => 'Incorrect password', 'form' => 'signin']);
+                //Handle incorrect password
+                $this->view('auth/index', ['error' => 'Incorrect password', 'form' => 'signin']);
+                return;
             }
         } else {
             $this->view("auth/index", ['form' => 'signin']);

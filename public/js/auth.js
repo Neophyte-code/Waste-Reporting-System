@@ -1,4 +1,3 @@
- 
 //  for responsive header
 const navLinks = document.querySelector('.nav-links')
 

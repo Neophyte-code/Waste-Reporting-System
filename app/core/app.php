@@ -3,7 +3,7 @@
 class App
 {
 
-    protected $controller = 'AuthController'; // Default controller (ensure case matches the file name)
+    protected $controller = 'AuthController'; // Default controller
     protected $method = 'index'; // Default method
     protected $params = []; // Parameters
 
