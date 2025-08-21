@@ -49,8 +49,8 @@ verifyBtn.addEventListener('click', async function(e) {
     }
 
     try {
-        console.log("URL being fetched:", `${URL_ROOT}/waste/process`);
-        const response = await fetch(`${URL_ROOT}/waste/process`, {
+        console.log("URL being fetched:", `${URL_ROOT}/user/process`);
+        const response = await fetch(`${URL_ROOT}/user/process`, {
             method: 'POST',
             body: formData
         });

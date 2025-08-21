@@ -18,16 +18,16 @@
             <div class="nav-links duration-500 md:static absolute bg-white md:min-h-fit min-h-[38vh] left-0 top-[-100%] md:w-auto z-1 w-full flex items-center px-5 py-8 sm:py-0">
                 <ul class="w-full flex items-center justify-center md:flex-row flex-col md:text-md md:h-full md:items-center md:gap-[2vw] gap-8 font-bold">
                     <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/home">HOME</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/user">HOME</a>
                     </li>
                     <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/about">ABOUT</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/user/about">ABOUT</a>
                     </li>
                     <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/contact">CONTACT</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/user/contact">CONTACT</a>
                     </li>
                     <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/announcement">ANNOUNCEMENT</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/user/announcement">ANNOUNCEMENT</a>
                     </li>
                     <li class="relative">
                         <button onclick="toggleDropdown()" class="hover:text-green-500 cursor-pointer flex items-center gap-1 font-bold">
@@ -37,8 +37,8 @@
                             </svg>
                         </button>
                         <div id="reportDropdown" class="absolute hidden bg-white shadow-lg mt-2 rounded w-44 z-20 text-sm">
-                            <a href="<?php echo URL_ROOT; ?>/waste" class="block px-4 py-2 hover:bg-green-100 text-black">Report Waste</a>
-                            <a href="<?php echo URL_ROOT; ?>/litterer" class="block px-4 py-2 hover:bg-green-100 text-black">Report Litterer</a>
+                            <a href="<?php echo URL_ROOT; ?>/user/waste" class="block px-4 py-2 hover:bg-green-100 text-black">Report Waste</a>
+                            <a href="<?php echo URL_ROOT; ?>/user/litterer" class="block px-4 py-2 hover:bg-green-100 text-black">Report Litterer</a>
                         </div>
                     </li>
                 </ul>
@@ -134,7 +134,7 @@
                         <ion-icon name="chevron-forward" class="text-red-400 ml-auto"></ion-icon>
                     </a>
                 </div>
-                <form id="editForm" class="hidden" action="<?php echo URL_ROOT; ?>/home/updateProfile" method="POST" enctype="multipart/form-data">
+                <form id="editForm" class="hidden" action="<?php echo URL_ROOT; ?>/user/updateProfile" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="old_email" value="<?php echo htmlspecialchars($data['user']['email'] ?? ''); ?>">
                     <div>
                         <label class="block text-sm font-sm text-gray-700 mb-1">Profile Picture</label>

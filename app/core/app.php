@@ -3,7 +3,7 @@
 class App
 {
 
-    protected $controller = 'AuthController'; // Default controller
+    protected $controller = 'Auth'; // Default controller
     protected $method = 'index'; // Default method
     protected $params = []; // Parameters
 
@@ -25,9 +25,15 @@ class App
         $this->controller = new $this->controller;
 
         // Check if the method exists in the controller
-        if (isset($url[1]) && method_exists($this->controller, $url[1])) {
-            $this->method = $url[1];
-            unset($url[1]);
+        if (isset($url[1])) {
+            if (method_exists($this->controller, $url[1])) {
+                $this->method = $url[1];
+                unset($url[1]);
+            } else {
+                // Method doesn't exist, show 404
+                $this->controller = new PageError();
+                $this->method = 'notFound';
+            }
         }
 
         // Set parameters

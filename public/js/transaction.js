@@ -16,7 +16,7 @@ tabItems.forEach(item => {
 // Fetch transaction history
 async function fetchHistory() {
     try {
-        const response = await fetch(`${URL_ROOT}/waste/getHistory`, {
+        const response = await fetch(`${URL_ROOT}/user/getHistory`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

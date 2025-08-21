@@ -1,7 +1,6 @@
-
 async function fetchNotifications() {
     try {
-        const response = await fetch(`${URL_ROOT}/waste/getNotifications`, {
+        const response = await fetch(`${URL_ROOT}/user/getNotifications`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

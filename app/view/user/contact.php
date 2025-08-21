@@ -1,32 +1,34 @@
-<html lang="en" class="h-full">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WasteWise</title>
+    <title></title>
     <link href="<?php echo URL_ROOT; ?>/css/output.css" rel="stylesheet">
     <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
-<body class="font-[sans-serif] bg-gradient-to-r from-green-100 via-emerald-200 to-green-500 flex flex-col min-h-full w-full">
-    <header class="bg-white w-full py-0.5">
-        <nav class="flex justify-between items-center w-[92%] mx-auto sm:py-0">
+<body class="flex flex-col font-[sans-serif] bg-gradient-to-r from-green-100 via-emerald-200 to-green-500 min-h-screen w-full">
+    <header class="bg-white w-full">
+        <nav class="flex justify-between items-center w-[92%] mx-auto">
             <div>
-                <img class="w-[100px] cursor-pointer" src="<?php echo URL_ROOT; ?>/images/WasteWise.png" alt="WasteWise Logo">
+                <img class="w-27 cursor-pointer " src="<?php echo URL_ROOT; ?>/images/WasteWise.png" alt="...">
             </div>
-            <div class="nav-links duration-500 md:static absolute bg-white md:min-h-fit min-h-[38vh] left-0 top-[-100%] md:w-auto w-full flex items-center px-5 py-8 sm:py-0 z-10">
+            <div class="nav-links duration-500 md:static absolute bg-white md:min-h-fit min-h-[38vh] left-0 top-[-100%] md:w-auto z-1 w-full flex items-center px-5">
                 <ul class="w-full flex items-center justify-center md:flex-row flex-col md:text-md md:h-full md:items-center md:gap-[2vw] gap-8 font-bold">
                     <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/home">HOME</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/user">HOME</a>
                     </li>
                     <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/about">ABOUT</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/user/about">ABOUT</a>
                     </li>
                     <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/contact">CONTACT</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/user/contact">CONTACT</a>
                     </li>
                     <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/announcement">ANNOUNCEMENT</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/user/announcement">ANNOUNCEMENT</a>
                     </li>
                     <li class="relative">
                         <button onclick="toggleDropdown()" class="hover:text-green-500 cursor-pointer flex items-center gap-1 font-bold">
@@ -36,8 +38,8 @@
                             </svg>
                         </button>
                         <div id="reportDropdown" class="absolute hidden bg-white shadow-lg mt-2 rounded w-44 z-20 text-sm">
-                            <a href="<?php echo URL_ROOT; ?>/waste" class="block px-4 py-2 hover:bg-green-100 text-black">Report Waste</a>
-                            <a href="<?php echo URL_ROOT; ?>/litterer" class="block px-4 py-2 hover:bg-green-100 text-black">Report Litterer</a>
+                            <a href="<?php echo URL_ROOT; ?>/user/waste" class="block px-4 py-2 hover:bg-green-100 text-black">Report Waste</a>
+                            <a href="<?php echo URL_ROOT; ?>/user/litterer" class="block px-4 py-2 hover:bg-green-100 text-black">Report Litterer</a>
                         </div>
                     </li>
                 </ul>
@@ -133,7 +135,7 @@
                         <ion-icon name="chevron-forward" class="text-red-400 ml-auto"></ion-icon>
                     </a>
                 </div>
-                <form id="editForm" class="hidden" action="<?php echo URL_ROOT; ?>/home/updateProfile" method="POST" enctype="multipart/form-data">
+                <form id="editForm" class="hidden" action="<?php echo URL_ROOT; ?>/user/updateProfile" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="old_email" value="<?php echo htmlspecialchars($data['user']['email'] ?? ''); ?>">
                     <div>
                         <label class="block text-sm font-sm text-gray-700 mb-1">Profile Picture</label>
@@ -191,30 +193,93 @@
         </div>
     </div>
 
-    <main class="flex-grow w-full ">
-        <div class="p-4 flex justify-center h-full  w-full sm:p-6 md:p-0 md:gap-10">
-            <div class=" flex flex-col gap-8 px-4 items-center justify-center w-full sm:mt-20 sm:px-6 md:flex-col md:max-w-full md:px-8 lg:flex-row lg:mt-0">
-                <div class=" p-1 w-full  order-2 sm:p-6 md:p-8 md:order-2 md:min-w-[60%] lg:order-1">
-                    <h1 class="text-2xl  font-bold text-black mb-2 sm:text-3xl md:text-4xl md:-mt-[10px]">Welcome to Waste<span class="text-green-500">Wise</span></h1>
-                    <h3 class="text-1xl font-bold text-black mb-2 sm:text-2xl md:text-3xl">Earn by reporting <span id="report" class="text-green-400"></span></h3>
-                    <p class="mb-4 text-sm text-black sm:text-lg md:text-xl">WasteWise is a user-friendly system designed to help individuals and communities report waste effectively. Our platform enables users to easily log and track waste, providing valuable insights into waste management practices and identifying areas for improvement. By promoting transparency and accountability, WasteWise aims to contribute to a more sustainable future for our planet.</p>
-                    <div class="flex flex-col gap-4 sm:flex-row">
-                        <a href="<?php echo URL_ROOT; ?>/waste" class="text-green-50 hover:text-green-500"><button class="w-full border-2 border-green-500 rounded p-2 text-base bg-green-500 hover:text-green hover:bg-transparent hover:border-2 hover:border-green-500 transition-colors sm:w-auto sm:text-lg md:text-xl">Report Waste</button></a>
-                        <a href="<?php echo URL_ROOT; ?>/litterer" class="text-green-500 hover:text-green-50"><button class="w-full border-2 border-green-500 rounded p-2 text-base text-green hover:bg-green-500 hover:text-green-50 transition-colors sm:w-auto sm:text-lg md:text-xl">Report Litterer</button></a>
+    <!-- CONTACT CONTENT -->
+    <main class="flex-grow  ">
+        <div class="flex flex-col justify-center items-center gap-4 px-4 pb-4">
+            <!-- Header Section -->
+            <div class=" container flex flex-col justify-center items-center pt-2 gap-3 text-center">
+                <h1 class="text-4xl md:text-4xl font-extrabold">Get in Touch!</h1>
+                <p class="text-base md:text-md font-thin max-w-2xl lg:max-w-4xl">WE ARE LOOKING FORWARD TO YOUR FEEDBACK TO HELP US KEEP THE ENVIRONMENT CLEAN AND SAFE.</p>
+            </div>
+
+            <!-- Contact Form + Info Container -->
+            <div class=" flex flex-col lg:flex-row gap-6 w-full max-w-5xl sm:items-center lg:items-start">
+
+                <!-- Contact Form -->
+                <form method="post" action="<?php echo URL_ROOT; ?>/user/contactForm" class="flex-1 bg-white p-6 rounded-lg shadow-md space-y-4 sm:max-w-xl lg:px-6">
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <div class="flex-1">
+                            <label class="block text-sm font-bold pb-0.5 lg:text-lg text-black">First Name</label>
+                            <input name="firstname" type="text" required placeholder="Enter first name" class="w-full border-2 border-green-400 rounded p-2 bg-gray-200" />
+                        </div>
+                        <div class="flex-1">
+                            <label class="block text-sm font-bold pb-0.5 lg:text-lg text-black">Last Name</label>
+                            <input name="lastname" type="text" required placeholder="Enter last name" class="w-full border-2 border-green-400 rounded p-2 bg-gray-200" />
+                        </div>
                     </div>
-                </div>
-                <div class=" w-full flex items-center justify-center p-1 order-1 md:min-w-[30%] md:order-1 lg:mt-0 lg:order-2 ">
-                    <img src="<?php echo URL_ROOT; ?>/images/tree3.png" alt="Tree illustration" class="w-60 max-w-xs object-contain sm:w-72 md:w-80 lg:w-96 md:mt-0.5">
+
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <div class="flex-1">
+                            <label class="block text-sm font-bold pb-0.5 lg:text-lg text-black">Gmail</label>
+                            <input name="gmail" type="email" required placeholder="example@gmail.com" class="w-full border-2 border-green-400 rounded p-2 bg-gray-200" />
+                        </div>
+                        <div class="flex-1">
+                            <label class="block text-sm font-bold pb-0.5 lg:text-lg text-black">Mobile Number</label>
+                            <input name="phone" type="tel" required placeholder="09123456789" class="w-full border-2 border-green-400 rounded p-2 bg-gray-200" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold pb-0.5 lg:text-lg text-black">Message</label>
+                        <textarea name="message" required placeholder="Type your message here" class="w-full border-2 border-green-400 rounded p-2 bg-gray-200 h-27 resize-none"></textarea>
+                    </div>
+
+                    <!-- submit error/success display -->
+                    <?php if (!empty($data['success'])): ?>
+                        <p class="text-green-500 text-center text-xs sm:text-sm"><?php echo $data['success']; ?></p>
+                    <?php endif; ?>
+
+                    <?php if (!empty($data['error'])): ?>
+                        <p class="text-red-500 text-center text-xs sm:text-sm"><?php echo $data['error']; ?></p>
+                    <?php endif; ?>
+
+
+                    <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-full font-bold hover:bg-green-700 transition">SUBMIT</button>
+                </form>
+
+                <!-- Contact Info + Map -->
+                <div class=" flex flex-col gap-4 w-full lg:w-98.5  sm:items-center sm:justify-center lg:justify-between lg:items-start  sm:flex-row sm:h-50 lg:flex-col lg:h-107">
+                    <!-- Info Box -->
+                    <div class="bg-white py-6 px-8 rounded-lg shadow-md sm:h-50 lg:h-50 lg:w-full">
+                        <h2 class="text-lg lg:text-xl text-center font-semibold mb-4 text-gray-800">Contact Information</h2>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-green-500 text-xl"><i class="fa-solid fa-phone" style="color: #39b828;"></i></span>
+                            <span><?= $data['barangayDetails']['phone'] ?></span>
+                        </div>
+                        <div class="flex items-center gap-2 mb-2 text-wrap">
+                            <span class="text-green-500 text-xl"><i class="fa-solid fa-envelope" style="color: #39b828;"></i></span>
+                            <span><?= $data['barangayDetails']['gmail']  ?></span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-green-500 text-xl"><i class="fa-brands fa-facebook" style="color: #39b828;"></i></span>
+                            <a href="<?= $data['barangayDetails']['facebook'] ?>" target="_blank"><?= $data['barangayDetails']['fbName'] ?></a>
+                        </div>
+                    </div>
+
+                    <!-- Map Image -->
+                    <div class="rounded-lg overflow-hidden shadow-2xl flex justify-center items-center lg:items-start sm:max-w-lg ">
+                        <iframe src="<?= $data['barangayDetails']['map'] ?>"
+                            class="w-full h-full sm:h-50 lg:h-60 lg:w-98.5"
+                            style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <footer class="text-gray bg-green-50 py-1 sm:py-2">
-        <h1 class="text-center text-xs sm:text-sm">©WasteWise 2025 All Rights Reserved</h1>
+    <footer class="text-gray bg-green-50 py-2 mt-2">
+        <h1 class="text-center text-xs">&copyWasteWise 2025 All Rights Reserved</h1>
     </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js"></script>
     <script>
         const URL_ROOT = '<?php echo URL_ROOT; ?>';
     </script>
@@ -222,17 +287,6 @@
     <script src="<?php echo URL_ROOT; ?>/js/profile.js"></script>
     <script src="<?php echo URL_ROOT; ?>/js/auth.js"></script>
     <script>
-        // TYPEWRITER EFFECT
-        document.addEventListener('DOMContentLoaded', function() {
-            var typed = new Typed('#report', {
-                strings: ['Waste', 'Litterer'],
-                typeSpeed: 150,
-                backSpeed: 100,
-                backDelay: 1000,
-                loop: true
-            });
-        });
-
         // Modern JavaScript for dropdown functionality
         function toggleDropdown() {
             const dropdown = document.getElementById("reportDropdown");

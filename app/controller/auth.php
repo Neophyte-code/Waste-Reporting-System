@@ -1,6 +1,6 @@
 <?php
 
-class AuthController extends Controller
+class Auth extends Controller
 {
     public function __construct() {}
 
@@ -35,7 +35,7 @@ class AuthController extends Controller
             }
 
             // Validate the chosen barangay
-            $userModel = $this->model('User');
+            $userModel = $this->model('UserModel');
             $barangay_id = $userModel->getBarangayIdByName($data['barangay']);
             if (!$barangay_id) {
                 $this->view('auth/index', ['error' => 'Invalid barangay selected', 'form' => 'signup']);
@@ -73,7 +73,7 @@ class AuthController extends Controller
             }
 
             // Instantiate the model class
-            $userModel = $this->model('User');
+            $userModel = $this->model('UserModel');
 
             // Check if email is registered
             if (!$userModel->emailExist($email)) {
@@ -96,14 +96,21 @@ class AuthController extends Controller
                     'lastname' => $user['lastname'],
                     'barangay_id' => $user['barangay_id'],
                     'barangay' => $user['barangay_name'],
-                    'profile_picture' => $profilePicture
+                    'profile_picture' => $profilePicture,
+                    'role' => $user['role']
                 ];
 
                 // Clear localStorage to reset modal state
                 echo '<script>localStorage.removeItem("modalState"); localStorage.removeItem("activeForm");</script>';
 
-                // Use URL_ROOT for consistent redirects
-                header('Location: ' . URL_ROOT . '/home');
+                // Redirect base on roles
+                if ($user['role'] === 'superadmin') {
+                    header('Location: ' . URL_ROOT . '/superadmin');
+                } elseif ($user['role'] === 'admin') {
+                    header('Location: ' . URL_ROOT . '/admin');
+                } else {
+                    header('Location: ' . URL_ROOT . '/user');
+                }
                 exit;
             } else {
                 //Handle incorrect password

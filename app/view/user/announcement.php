@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 
 <head>
     <meta charset="UTF-8">
@@ -7,28 +7,27 @@
     <title></title>
     <link href="<?php echo URL_ROOT; ?>/css/output.css" rel="stylesheet">
     <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
-<body class="flex flex-col font-[sans-serif] bg-gradient-to-r from-green-100 via-emerald-200 to-green-500 min-h-screen w-full">
-    <header class="bg-white w-full">
-        <nav class="flex justify-between items-center w-[92%] mx-auto">
+<body class="relative flex flex-col font-[sans-serif] bg-gradient-to-r from-green-100 via-emerald-200 to-green-500 min-h-screen w-full">
+    <header class="fixed top-0 bg-white w-full py-0.5">
+        <nav class="flex justify-between items-center w-[92%] mx-auto sm:py-0">
             <div>
-                <img class="w-27 cursor-pointer " src="<?php echo URL_ROOT; ?>/images/WasteWise.png" alt="...">
+                <img class="w-[100px] cursor-pointer" src="<?php echo URL_ROOT; ?>/images/WasteWise.png" alt="WasteWise Logo">
             </div>
-            <div class="nav-links duration-500 md:static absolute bg-white md:min-h-fit min-h-[38vh] left-0 top-[-100%] md:w-auto z-1 w-full flex items-center px-5">
+            <div class="nav-links transition-all ease-in-out duration-500 md:static absolute bg-white md:min-h-fit min-h-[38vh] left-0 -top-full md:top-auto md:w-auto w-full flex items-center px-5 py-8 sm:py-0 z-10 hidden md:flex">
                 <ul class="w-full flex items-center justify-center md:flex-row flex-col md:text-md md:h-full md:items-center md:gap-[2vw] gap-8 font-bold">
                     <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/home">HOME</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/user">HOME</a>
                     </li>
                     <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/about">ABOUT</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/user/about">ABOUT</a>
                     </li>
                     <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/contact">CONTACT</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/user/contact">CONTACT</a>
                     </li>
                     <li>
-                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/announcement">ANNOUNCEMENT</a>
+                        <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/user/announcement">ANNOUNCEMENT</a>
                     </li>
                     <li class="relative">
                         <button onclick="toggleDropdown()" class="hover:text-green-500 cursor-pointer flex items-center gap-1 font-bold">
@@ -38,8 +37,8 @@
                             </svg>
                         </button>
                         <div id="reportDropdown" class="absolute hidden bg-white shadow-lg mt-2 rounded w-44 z-20 text-sm">
-                            <a href="<?php echo URL_ROOT; ?>/waste" class="block px-4 py-2 hover:bg-green-100 text-black">Report Waste</a>
-                            <a href="<?php echo URL_ROOT; ?>/litterer" class="block px-4 py-2 hover:bg-green-100 text-black">Report Litterer</a>
+                            <a href="<?php echo URL_ROOT; ?>/user/waste" class="block px-4 py-2 hover:bg-green-100 text-black">Report Waste</a>
+                            <a href="<?php echo URL_ROOT; ?>/user/litterer" class="block px-4 py-2 hover:bg-green-100 text-black">Report Litterer</a>
                         </div>
                     </li>
                 </ul>
@@ -135,7 +134,7 @@
                         <ion-icon name="chevron-forward" class="text-red-400 ml-auto"></ion-icon>
                     </a>
                 </div>
-                <form id="editForm" class="hidden" action="<?php echo URL_ROOT; ?>/home/updateProfile" method="POST" enctype="multipart/form-data">
+                <form id="editForm" class="hidden" action="<?php echo URL_ROOT; ?>/user/updateProfile" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="old_email" value="<?php echo htmlspecialchars($data['user']['email'] ?? ''); ?>">
                     <div>
                         <label class="block text-sm font-sm text-gray-700 mb-1">Profile Picture</label>
@@ -193,91 +192,56 @@
         </div>
     </div>
 
-    <!-- CONTACT CONTENT -->
-    <main class="flex-grow  ">
-        <div class="flex flex-col justify-center items-center gap-4 px-4 pb-4">
-            <!-- Header Section -->
-            <div class=" container flex flex-col justify-center items-center pt-2 gap-3 text-center">
-                <h1 class="text-4xl md:text-4xl font-extrabold">Get in Touch!</h1>
-                <p class="text-base md:text-md font-thin max-w-2xl lg:max-w-4xl">WE ARE LOOKING FORWARD TO YOUR FEEDBACK TO HELP US KEEP THE ENVIRONMENT CLEAN AND SAFE.</p>
+    <!-- ANNOUNCEMENT CONTENT -->
+
+    <main class="flex-grow flex justify-center pt-10 w-full">
+        <div class="container flex flex-col items-center px-6 gap-10 py-6 mb-4">
+            <div class="flex justify-center items-center mt-4 gap-5 mb-0 sm:mb-2 ">
+                <h1 class="text-3xl text-center sm:text-5xl lg:text-4xl font-bold ">Announcement</h1>
             </div>
-
-            <!-- Contact Form + Info Container -->
-            <div class=" flex flex-col lg:flex-row gap-6 w-full max-w-5xl sm:items-center lg:items-start">
-
-                <!-- Contact Form -->
-                <form method="post" action="<?php echo URL_ROOT; ?>/contact/contactForm" class="flex-1 bg-white p-6 rounded-lg shadow-md space-y-4 sm:max-w-xl lg:px-6">
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="flex-1">
-                            <label class="block text-sm font-bold pb-0.5 lg:text-lg text-black">First Name</label>
-                            <input name="firstname" type="text" required placeholder="Enter first name" class="w-full border-2 border-green-400 rounded p-2 bg-gray-200" />
+            <?php if (empty($data['announcements'])): ?>
+                <p class="text-center">No Announcement Yet</p>
+            <?php else: ?>
+                <?php foreach ($data['announcements'] as $announcement): ?>
+                    <div class="bg-gray-50 flex flex-col w-full sm:max-w-150 md:max-w-180 lg:max-w-200  p-4 gap-3 rounded-xl shadow-2xl">
+                        <div class="flex flex-col ">
+                            <div class="flex items-center gap-2 ">
+                                <span class="text-green-500 text-lg">📢</span>
+                                <span>What: <?php echo htmlspecialchars($announcement['what']); ?></span>
+                            </div>
+                            <div class="flex items-center gap-2 ">
+                                <span class="text-green-500 text-lg">👥</span>
+                                <span>To: <?php echo htmlspecialchars($announcement['to_whom']); ?></span>
+                            </div>
+                            <div class="flex items-center gap-2  text-wrap">
+                                <span class="text-green-500 text-lg">🗓️</span>
+                                <span>Date: <?php echo htmlspecialchars(date('l, F d, Y', strtotime($announcement['date']))); ?></span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-green-500 text-lg">⏰</span>
+                                <span>Time: <?php echo htmlspecialchars(date('h:i A', strtotime($announcement['time']))); ?></span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-green-500 text-lg">📍</span>
+                                <span>Location: <?php echo htmlspecialchars($announcement['location']) ?></span>
+                            </div>
                         </div>
-                        <div class="flex-1">
-                            <label class="block text-sm font-bold pb-0.5 lg:text-lg text-black">Last Name</label>
-                            <input name="lastname" type="text" required placeholder="Enter last name" class="w-full border-2 border-green-400 rounded p-2 bg-gray-200" />
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="flex-1">
-                            <label class="block text-sm font-bold pb-0.5 lg:text-lg text-black">Gmail</label>
-                            <input name="gmail" type="email" required placeholder="example@gmail.com" class="w-full border-2 border-green-400 rounded p-2 bg-gray-200" />
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-sm font-bold pb-0.5 lg:text-lg text-black">Mobile Number</label>
-                            <input name="phone" type="tel" required placeholder="09123456789" class="w-full border-2 border-green-400 rounded p-2 bg-gray-200" />
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-bold pb-0.5 lg:text-lg text-black">Message</label>
-                        <textarea name="message" required placeholder="Type your message here" class="w-full border-2 border-green-400 rounded p-2 bg-gray-200 h-27 resize-none"></textarea>
-                    </div>
-
-                    <!-- submit error/success display -->
-                    <?php if (!empty($data['success'])): ?>
-                        <p class="text-green-500 text-center text-xs sm:text-sm"><?php echo $data['success']; ?></p>
-                    <?php endif; ?>
-
-                    <?php if (!empty($data['error'])): ?>
-                        <p class="text-red-500 text-center text-xs sm:text-sm"><?php echo $data['error']; ?></p>
-                    <?php endif; ?>
-
-
-                    <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-full font-bold hover:bg-green-700 transition">SUBMIT</button>
-                </form>
-
-                <!-- Contact Info + Map -->
-                <div class=" flex flex-col gap-4 w-full lg:w-98.5  sm:items-center sm:justify-center lg:justify-between lg:items-start  sm:flex-row sm:h-50 lg:flex-col lg:h-107">
-                    <!-- Info Box -->
-                    <div class="bg-white py-6 px-8 rounded-lg shadow-md sm:h-50 lg:h-50 lg:w-full">
-                        <h2 class="text-lg lg:text-xl text-center font-semibold mb-4 text-gray-800">Contact Information</h2>
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="text-green-500 text-xl"><i class="fa-solid fa-phone" style="color: #39b828;"></i></span>
-                            <span><?= $data['barangayDetails']['phone'] ?></span>
-                        </div>
-                        <div class="flex items-center gap-2 mb-2 text-wrap">
-                            <span class="text-green-500 text-xl"><i class="fa-solid fa-envelope" style="color: #39b828;"></i></span>
-                            <span><?= $data['barangayDetails']['gmail']  ?></span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-green-500 text-xl"><i class="fa-brands fa-facebook" style="color: #39b828;"></i></span>
-                            <a href="<?= $data['barangayDetails']['facebook'] ?>" target="_blank"><?= $data['barangayDetails']['fbName'] ?></a>
+                        <div class="flex flex-col p-6 gap-4 bg-gray-300 rounded-lg">
+                            <h1 class="font-bold">Dear <?php echo htmlspecialchars($announcement['to_whom']) ?> of Barangay <?php echo $data['user']['barangay'] ?>, </h1>
+                            <div>
+                                <?php echo nl2br(htmlspecialchars($announcement['message'])) ?>
+                            </div>
                         </div>
                     </div>
-
-                    <!-- Map Image -->
-                    <div class="rounded-lg overflow-hidden shadow-2xl flex justify-center items-center lg:items-start sm:max-w-lg ">
-                        <iframe src="<?= $data['barangayDetails']['map'] ?>"
-                            class="w-full h-full sm:h-50 lg:h-60 lg:w-98.5"
-                            style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    </div>
-                </div>
-            </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
+
+
+
     </main>
 
-    <footer class="text-gray bg-green-50 py-2 mt-2">
+    <footer class="text-gray bg-green-50 py-2">
         <h1 class="text-center text-xs">&copyWasteWise 2025 All Rights Reserved</h1>
     </footer>
     <script>
@@ -287,6 +251,22 @@
     <script src="<?php echo URL_ROOT; ?>/js/profile.js"></script>
     <script src="<?php echo URL_ROOT; ?>/js/auth.js"></script>
     <script>
+        function onToggleMenu(icon) {
+            const navLinks = document.querySelector('.nav-links');
+            const menuIcon = document.getElementById('menuIcon');
+
+            navLinks.classList.toggle('hidden');
+            navLinks.classList.toggle('top-[9%]');
+            navLinks.classList.toggle('-top-full');
+
+            // Toggle icon
+            if (menuIcon.name === 'menu') {
+                menuIcon.name = 'close';
+            } else {
+                menuIcon.name = 'menu';
+            }
+        }
+
         // Modern JavaScript for dropdown functionality
         function toggleDropdown() {
             const dropdown = document.getElementById("reportDropdown");
