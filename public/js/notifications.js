@@ -115,7 +115,7 @@ async function fetchNotifications() {
 async function markAsRead(notificationId, element) {
     try {
         console.log('Marking notification as read:', notificationId); // Debug log
-        const response = await fetch(`${URL_ROOT}/waste/markNotificationAsRead`, {
+        const response = await fetch(`${URL_ROOT}/user/markNotificationAsRead`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -146,7 +146,7 @@ async function markAsRead(notificationId, element) {
 async function markAllAsRead() {
     try {
         console.log('Marking all notifications as read'); // Debug log
-        const response = await fetch(`${URL_ROOT}/waste/markAllNotificationsAsRead`, {
+        const response = await fetch(`${URL_ROOT}/user/markAllNotificationsAsRead`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

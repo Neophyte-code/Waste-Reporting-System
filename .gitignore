@@ -1,5 +1,5 @@
 #ignore node_modules folder to be push in github
-node_modules/
+/node_modules/
 
 #ignore profile uploads to be push in github
 /public/images/uploads/
@@ -9,3 +9,8 @@ node_modules/
 
 #ignore .env file to be push in github
 .env
+
+# ignore images uploads to be push to github
+/public/images/qrCode/
+/public/images/reportLitterer/
+/public/images/reportWaste/

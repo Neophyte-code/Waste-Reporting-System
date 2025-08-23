@@ -183,14 +183,14 @@
               <div class="flex flex-col justify-between">
 
                 <p class="font-semibold">Name</p>
-                <input id="nameInput" type="text" value="Jerwin A. Noval" class="w-full border border-gray-300 rounded p-2 mt-1 text-md focus:outline-none" readonly>
+                <input id="nameInput" type="text" value="<?php echo htmlspecialchars($data['user']['firstname'] . ' ' . $data['user']['lastname'] ?? 'Guest User'); ?>" class="w-full border border-gray-300 rounded p-2 mt-1 text-md focus:outline-none" readonly>
 
               </div>
 
               <div class="flex flex-col justify-between">
 
-                <p class="font-semibold">Address</p>
-                <input id="addressInput" type="text" value="Magsumbay, Tapilon, Daanbantayan, Cebu" class="w-full border border-gray-300 rounded p-2 mt-1 text-md focus:outline-none" readonly>
+                <p class="font-semibold">Barangay</p>
+                <input id="addressInput" type="text" value="<?php echo htmlspecialchars($data['user']['barangay'] ?? 'Unknown'); ?>" class="w-full border border-gray-300 rounded p-2 mt-1 text-md focus:outline-none" readonly>
 
               </div>
 
@@ -204,11 +204,9 @@
               <div class="flex flex-col justify-between">
 
                 <p class="font-semibold">Email Address</p>
-                <input id="emailInput" type="text" value="jerwinnoval@gmail.com" class="w-full border border-gray-300 rounded p-2 mt-1 text-md focus:outline-none" readonly>
+                <input id="emailInput" type="text" value="<?php echo htmlspecialchars($data['user']['email'] ?? 'guest@example.com'); ?>" class="w-full border border-gray-300 rounded p-2 mt-1 text-md focus:outline-none" readonly>
 
               </div>
-
-
             </div>
           </div>
 
@@ -218,7 +216,7 @@
     </main>
 
     <!-- Modal Background for logout -->
-    <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50" style="display:none;">
+    <div id="logoutModal" class="fixed inset-0 bg-opacity-40 flex items-center justify-center z-50" style="display:none;">
 
       <!-- Modal Container for logout -->
       <div class="bg-[#e5f9e0] w-full max-w-xs rounded-lg shadow-lg relative p-4">
@@ -229,7 +227,7 @@
 
         <div class="flex justify-end gap-2 mt-4">
           <button id="cancelLogoutBtn" class="hover:bg-gray-400 px-4 py-1 rounded-md">Cancel</button>
-          <button id="confirmLogoutBtn" class="hover:bg-gray-400 px-4 py-1 rounded-md">OK</button>
+          <a id="confirmLogoutBtn" href="<?php echo URL_ROOT; ?>/auth/logout" class="hover:bg-gray-400 px-4 py-1 rounded-md">OK</a>
         </div>
       </div>
     </div>

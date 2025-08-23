@@ -98,4 +98,39 @@ class UserModel
         // Corrected return statement with proper parentheses
         return ($result && isset($result['points'])) ? (float)$result['points'] : 0.00;
     }
+
+    //function to get all users (for admin)
+    public function getDashboardStats($barangay_id)
+    {
+
+        try {
+            $stmt = $this->db->prepare(
+                "Select
+                    (select count(*) from users where barangay_id = :barangay_id and role not in ('admin', 'superadmin')) as total_users,
+                    (select count(*) from waste_reports wr join users u on wr.user_id = u.id where u.barangay_id = :barangay_id) as total_waste_reports,
+                    (select count(*) from litterer_reports lr join users u on lr.user_id = u.id where u.barangay_id = :barangay_id) as total_litterer_reports,
+                    (select count(*) from waste_reports wr join users u on wr.user_id = u.id where u.barangay_id = :barangay_id and status = 'approved') as total_verified_waste_reports,
+                    (select count(*) from litterer_reports lr join users u on lr.user_id = u.id where u.barangay_id = :barangay_id and status = 'approved') as total_verified_litterer_reports,
+                    (select count(*) from waste_reports wr join users u on wr.user_id = u.id where u.barangay_id = :barangay_id and status = 'pending') as total_pending_waste_reports,
+                    (select count(*) from litterer_reports lr join users u on lr.user_id = u.id where u.barangay_id = :barangay_id and status = 'pending') as total_pending_litterer_reports
+                "
+            );
+
+            $stmt->bindParam(':barangay_id', $barangay_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log('Database error: ' . $e->getMessage());
+            return [
+                'total_users' => 0,
+                'total_waste_reports' => 0,
+                'total_litterer_reports' => 0,
+                'total_verified_waste_reports' => 0,
+                'total_verified_litterer_reports' => 0,
+                'total_pending_waste_reports' =>  0,
+                'total_pending_litterer_reports' => 0
+            ];
+        }
+    }
 }

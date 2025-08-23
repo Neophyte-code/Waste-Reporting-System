@@ -82,20 +82,20 @@
       <!-- Stats -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-2 md:mb-6">
         <div class="bg-sky-300 shadow-lg rounded-lg p-2 md:p-4 text-center">
-          <p class="text-sm lg:text-lg  text-gray-700 font-bold">Total Reports</p>
-          <p class="text-xl md:text-2xl font-bold">125</p>
+          <p class="text-sm lg:text-lg  text-gray-700 font-bold">Total Users</p>
+          <p class="text-xl md:text-2xl font-bold"><?= $data['totalUsers'] ?></p>
         </div>
         <div class="bg-green-400 shadow-lg rounded-lg p-2 md:p-4 text-center">
+          <p class="text-sm lg:text-lg  text-gray-700 font-bold">Total Reports</p>
+          <p class="text-xl md:text-2xl font-bold"><?= $data['totalReports'] ?></p>
+        </div>
+        <div class="bg-sky-400 shadow-lg rounded-lg p-2 md:p-4 text-center">
           <p class="text-sm lg:text-lg  text-gray-700 font-bold">Verified</p>
-          <p class="text-xl md:text-2xl font-bold">50</p>
+          <p class="text-xl md:text-2xl font-bold"><?= $data['total_verified_reports'] ?></p>
         </div>
         <div class="bg-yellow-400 shadow-lg rounded-lg p-2 md:p-4 text-center">
           <p class="text-sm lg:text-lg  text-gray-700 font-bold">Pending</p>
-          <p class="text-xl md:text-2xl font-bold">22</p>
-        </div>
-        <div class="bg-sky-400 shadow-lg rounded-lg p-2 md:p-4 text-center">
-          <p class="text-sm lg:text-lg  text-gray-700 font-bold">Resolved</p>
-          <p class="text-xl md:text-2xl font-bold">53</p>
+          <p class="text-xl md:text-2xl font-bold"><?= $data['total_pending_reports'] ?></p>
         </div>
       </div>
 

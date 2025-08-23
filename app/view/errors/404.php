@@ -23,7 +23,7 @@
 <body>
     <h1>404</h1>
     <p>Sorry, page not found.</p>
-    <a href="<?php echo URL_ROOT; ?>/dashboard">Go back</a>
+    <a href="<?php echo URL_ROOT; ?>/user/dashboard">Go back</a>
 </body>
 
 </html>

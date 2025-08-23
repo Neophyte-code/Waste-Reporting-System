@@ -20,9 +20,15 @@ class Admin extends Controller
     {
         // Pass user data to the view
         $userData = $_SESSION['user'];
+        $userModel = $this->model('UserModel');
+        $stats = $userModel->getDashboardStats($userData['barangay_id']);
 
         $this->view('admin/dashboard', [
             'user' => $userData,
+            'totalUsers' => $stats['total_users'],
+            'totalReports' => $stats['total_waste_reports'] + $stats['total_litterer_reports'],
+            'total_verified_reports' => $stats['total_verified_waste_reports'] + $stats['total_verified_litterer_reports'],
+            'total_pending_reports' => $stats['total_pending_waste_reports'] + $stats['total_pending_litterer_reports'],
         ]);
     }
 

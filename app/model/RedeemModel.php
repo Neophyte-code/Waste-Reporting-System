@@ -146,9 +146,6 @@ class RedeemModel
         }
     }
 
-
-
-
     //function to get redemption request(for admin)
     public function getRedemptionRequest()
     {
