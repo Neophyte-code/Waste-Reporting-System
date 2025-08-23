@@ -20,8 +20,16 @@ class Admin extends Controller
     {
         // Pass user data to the view
         $userData = $_SESSION['user'];
+
+        //initialize and get the dashboard stats from model
         $userModel = $this->model('UserModel');
         $stats = $userModel->getDashboardStats($userData['barangay_id']);
+
+        // Get chart data for all timeframes
+        $dailyChartData = $userModel->getChartData($userData['barangay_id'], 'daily');
+        $weeklyChartData = $userModel->getChartData($userData['barangay_id'], 'weekly');
+        $monthlyChartData = $userModel->getChartData($userData['barangay_id'], 'month');
+        $yearlyChartData = $userModel->getChartData($userData['barangay_id'], 'year');
 
         $this->view('admin/dashboard', [
             'user' => $userData,
@@ -29,6 +37,10 @@ class Admin extends Controller
             'totalReports' => $stats['total_waste_reports'] + $stats['total_litterer_reports'],
             'total_verified_reports' => $stats['total_verified_waste_reports'] + $stats['total_verified_litterer_reports'],
             'total_pending_reports' => $stats['total_pending_waste_reports'] + $stats['total_pending_litterer_reports'],
+            'dailyChartData' => json_encode($dailyChartData),
+            'weeklyChartData' => json_encode($weeklyChartData),
+            'monthlyChartData' => json_encode($monthlyChartData),
+            'yearlyChartData' => json_encode($yearlyChartData)
         ]);
     }
 

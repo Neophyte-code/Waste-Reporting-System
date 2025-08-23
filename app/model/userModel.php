@@ -99,6 +99,8 @@ class UserModel
         return ($result && isset($result['points'])) ? (float)$result['points'] : 0.00;
     }
 
+
+
     //function to get all users (for admin)
     public function getDashboardStats($barangay_id)
     {
@@ -131,6 +133,108 @@ class UserModel
                 'total_pending_waste_reports' =>  0,
                 'total_pending_litterer_reports' => 0
             ];
+        }
+    }
+
+    //function to get data for chart (for admin)
+    public function getChartData($barangay_id, $timeFrame = 'month')
+    {
+        try {
+            if ($timeFrame === 'daily') {
+                // Daily data - last 7 days
+                $query = "
+                SELECT 
+                    DATE(report_date) as date,
+                    DAYNAME(report_date) as day_name,
+                    DAYOFWEEK(report_date) as day_order,
+                    COUNT(CASE WHEN report_type = 'waste' THEN 1 END) as waste_count,
+                    COUNT(CASE WHEN report_type = 'litterer' THEN 1 END) as litterer_count
+                FROM (
+                    SELECT 'waste' as report_type, report_date FROM waste_reports wr 
+                    JOIN users u ON wr.user_id = u.id 
+                    WHERE u.barangay_id = :barangay_id
+                    UNION ALL
+                    SELECT 'litterer' as report_type, report_date FROM litterer_reports lr 
+                    JOIN users u ON lr.user_id = u.id 
+                    WHERE u.barangay_id = :barangay_id
+                ) combined_reports
+                WHERE report_date >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+                GROUP BY DATE(report_date), DAYNAME(report_date), DAYOFWEEK(report_date)
+                ORDER BY date
+            ";
+            } elseif ($timeFrame === 'weekly') {
+                // Weekly data - last 8 weeks
+                $query = "
+                SELECT 
+                    YEAR(report_date) as year,
+                    WEEK(report_date) as week_number,
+                    CONCAT('Week ', WEEK(report_date)) as week_label,
+                    COUNT(CASE WHEN report_type = 'waste' THEN 1 END) as waste_count,
+                    COUNT(CASE WHEN report_type = 'litterer' THEN 1 END) as litterer_count
+                FROM (
+                    SELECT 'waste' as report_type, report_date FROM waste_reports wr 
+                    JOIN users u ON wr.user_id = u.id 
+                    WHERE u.barangay_id = :barangay_id
+                    UNION ALL
+                    SELECT 'litterer' as report_type, report_date FROM litterer_reports lr 
+                    JOIN users u ON lr.user_id = u.id 
+                    WHERE u.barangay_id = :barangay_id
+                ) combined_reports
+                WHERE report_date >= DATE_SUB(NOW(), INTERVAL 8 WEEK)
+                GROUP BY YEAR(report_date), WEEK(report_date)
+                ORDER BY year, week_number
+            ";
+            } elseif ($timeFrame === 'month') {
+                // Monthly data - last 12 months
+                $query = "
+                SELECT 
+                    YEAR(report_date) as year,
+                    MONTH(report_date) as month,
+                    COUNT(CASE WHEN report_type = 'waste' THEN 1 END) as waste_count,
+                    COUNT(CASE WHEN report_type = 'litterer' THEN 1 END) as litterer_count
+                FROM (
+                    SELECT 'waste' as report_type, report_date FROM waste_reports wr 
+                    JOIN users u ON wr.user_id = u.id 
+                    WHERE u.barangay_id = :barangay_id
+                    UNION ALL
+                    SELECT 'litterer' as report_type, report_date FROM litterer_reports lr 
+                    JOIN users u ON lr.user_id = u.id 
+                    WHERE u.barangay_id = :barangay_id
+                ) combined_reports
+                WHERE report_date >= DATE_SUB(NOW(), INTERVAL 12 MONTH)
+                GROUP BY YEAR(report_date), MONTH(report_date)
+                ORDER BY year, month
+            ";
+            } else {
+                // Yearly data - last 5 years
+                $query = "
+                SELECT 
+                    YEAR(report_date) as year,
+                    COUNT(CASE WHEN report_type = 'waste' THEN 1 END) as waste_count,
+                    COUNT(CASE WHEN report_type = 'litterer' THEN 1 END) as litterer_count
+                FROM (
+                    SELECT 'waste' as report_type, report_date FROM waste_reports wr 
+                    JOIN users u ON wr.user_id = u.id 
+                    WHERE u.barangay_id = :barangay_id
+                    UNION ALL
+                    SELECT 'litterer' as report_type, report_date FROM litterer_reports lr 
+                    JOIN users u ON lr.user_id = u.id 
+                    WHERE u.barangay_id = :barangay_id
+                ) combined_reports
+                WHERE report_date >= DATE_SUB(NOW(), INTERVAL 5 YEAR)
+                GROUP BY YEAR(report_date)
+                ORDER BY year
+            ";
+            }
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':barangay_id', $barangay_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log('Database error: ' . $e->getMessage());
+            return [];
         }
     }
 }

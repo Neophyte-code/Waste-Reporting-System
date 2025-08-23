@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Barangay Admin Dashboard</title>
   <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/css/output.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="min-h-screen flex flex-col bg-gradient-to-br from-green-200 to-green-300">
@@ -118,131 +117,29 @@
 
             <!-- Filter -->
             <select id="timeFilter" class="border rounded px-2 py-1 text-sm outline-none">
-              <option value="month">Month</option>
-              <option value="year">Year</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="month">Monthly</option>
+              <option value="year">Yearly</option>
             </select>
           </div>
         </div>
 
         <!-- Chart -->
-        <div class="w-full bg-gray-50 p-4 rounded-sm shadow-lg" style="height:330px;">
+        <div id="chart-container"
+          class="w-full bg-gray-50 p-4 rounded-sm shadow-lg"
+          style="height:330px;"
+          data-daily='<?= htmlspecialchars($data['dailyChartData'], ENT_QUOTES) ?>'
+          data-weekly='<?= htmlspecialchars($data['weeklyChartData'], ENT_QUOTES) ?>'
+          data-monthly='<?= htmlspecialchars($data['monthlyChartData'], ENT_QUOTES) ?>'
+          data-yearly='<?= htmlspecialchars($data['yearlyChartData'], ENT_QUOTES) ?>'>
           <canvas id="engagementChart"></canvas>
         </div>
       </div>
     </main>
   </div>
-
-  <script>
-    // Sidebar controls (named functions) + close on outside click
-    const toggleBtn = document.getElementById('toggleSidebar');
-    const sidebar = document.getElementById('sidebar');
-
-    function openSidebarMenu() {
-      sidebar.classList.remove('-translate-x-full');
-    }
-
-    function closeSidebarMenu() {
-      sidebar.classList.add('-translate-x-full');
-    }
-
-    function toggleSidebarMenu() {
-      sidebar.classList.toggle('-translate-x-full');
-    }
-
-    // Toggle button should not allow the document click handler to immediately close it
-    if (toggleBtn) toggleBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleSidebarMenu();
-    });
-
-    // Prevent clicks inside the sidebar from bubbling to document (so it won't close)
-    if (sidebar) sidebar.addEventListener('click', (e) => {
-      e.stopPropagation();
-    });
-
-    // Close sidebar when clicking outside it (only when it's currently open)
-    document.addEventListener('click', (e) => {
-      if (!sidebar) return;
-      const isHidden = sidebar.classList.contains('-translate-x-full');
-      if (!isHidden) {
-        // click outside sidebar -> close
-        if (!e.target.closest || !e.target.closest('#sidebar')) {
-          closeSidebarMenu();
-        }
-      }
-    });
-
-    // Monthly Data
-    const monthlyLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-    const monthlyDatasets = [{
-        label: 'Waste',
-        data: [2, 5, 6, 2, 5, 3, 2, 5, 4, 2, 8, 3],
-        backgroundColor: '#facc15'
-      },
-      {
-        label: 'Litterer',
-        data: [3, 7, 5, 4, 9, 6, 3, 6, 7, 3, 6, 6],
-        backgroundColor: '#4ade80'
-      }
-    ];
-
-    // Yearly Data
-    const yearlyLabels = ['2021', '2022', '2023', '2024', '2025'];
-    const yearlyDatasets = [{
-        label: 'Waste',
-        data: [25, 30, 28, 35, 40],
-        backgroundColor: '#facc15'
-      },
-      {
-        label: 'Litterer',
-        data: [18, 22, 20, 25, 27],
-        backgroundColor: '#4ade80'
-      }
-    ];
-
-    // Initial Chart
-    const chartConfig = {
-      type: 'bar',
-      data: {
-        labels: monthlyLabels,
-        datasets: monthlyDatasets
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        animation: {
-          duration: 500
-        },
-        plugins: {
-          legend: {
-            display: false
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            max: 30
-          }
-        }
-      }
-    };
-
-    const ctx = document.getElementById('engagementChart').getContext('2d');
-    const engagementChart = new Chart(ctx, chartConfig);
-
-    // Time Filter Change
-    document.getElementById('timeFilter').addEventListener('change', (e) => {
-      if (e.target.value === 'month') {
-        engagementChart.data.labels = monthlyLabels;
-        engagementChart.data.datasets = monthlyDatasets;
-      } else {
-        engagementChart.data.labels = yearlyLabels;
-        engagementChart.data.datasets = yearlyDatasets;
-      }
-      engagementChart.update();
-    });
-  </script>
-
+  <script src="<?php echo URL_ROOT; ?>/js/admin/chart.js"></script>
+  <script src="<?php echo URL_ROOT; ?>/js/admin/chart.umd.min.js"></script>
 </body>
 
 </html>
