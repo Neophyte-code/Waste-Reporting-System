@@ -174,4 +174,79 @@ class ReportModel
             return false;
         }
     }
+
+    //function to get all pending reports
+    public function getAllPendingReports($barangay_id)
+    {
+        try {
+            $sqlWaste = '
+            SELECT 
+                wr.id, 
+                u.firstname, 
+                u.lastname, 
+                u.email, 
+                wr.report_date, 
+                "waste" as report_type,
+                wr.description as details,
+                wr.image_path, 
+                wr.status,
+                wr.estimated_weight,
+                NULL as name,
+                NULL as age,
+                NULL as gender,
+                NULL as features,
+                wr.latitude,
+                wr.longitude
+            FROM waste_reports wr
+            JOIN users u ON wr.user_id = u.id
+            WHERE wr.status = "pending"
+        ';
+
+            $sqlLitterer = '
+            SELECT 
+                lr.id, 
+                u.firstname, 
+                u.lastname, 
+                u.email, 
+                lr.report_date, 
+                "litterer" as report_type,
+                lr.features as details,
+                lr.image_path, 
+                lr.status,
+                NULL as estimated_weight,
+                lr.name,
+                lr.age,
+                lr.gender,
+                lr.features,
+                lr.latitude,
+                lr.longitude
+            FROM litterer_reports lr
+            JOIN users u ON lr.user_id = u.id
+            WHERE lr.status = "pending"
+        ';
+
+            // Add barangay filter if provided
+            if ($barangay_id) {
+                $sqlWaste .= ' AND u.barangay_id = :barangay_id';
+                $sqlLitterer .= ' AND u.barangay_id = :barangay_id';
+            }
+
+            // Combine with UNION ALL
+            $sql = $sqlWaste . ' UNION ALL ' . $sqlLitterer . ' ORDER BY report_date DESC';
+
+            $stmt = $this->db->prepare($sql);
+
+            if ($barangay_id) {
+                $stmt->bindParam(':barangay_id', $barangay_id, PDO::PARAM_INT);
+            }
+
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $result;
+        } catch (PDOException $e) {
+            error_log('Database Error: ' . $e->getMessage());
+            return [];
+        }
+    }
 }

@@ -4,9 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barangay Admin ViewReports</title>
+    <title>Barangay Admin View Reports</title>
     <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/css/output.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
+<style>
+    #map {
+        width: 100%;
+        height: 400px;
+    }
+
+    /* Custom styles for map containers */
+    .map-container {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    /* Ensure map containers have proper dimensions even when hidden */
+    #wasteMap,
+    #littererMap {
+        height: 100%;
+        width: 100%;
+    }
+</style>
 
 <body class="min-h-screen h-screen  overflow-hidden flex flex-col bg-gradient-to-r from-green-100 via-emerald-200 to-green-500">
 
@@ -82,342 +104,173 @@
                 <h2 class="text-xl font-semibold mb-4">View Reports</h2>
 
                 <div class="max-h-[calc(92vh-100px)] sm:max-h-[calc(91vh-100px)]max-h-[calc(92vh-100px)] sm:max-h-[calc(91vh-100px)] overflow-auto rounded-md border">
+
+                    <!-- table -->
                     <table class="w-full text-sm border-collapse  rounded-md">
                         <thead>
                             <tr class="text-white">
                                 <th class="sticky top-0 z-10 bg-green-500 py-2 px-4 text-left">Name</th>
-                                <th class="sticky top-0 z-10 bg-green-500 p-2.5 hidden sm:table-cell text-left">Address</th>
                                 <th class="sticky top-0 z-10 bg-green-500 p-2.5 hidden md:table-cell text-left">Email Address</th>
+                                <th class="sticky top-0 z-10 bg-green-500 p-2.5 hidden md:table-cell text-left">Report Type</th>
                                 <th class="sticky top-0 z-10 bg-green-500 p-2.5 hidden lg:table-cell text-left w-[250px]">Date & Time</th>
                                 <th class="sticky top-0 z-10 bg-green-500 p-2.5 text-left w-[110px]">Action</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white">
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden gap-1">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Verify
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Verify
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Verify
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Verify
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Verify
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Verify
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Verify
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Verify
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Verify
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Verify
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Verify
-                                    </button>
-                                </td>
-                            </tr>
-                            <!-- Add more rows -->
+                            <?php if (empty($data['reports'])): ?>
+                                <p class="text-center">No Waste Reports Found</p>
+                            <?php else: ?>
+                                <?php foreach ($data['reports'] as $report): ?>
+
+                                    <tr class="border-b">
+                                        <td class="text-base py-2 px-4"><?= htmlspecialchars($report['firstname'] . ' ' . $report['lastname']) ?>
+                                            <dl class="lg:hidden">
+                                                <dt class="sr-only">Email Address</dt>
+                                                <dd class="md:hidden text-sm text-gray-500"><?= htmlspecialchars($report['email']) ?></dd>
+                                                <dt class="sr-only">Report Type</dt>
+                                                <dd class="md:hidden text-sm text-gray-500"><?= htmlspecialchars($report['report_type']) ?></dd>
+                                                <dt class="sr-only">Date & Time</dt>
+                                                <dd class="lg:hidden mt-1 text-xs text-gray-400"><?php echo htmlspecialchars(date('Y-m-d H:i', strtotime($report['report_date']))); ?></dd>
+                                            </dl>
+                                        </td>
+                                        <td class="hidden md:table-cell p-2.5"><?= htmlspecialchars($report['email']) ?></td>
+                                        <td class="hidden md:table-cell p-2.5"><?= htmlspecialchars($report['report_type']) ?></td>
+                                        <td class="hidden lg:table-cell p-2.5"><?php echo htmlspecialchars(date('Y-m-d H:i', strtotime($report['report_date']))); ?></td>
+                                        <td class=" p-2.5">
+                                            <button
+                                                class="verify-btn bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded"
+                                                data-id="<?= $report['id'] ?>"
+                                                data-type="<?= $report['report_type'] ?>"
+                                                data-name="<?= htmlspecialchars($report['firstname'] . ' ' . $report['lastname']) ?>"
+                                                data-email="<?= htmlspecialchars($report['email']) ?>"
+                                                data-img="<?= htmlspecialchars($report['image_path']) ?>"
+                                                data-details="<?= htmlspecialchars($report['details']) ?>"
+                                                data-weight="<?= htmlspecialchars($report['estimated_weight'] ?? '') ?>"
+                                                data-suspect="<?= htmlspecialchars($report['name'] ?? '') ?>"
+                                                data-age="<?= htmlspecialchars($report['age'] ?? '') ?>"
+                                                data-gender="<?= htmlspecialchars($report['gender'] ?? '') ?>"
+                                                data-features="<?= htmlspecialchars($report['features'] ?? '') ?>"
+                                                data-lat="<?= htmlspecialchars($report['latitude'] ?? '') ?>"
+                                                data-lng="<?= htmlspecialchars($report['longitude'] ?? '') ?>">
+                                                Verify
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
             </div>
-
-            <!-- Modal Background -->
-            <div id="modalOverlay" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
-
-                <!-- Modal Container for waste -->
-                <div id="wasteModal" class="bg-[#e5f9e0] w-full max-w-sm sm:max-w-md md:max-w-xl rounded-lg shadow-lg relative p-4 sm:p-6 hidden mx-4">
-                    <!-- Close Button -->
-                    <button id="wasteClose" class="absolute top-2 right-4 text-2xl font-bold text-gray-700 hover:text-black">&times;</button>
-
-                    <!-- Reporter Info -->
-                    <div class="mb-4">
-                        <p class="text-sm text-gray-700 font-semibold">Reporter</p>
-                        <p class="text-lg font-bold">Jerwin A. Noval</p>
-                    </div>
-
-                    <!-- Content Grid -->
-                    <div class="grid content-center grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-
-                        <!-- Waste Image -->
-                        <div class="border border-gray-300 flex justify-center items-center rounded overflow-hidden">
-                            <img src="" alt="Waste" class="w-full h-40 object-fill">
-                        </div>
-
-                        <!-- Map -->
-                        <div class="border border-green-400 rounded overflow-hidden">
-                            <img src="map-image.jpg" alt="Map" class="w-full h-40 object-cover">
-                        </div>
-                    </div>
-
-                    <!-- Waste Info -->
-                    <div class="grid grid-cols-2 gap-4 mb-6">
-                        <div>
-                            <label class="text-sm font-semibold text-gray-700">Waste Type</label>
-                            <input type="text" value="Mixed Plastic cup, paper cup and plastics" class="w-full border border-gray-300 rounded p-2 mt-1 text-sm focus:outline-none" readonly>
-                        </div>
-                        <div>
-                            <label class="text-sm font-semibold text-gray-700">Estimated Weight</label>
-                            <input type="text" value="1kg" class="w-full border border-gray-300 rounded p-2 mt-1 text-sm focus:outline-none" readonly>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="flex justify-center gap-4">
-                        <button class="bg-green-500 hover:bg-green-600 text-white px-8 py-2 rounded">Approve</button>
-                        <button class="bg-red-500 hover:bg-red-600 text-white px-8 py-2 rounded">Reject</button>
-                    </div>
-                </div>
-
-                <!-- Modal Container for litterer -->
-                <div id="littererModal" class="bg-[#e5f9e0] w-full max-w-xs sm:max-w-lg rounded-lg shadow-lg relative p-6 mx-4">
-
-                    <!-- Close Button -->
-                    <button id="littererClose" class="absolute top-2 right-3 text-xl font-bold text-gray-700 hover:text-black">&times;</button>
-
-                    <!-- Reporter Info -->
-                    <div class="mb-4">
-                        <p class="text-sm text-gray-700 font-semibold">Reporter</p>
-                        <p class="text-lg font-bold">Jerwin A. Noval</p>
-                    </div>
-
-                    <!-- Content Grid -->
-                    <div class="grid grid-cols-2 gap-6 mb-6">
-
-                        <!-- Waste Image -->
-                        <div class="border border-gray-300 rounded overflow-visible">
-                            <img src="" alt="Waste" class="w-full h-full object-cover">
-                        </div>
-
-                        <!-- Suspect Details -->
-                        <div class="space-y-2">
-                            <div>
-                                <label class="text-sm font-semibold text-gray-700">Name of the suspect (if applicable)</label>
-                                <input type="text" value="Jerico Ducante" class="w-full border focus:outline-none border-gray-300 rounded p-2 text-sm" readonly>
-                            </div>
-                            <div>
-                                <label class="text-sm font-semibold text-gray-700">Estimated Age</label>
-                                <input type="text" value="22" class="w-full border focus:outline-none border-gray-300 rounded p-2 text-sm" readonly>
-                            </div>
-                            <div>
-                                <label class="text-sm font-semibold text-gray-700">Location</label>
-                                <input type="text" value="Purok lipte near Mosque" class="w-full border focus:outline-none border-gray-300 rounded p-2 text-sm" readonly>
-                            </div>
-                            <div>
-                                <label class="text-sm font-semibold text-gray-700">Distinguishing features</label>
-                                <input type="text" value="Short" class="w-full border focus:outline-none border-gray-300 rounded p-2 text-sm" readonly>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="flex justify-center gap-4">
-                        <button class="bg-green-500 hover:bg-green-600 text-white px-8 py-2 rounded">Approve</button>
-                        <button class="bg-red-500 hover:bg-red-600 text-white px-8 py-2 rounded">Reject</button>
-                    </div>
-
-                </div>
-            </div>
-        </main>
     </div>
 
+    <!-- Modal Background -->
+    <div id="modalOverlay" class="fixed inset-0 bg-white-200 flex items-center justify-center z-50 hidden">
+        <!-- Waste Report Modal -->
+        <div id="wasteModal" class="bg-[#e5f9e0] w-full max-w-sm sm:max-w-lg md:max-w-2xl rounded-lg shadow-lg relative p-4 sm:p-6 hidden mx-4">
+            <button onclick="closeModal()" class="absolute top-2 right-4 text-2xl font-bold text-gray-700 hover:text-black">&times;</button>
+
+            <!-- waste report reporter name -->
+            <div class="mb-4">
+                <p class="text-sm text-gray-700 font-semibold">Reporter</p>
+                <p class="text-lg font-bold" id="wasteReporterName"></p>
+                <p class="text-sm text-gray-600" id="wasteReporterEmail"></p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div class="border border-gray-300 rounded overflow-hidden">
+                        <img id="wasteImage" src="" alt="Report Image" class="w-full h-40 object-cover">
+                    </div>
+                    <!-- map -->
+                    <div class="border border-green-400 rounded overflow-hidden">
+                        <div class="map-container h-20">
+                            <!-- Map container for waste reports -->
+                            <div id="wasteMap"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-sm font-semibold text-gray-700">Waste Type</label>
+                        <input type="text" id="wasteType" class="w-full border border-gray-300 rounded p-2 text-sm" readonly>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-700">Estimated Weight</label>
+                        <input type="text" id="wasteWeight" class="w-full border border-gray-300 rounded p-2 text-sm" readonly>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-700">Description</label>
+                        <textarea id="wasteDescription" class="w-full border border-gray-300 rounded p-2 text-sm h-16" readonly></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- waste report buttons -->
+            <div class="flex justify-center gap-4">
+                <button onclick="approveReport('waste')" class="bg-green-500 hover:bg-green-600 text-white px-8 py-2 rounded">Approve</button>
+                <button onclick="rejectReport('waste')" class="bg-red-500 hover:bg-red-600 text-white px-8 py-2 rounded">Reject</button>
+            </div>
+        </div>
+
+        <!-- Litterer Report Modal -->
+        <div id="littererModal" class="bg-[#e5f9e0] w-full max-w-sm sm:max-w-lg md:max-w-2xl rounded-lg shadow-lg relative p-4 sm:p-6 hidden mx-4">
+            <button onclick="closeModal()" class="absolute top-2 right-4 text-2xl font-bold text-gray-700 hover:text-black">&times;</button>
+
+            <!-- litterer report reporter name -->
+            <div class="mb-4">
+                <p class="text-sm text-gray-700 font-semibold">Reporter</p>
+                <p class="text-lg font-bold" id="littererReporterName"></p>
+                <p class="text-sm text-gray-600" id="littererReporterEmail"></p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div class="border border-gray-300 rounded overflow-hidden">
+                        <img id="littererImage" src="" alt="Report Image" class="w-full h-40 object-cover">
+                    </div>
+                    <!-- map -->
+                    <div class="border border-green-400 rounded overflow-hidden">
+                        <div class="map-container">
+                            <!-- Map container for litterer reports -->
+                            <div id="littererMap"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-sm font-semibold text-gray-700">Suspect Name</label>
+                        <input type="text" id="littererName" class="w-full border border-gray-300 rounded p-2 text-sm" readonly>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-sm font-semibold text-gray-700">Age</label>
+                            <input type="text" id="littererAge" class="w-full border border-gray-300 rounded p-2 text-sm" readonly>
+                        </div>
+                        <div>
+                            <label class="text-sm font-semibold text-gray-700">Gender</label>
+                            <input type="text" id="littererGender" class="w-full border border-gray-300 rounded p-2 text-sm" readonly>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-700">Distinguishing Features</label>
+                        <textarea id="littererFeatures" class="w-full border border-gray-300 rounded p-2 text-sm h-16" readonly></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button onclick="approveReport('litterer')" class="bg-green-500 hover:bg-green-600 text-white px-8 py-2 rounded">Approve</button>
+                <button onclick="rejectReport('litterer')" class="bg-red-500 hover:bg-red-600 text-white px-8 py-2 rounded">Reject</button>
+            </div>
+        </div>
+    </div>
+    </main>
+    </div>
+
+    <!-- for responsive navbar -->
     <script>
         // Sidebar controls (named functions) + close on outside click
         const toggleBtn = document.getElementById('toggleSidebar');
@@ -457,64 +310,217 @@
                 }
             }
         });
-
-        // Reports modal behavior
-        (function() {
-            const overlay = document.getElementById('modalOverlay');
-            const wasteModal = document.getElementById('wasteModal');
-
-            let activeRow = null;
-
-            function showWasteModal(row) {
-                if (!overlay || !wasteModal) return;
-                activeRow = row || null;
-                overlay.classList.remove('hidden');
-                wasteModal.classList.remove('hidden');
-            }
-
-            function hideAllModals() {
-                if (!overlay) return;
-                overlay.classList.add('hidden');
-                Array.from(overlay.querySelectorAll('.bg-[#e5f9e0]')).forEach(el => el.classList.add('hidden'));
-                activeRow = null;
-            }
-
-            // Delegate clicks on Verify buttons inside the main area and capture the row
-            document.querySelector('main').addEventListener('click', (e) => {
-                const btn = e.target.closest('button');
-                if (!btn) return;
-                if (btn.textContent && btn.textContent.trim() === 'Verify') {
-                    const row = btn.closest('tr');
-                    showWasteModal(row);
-                }
-            });
-
-            // Handle Approve/Reject clicks inside the overlay: remove active row then hide modals
-            overlay.addEventListener('click', (e) => {
-                const btn = e.target.closest('button');
-                if (!btn) return;
-                const txt = btn.textContent ? btn.textContent.trim() : '';
-                if (txt === 'Approve' || txt === 'Reject') {
-                    if (activeRow && activeRow.parentElement) {
-                        activeRow.remove();
-                    }
-                    hideAllModals();
-                }
-            });
-
-            // Also close when clicking the overlay background (but not when clicking inside modal)
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) hideAllModals();
-            });
-
-            // Close buttons for modals
-            const wasteClose = document.getElementById('wasteClose');
-            const littererClose = document.getElementById('littererClose');
-            if (wasteClose) wasteClose.addEventListener('click', hideAllModals);
-            if (littererClose) littererClose.addEventListener('click', hideAllModals);
-        })();
     </script>
 
+    <!-- for verify modal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modalOverlay = document.getElementById('modalOverlay');
+            const wasteModal = document.getElementById('wasteModal');
+            const littererModal = document.getElementById('littererModal');
+            let wasteMap = null;
+            let littererMap = null;
+            let currentReportId = null;
+            let currentReportType = null;
+
+            document.querySelectorAll('.verify-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const type = button.dataset.type;
+                    const latitude = parseFloat(button.dataset.lat);
+                    const longitude = parseFloat(button.dataset.lng);
+                    currentReportId = button.dataset.id;
+                    currentReportType = type;
+
+                    modalOverlay.classList.remove('hidden');
+
+                    const baseURL = "<?= URL_ROOT ?>/";
+
+                    if (type === 'waste') {
+                        wasteModal.classList.remove('hidden');
+                        littererModal.classList.add('hidden');
+
+                        // Fill Waste Modal
+                        document.getElementById('wasteReporterName').textContent = button.dataset.name;
+                        document.getElementById('wasteReporterEmail').textContent = button.dataset.email;
+                        document.getElementById('wasteImage').src = baseURL + button.dataset.img;
+                        document.getElementById('wasteType').value = "Waste";
+                        document.getElementById('wasteWeight').value = button.dataset.weight || 'N/A';
+                        document.getElementById('wasteDescription').value = button.dataset.details || 'N/A';
+
+                        // Initialize waste map after a small delay to ensure modal is visible
+                        setTimeout(() => {
+                            initializeMap('waste', latitude, longitude);
+                        }, 300);
+                    }
+
+                    if (type === 'litterer') {
+                        littererModal.classList.remove('hidden');
+                        wasteModal.classList.add('hidden');
+
+                        // Fill Litterer Modal
+                        document.getElementById('littererReporterName').textContent = button.dataset.name;
+                        document.getElementById('littererReporterEmail').textContent = button.dataset.email;
+                        document.getElementById('littererImage').src = baseURL + button.dataset.img;
+                        document.getElementById('littererName').value = button.dataset.suspect || 'Unknown';
+                        document.getElementById('littererAge').value = button.dataset.age || 'N/A';
+                        document.getElementById('littererGender').value = button.dataset.gender || 'N/A';
+                        document.getElementById('littererFeatures').value = button.dataset.features || 'N/A';
+
+                        // Initialize litterer map after a small delay to ensure modal is visible
+                        setTimeout(() => {
+                            initializeMap('litterer', latitude, longitude);
+                        }, 300);
+                    }
+                });
+            });
+
+            function initializeMap(reportType, lat, lng) {
+                // Check if coordinates are valid
+                if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
+                    document.getElementById(reportType + 'Map').innerHTML = '<div class="flex items-center justify-center h-full bg-gray-200 text-gray-600">Location not available</div>';
+                    return;
+                }
+
+                // Remove existing map if it exists
+                if (reportType === 'waste' && wasteMap) {
+                    wasteMap.remove();
+                    wasteMap = null;
+                } else if (reportType === 'litterer' && littererMap) {
+                    littererMap.remove();
+                    littererMap = null;
+                }
+
+                // Initialize new map
+                const mapId = reportType + 'Map';
+                const map = L.map(mapId, {
+                    zoomControl: true,
+                    scrollWheelZoom: true,
+                    doubleClickZoom: true,
+                    dragging: true,
+                    touchZoom: true,
+                    boxZoom: true,
+                    keyboard: true
+                }).setView([lat, lng], 16);
+
+                // Store reference to the correct map
+                if (reportType === 'waste') {
+                    wasteMap = map;
+                } else {
+                    littererMap = map;
+                }
+
+                // Add tile layer
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map);
+
+                // Create custom marker icon based on report type
+                let markerIcon;
+                if (reportType === 'waste') {
+                    markerIcon = L.divIcon({
+                        html: '<div style="background-color: #ef4444; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
+                        iconSize: [20, 20],
+                        iconAnchor: [10, 10],
+                        className: 'custom-marker'
+                    });
+                } else {
+                    markerIcon = L.divIcon({
+                        html: '<div style="background-color: #f97316; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
+                        iconSize: [20, 20],
+                        iconAnchor: [10, 10],
+                        className: 'custom-marker'
+                    });
+                }
+
+                // Add marker
+                L.marker([lat, lng], {
+                        icon: markerIcon
+                    })
+                    .addTo(map)
+                    .bindPopup(`${reportType === 'waste' ? 'Waste' : 'Litterer'} Report Location`);
+
+                // Force map to resize properly after it's visible
+                setTimeout(() => {
+                    map.invalidateSize();
+                }, 100);
+            }
+
+            // Close modal function
+            window.closeModal = function() {
+                document.getElementById('modalOverlay').classList.add('hidden');
+                document.getElementById('wasteModal').classList.add('hidden');
+                document.getElementById('littererModal').classList.add('hidden');
+
+                // Clean up maps
+                if (wasteMap) {
+                    wasteMap.remove();
+                    wasteMap = null;
+                }
+                if (littererMap) {
+                    littererMap.remove();
+                    littererMap = null;
+                }
+
+                currentReportId = null;
+                currentReportType = null;
+            }
+
+            // Approve and reject functions
+            window.approveReport = function(type) {
+                if (!currentReportId) return;
+
+                // Send AJAX request to approve the report
+                fetch('<?= URL_ROOT ?>/admin/approveReport/' + currentReportId, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(`Approved ${type} report`);
+                            // Remove the approved report from the table
+                            document.querySelector(`.verify-btn[data-id="${currentReportId}"]`).closest('tr').remove();
+                        } else {
+                            alert('Error: ' + data.message);
+                        }
+                        closeModal();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error approving report');
+                        closeModal();
+                    });
+            }
+
+            window.rejectReport = function(type) {
+                if (!currentReportId) return;
+
+                // Send AJAX request to reject the report
+                fetch('<?= URL_ROOT ?>/admin/rejectReport/' + currentReportId, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(`Rejected ${type} report`);
+                            // Remove the rejected report from the table
+                            document.querySelector(`.verify-btn[data-id="${currentReportId}"]`).closest('tr').remove();
+                        } else {
+                            alert('Error: ' + data.message);
+                        }
+                        closeModal();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error rejecting report');
+                        closeModal();
+                    });
+            }
+        });
+    </script>
 </body>
 
 </html>

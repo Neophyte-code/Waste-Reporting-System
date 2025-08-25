@@ -44,14 +44,18 @@ class Admin extends Controller
         ]);
     }
 
-    //function to diplay the reports UI
+    //function to display the reports UI
     public function reports()
     {
-        // Pass user data to the view
         $userData = $_SESSION['user'];
+        $reportModel = $this->model('ReportModel');
+
+        // Get reports with debug info
+        $pendingReports = $reportModel->getAllPendingReports($userData['barangay_id']);
 
         $this->view('admin/reports', [
-            'user' => $userData
+            'user' => $userData,
+            'reports' => $pendingReports,
         ]);
     }
 
