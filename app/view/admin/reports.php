@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barangay Admin View Reports</title>
     <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/css/output.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- Local Leaflet CSS -->
+    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/js/leaflet/leaflet.css" />
 </head>
 <style>
     #map {
@@ -104,7 +104,6 @@
                 <h2 class="text-xl font-semibold mb-4">View Reports</h2>
 
                 <div class="max-h-[calc(92vh-100px)] sm:max-h-[calc(91vh-100px)]max-h-[calc(92vh-100px)] sm:max-h-[calc(91vh-100px)] overflow-auto rounded-md border">
-
                     <!-- table -->
                     <table class="w-full text-sm border-collapse  rounded-md">
                         <thead>
@@ -193,10 +192,6 @@
 
                 <div class="space-y-3">
                     <div>
-                        <label class="text-sm font-semibold text-gray-700">Waste Type</label>
-                        <input type="text" id="wasteType" class="w-full border border-gray-300 rounded p-2 text-sm" readonly>
-                    </div>
-                    <div>
                         <label class="text-sm font-semibold text-gray-700">Estimated Weight</label>
                         <input type="text" id="wasteWeight" class="w-full border border-gray-300 rounded p-2 text-sm" readonly>
                     </div>
@@ -270,6 +265,7 @@
     </main>
     </div>
 
+    <script src="<?php echo URL_ROOT; ?>/js/leaflet/leaflet.js"></script>
     <!-- for responsive navbar -->
     <script>
         // Sidebar controls (named functions) + close on outside click
@@ -343,7 +339,6 @@
                         document.getElementById('wasteReporterName').textContent = button.dataset.name;
                         document.getElementById('wasteReporterEmail').textContent = button.dataset.email;
                         document.getElementById('wasteImage').src = baseURL + button.dataset.img;
-                        document.getElementById('wasteType').value = "Waste";
                         document.getElementById('wasteWeight').value = button.dataset.weight || 'N/A';
                         document.getElementById('wasteDescription').value = button.dataset.details || 'N/A';
 
