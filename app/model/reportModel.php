@@ -249,4 +249,149 @@ class ReportModel
             return [];
         }
     }
+
+    //function to add points
+    public function addPoints($userId, $points)
+    {
+        try {
+            $stmt = $this->db->prepare("
+                UPDATE users SET points = points + :points WHERE id = :user_id
+            ");
+
+            $stmt->bindParam(':points', $points);
+            $stmt->bindParam(':user_id', $userId);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log('Database Error: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    //function to trace which table is the report id that is going to be change status
+    public function getReportById($reportId, $barangayId)
+    {
+        try {
+            // Check waste reports with all needed fields
+            $stmt = $this->db->prepare("
+            SELECT wr.*, u.barangay_id, 'waste' as report_type
+            FROM waste_reports wr
+            JOIN users u ON wr.user_id = u.id
+            WHERE wr.id = :id AND u.barangay_id = :barangay_id
+        ");
+            $stmt->bindParam(':id', $reportId);
+            $stmt->bindParam(':barangay_id', $barangayId);
+            $stmt->execute();
+
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result) {
+                return $result;
+            }
+
+            // Check litterer reports if not found in waste reports
+            $stmt = $this->db->prepare("
+            SELECT lr.*, u.barangay_id, 'litterer' as report_type
+            FROM litterer_reports lr
+            JOIN users u ON lr.user_id = u.id
+            WHERE lr.id = :id AND u.barangay_id = :barangay_id
+        ");
+            $stmt->bindParam(':id', $reportId);
+            $stmt->bindParam(':barangay_id', $barangayId);
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log('Database Error: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    //function model to change the status of the reports 
+    public function updateReportStatus($reportId, $status, $barangayId)
+    {
+        try {
+            // First determine which table the report is in
+            $report = $this->getReportById($reportId, $barangayId);
+
+            if (!$report) {
+                return false;
+            }
+
+            $tableName = $report['report_type'] === 'waste' ? 'waste_reports' : 'litterer_reports';
+
+            $stmt = $this->db->prepare("
+            UPDATE $tableName 
+            SET status = :status 
+            WHERE id = :id
+        ");
+
+            $stmt->bindParam(':status', $status);
+            $stmt->bindParam(':id', $reportId);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log('Database Error: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    //Get user ID from a report
+    public function getUserIdFromReport($reportId, $reportType)
+    {
+        try {
+            $tableName = $reportType === 'waste' ? 'waste_reports' : 'litterer_reports';
+
+            $stmt = $this->db->prepare("
+            SELECT user_id FROM $tableName WHERE id = :id
+        ");
+            $stmt->bindParam(':id', $reportId);
+            $stmt->execute();
+
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ? $result['user_id'] : false;
+        } catch (PDOException $e) {
+            error_log('Database Error: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    //Get report details by ID for a specific barangay
+    public function getReportDetails($reportId, $barangayId)
+    {
+        try {
+            // Check waste reports
+            $stmt = $this->db->prepare("
+            SELECT wr.*, 'waste' as report_type
+            FROM waste_reports wr
+            JOIN users u ON wr.user_id = u.id
+            WHERE wr.id = :id AND u.barangay_id = :barangay_id
+        ");
+            $stmt->bindParam(':id', $reportId);
+            $stmt->bindParam(':barangay_id', $barangayId);
+            $stmt->execute();
+
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result) {
+                return $result;
+            }
+
+            // Check litterer reports if not found in waste reports
+            $stmt = $this->db->prepare("
+            SELECT lr.*, 'litterer' as report_type
+            FROM litterer_reports lr
+            JOIN users u ON lr.user_id = u.id
+            WHERE lr.id = :id AND u.barangay_id = :barangay_id
+        ");
+            $stmt->bindParam(':id', $reportId);
+            $stmt->bindParam(':barangay_id', $barangayId);
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log('Database Error: ' . $e->getMessage());
+            return false;
+        }
+    }
 }

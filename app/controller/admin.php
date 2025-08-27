@@ -59,6 +59,105 @@ class Admin extends Controller
         ]);
     }
 
+    //function to approved report
+    public function approveReport($reportId)
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        $userData = $_SESSION['user'];
+        $reportModel = $this->model('ReportModel');
+
+        $reportDetails = $reportModel->getReportDetails($reportId, $userData['barangay_id']);
+        if (!$reportDetails) {
+            http_response_code(404);
+            echo json_encode(['success' => false, 'message' => 'Report not found']);
+            return;
+        }
+
+        $success = $reportModel->updateReportStatus($reportId, 'approved', $userData['barangay_id']);
+        if ($success) {
+            $userId = $reportModel->getUserIdFromReport($reportId, $reportDetails['report_type']);
+
+            if ($userId) {
+                if ($reportDetails['report_type'] === 'waste') {
+                    $reportModel->createNotification(
+                        $userId,
+                        $reportId,
+                        'waste',
+                        'report_approved',
+                        'Waste Report Approved',
+                        'Your waste report has been approved. Thank you for helping keep our community clean!'
+                    );
+
+                    //add ten points to users
+                    $userModel = $this->model('ReportModel');
+                    $points = 10;
+                    $userModel->addPoints($userId, $points);
+                } else {
+
+                    //add ten points to users
+                    $userModel = $this->model('ReportModel');
+                    $points = 10;
+                    $userModel->addPoints($userId, $points);
+
+                    $reportModel->createNotification(
+                        $userId,
+                        $reportId,
+                        'litterer',
+                        'report_approved',
+                        'Litterer Report Approved',
+                        'Your litterer report has been approved. Thank you for helping keep our community clean!'
+                    );
+                }
+            }
+
+            echo json_encode(['success' => true, 'message' => 'Report approved successfully']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'message' => 'Failed to approve report']);
+        }
+    }
+
+    //function to reject report
+    public function rejectReport($reportId)
+    {
+        $userData = $_SESSION['user'];
+        $reportModel = $this->model('ReportModel');
+
+        // First get report details to determine type
+        $reportDetails = $reportModel->getReportDetails($reportId, $userData['barangay_id']);
+
+        if (!$reportDetails) {
+            http_response_code(404);
+            echo json_encode(['success' => false, 'message' => 'Report not found']);
+            exit;
+        }
+
+        // Update report status to rejected
+        $success = $reportModel->updateReportStatus($reportId, 'rejected', $userData['barangay_id']);
+
+        if ($success) {
+            // Notify the user who submitted the report using your existing method
+            $userId = $reportModel->getUserIdFromReport($reportId, $reportDetails['report_type']);
+
+            if ($userId) {
+                $reportModel->createNotification(
+                    $userId,
+                    $reportId,
+                    $reportDetails['report_type'],
+                    'report_rejected',
+                    'Report Rejected',
+                    'Your ' . $reportDetails['report_type'] . ' report was rejected. Please ensure your reports contain clear evidence and accurate information.'
+                );
+            }
+
+            echo json_encode(['success' => true, 'message' => 'Report rejected successfully']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'message' => 'Failed to reject report']);
+        }
+    }
+
     //function to display the user info UI
     public function user_info()
     {

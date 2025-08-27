@@ -308,7 +308,7 @@
         });
     </script>
 
-    <!-- for verify modal -->
+    <!-- for verifying and map initialization script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const modalOverlay = document.getElementById('modalOverlay');
@@ -462,57 +462,120 @@
             window.approveReport = function(type) {
                 if (!currentReportId) return;
 
+                if (!confirm(`Are you sure you want to approve this ${type} report?`)) {
+                    return;
+                }
+
+                // Show loading state
+                const approveBtn = document.querySelector(`#${type}Modal button:first-child`);
+                const originalText = approveBtn.textContent;
+                approveBtn.textContent = 'Processing...';
+                approveBtn.disabled = true;
+
                 // Send AJAX request to approve the report
                 fetch('<?= URL_ROOT ?>/admin/approveReport/' + currentReportId, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
                     })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            alert(`Approved ${type} report`);
+                            // Show success message
+                            showNotification('Report approved successfully! The user has been notified.', 'success');
+
                             // Remove the approved report from the table
-                            document.querySelector(`.verify-btn[data-id="${currentReportId}"]`).closest('tr').remove();
+                            const row = document.querySelector(`.verify-btn[data-id="${currentReportId}"]`).closest('tr');
+                            if (row) {
+                                row.remove();
+                            }
+
+                            // Check if table is empty after removal
+                            if (document.querySelectorAll('tbody tr').length === 0) {
+                                document.querySelector('tbody').innerHTML = '<tr><td colspan="5" class="text-center py-4">No pending reports</td></tr>';
+                            }
                         } else {
-                            alert('Error: ' + data.message);
+                            showNotification('Error: ' + data.message, 'error');
                         }
                         closeModal();
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        alert('Error approving report');
+                        showNotification('Error approving report', 'error');
                         closeModal();
+                    })
+                    .finally(() => {
+                        // Reset button state
+                        approveBtn.textContent = originalText;
+                        approveBtn.disabled = false;
                     });
             }
 
             window.rejectReport = function(type) {
                 if (!currentReportId) return;
 
+                if (!confirm(`Are you sure you want to reject this ${type} report?`)) {
+                    return;
+                }
+
+                // Show loading state
+                const rejectBtn = document.querySelector(`#${type}Modal button:last-child`);
+                const originalText = rejectBtn.textContent;
+                rejectBtn.textContent = 'Processing...';
+                rejectBtn.disabled = true;
+
                 // Send AJAX request to reject the report
                 fetch('<?= URL_ROOT ?>/admin/rejectReport/' + currentReportId, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
                     })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            alert(`Rejected ${type} report`);
+                            // Show success message
+                            showNotification('Report rejected successfully! The user has been notified.', 'success');
+
                             // Remove the rejected report from the table
-                            document.querySelector(`.verify-btn[data-id="${currentReportId}"]`).closest('tr').remove();
+                            const row = document.querySelector(`.verify-btn[data-id="${currentReportId}"]`).closest('tr');
+                            if (row) {
+                                row.remove();
+                            }
+
+                            // Check if table is empty after removal
+                            if (document.querySelectorAll('tbody tr').length === 0) {
+                                document.querySelector('tbody').innerHTML = '<tr><td colspan="5" class="text-center py-4">No pending reports</td></tr>';
+                            }
                         } else {
-                            alert('Error: ' + data.message);
+                            showNotification('Error: ' + data.message, 'error');
                         }
                         closeModal();
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        alert('Error rejecting report');
+                        showNotification('Error rejecting report', 'error');
                         closeModal();
+                    })
+                    .finally(() => {
+                        // Reset button state
+                        rejectBtn.textContent = originalText;
+                        rejectBtn.disabled = false;
                     });
+            }
+
+            // Add this helper function for notifications
+            function showNotification(message, type = 'info') {
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.className = `fixed top-4 right-4 m-5 z-50 px-4 py-3 rounded shadow-lg text-white ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+            }`;
+                notification.textContent = message;
+
+                // Add to page
+                document.body.appendChild(notification);
+
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
             }
         });
     </script>
