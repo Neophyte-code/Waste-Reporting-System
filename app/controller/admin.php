@@ -80,19 +80,24 @@ class Admin extends Controller
 
             if ($userId) {
                 if ($reportDetails['report_type'] === 'waste') {
+
+                    //add ten points to users
+                    $userModel = $this->model('ReportModel');
+                    $points = 10;
+                    $userModel->addPoints($userId, $points);
+
+                    //get updated points to display in the notif message
+                    $userModel = $this->model('UserModel');
+                    $updatedPoints = $userModel->getUserPoints($userId);
+
                     $reportModel->createNotification(
                         $userId,
                         $reportId,
                         'waste',
                         'report_approved',
                         'Waste Report Approved',
-                        'Your waste report has been approved. Thank you for helping keep our community clean!'
+                        "Your waste report has been approved! You earned 10 points. Your total points: {$updatedPoints}. Thank you for helping keep our community clean!"
                     );
-
-                    //add ten points to users
-                    $userModel = $this->model('ReportModel');
-                    $points = 10;
-                    $userModel->addPoints($userId, $points);
                 } else {
 
                     //add ten points to users
@@ -100,13 +105,17 @@ class Admin extends Controller
                     $points = 10;
                     $userModel->addPoints($userId, $points);
 
+                    //get updated points to display in the notif message
+                    $userModel = $this->model('UserModel');
+                    $updatedPoints = $userModel->getUserPoints($userId);
+
                     $reportModel->createNotification(
                         $userId,
                         $reportId,
                         'litterer',
                         'report_approved',
                         'Litterer Report Approved',
-                        'Your litterer report has been approved. Thank you for helping keep our community clean!'
+                        "Your litterer report has been approved. You earned 10 points. Your total points: {$updatedPoints}. Thank you for helping keep our community clean!"
                     );
                 }
             }
