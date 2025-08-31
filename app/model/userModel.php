@@ -237,4 +237,32 @@ class UserModel
             return [];
         }
     }
+
+    //function to get all the users in each barangay (for admin)
+    public function getUsers($barangay_id)
+    {
+        try {
+
+            $stmt = $this->db->prepare("select id, firstname, lastname, email from users where barangay_id = :barangay_id and role not in ('admin', 'superadmin')");
+            $stmt->bindParam(':barangay_id', $barangay_id);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Database error: " . $e->getMessage());
+            return;
+        }
+    }
+
+    //funciton to delete users(for admin)
+    public function deleteUser($userID)
+    {
+        try {
+            $stmt = $this->db->prepare("DELETE FROM users WHERE id = :id");
+            $stmt->bindParam(':id', $userID, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Database Error: " . $e->getMessage());
+            return false;
+        }
+    }
 }

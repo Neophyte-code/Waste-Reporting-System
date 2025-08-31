@@ -173,10 +173,37 @@ class Admin extends Controller
 
         // Pass user data to the view
         $userData = $_SESSION['user'];
+        $userModel = $this->model('UserModel');
+        $users = $userModel->getUsers($userData['barangay_id']);
 
         $this->view('admin/users', [
-            'user' => $userData
+            'user' => $userData,
+            'users' => $users
         ]);
+    }
+
+    public function deleteUser()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userID = $_POST['user_id'] ?? null;
+            $userModel = $this->model('UserModel');
+
+            $message = "Invalid User ID.";
+            if ($userID) {
+                $deleted = $userModel->deleteUser($userID);
+                $message = $deleted ? "User deleted successfully." : "Failed to delete user.";
+            }
+
+            // Reload user list with message
+            $userData = $_SESSION['user'];
+            $users = $userModel->getUsers($userData['barangay_id']);
+
+            $this->view('admin/users', [
+                'user' => $userData,
+                'users' => $users,
+                'message' => $message
+            ]);
+        }
     }
 
     //function to display the announcement UI

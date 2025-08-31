@@ -500,6 +500,7 @@ class User extends Controller
         }
         exit;
     }
+
     //function to mark the notification as read
     public function markNotificationAsRead()
     {

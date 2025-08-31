@@ -7,6 +7,31 @@
   <title>Barangay Admin ViewReports</title>
   <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/css/output.css">
 </head>
+<style>
+  .flash-message {
+    position: fixed;
+    top: 30px;
+    right: -90px;
+    transform: translate(-50%, -50%);
+    background: #22C55E;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    opacity: 1;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    z-index: 9999;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Hidden state for animation */
+  .flash-hide {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+</style>
 
 <body class="bg-green-200 font-sans overflow-hidden">
 
@@ -80,174 +105,53 @@
         <h2 class="text-xl font-semibold mb-4">User Information</h2>
 
         <div class="max-h-[calc(92vh-100px)] sm:max-h-[calc(86vh-100px)] overflow-auto border">
+
+          <!-- display flash message -->
+          <?php if (!empty($data['message'])): ?>
+            <div id="flash-message" class="flash-message">
+              <?= htmlspecialchars($data['message'] ?? null); ?>
+            </div>
+          <?php endif; ?>
+
           <table class="w-full text-sm border-collapse table-fixed">
             <thead class="sticky top-0 bg-green-500 text-white">
               <tr>
                 <th class="sticky top-0 z-10 bg-green-500 py-2 px-4 text-left">Name</th>
-                <th class="sticky top-0 z-10 bg-green-500 p-2.5 hidden sm:table-cell text-left">Address</th>
                 <th class="sticky top-0 z-10 bg-green-500 p-2.5 hidden md:table-cell text-left">Email Address</th>
                 <th class="sticky top-0 z-10 bg-green-500 p-2.5 text-center w-[150px]">Action</th>
               </tr>
             </thead>
             <tbody class="bg-white">
-              <tr class="border-b hover:bg-gray-200">
-                <td class="text-base py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                    <dt class="sr-only">Email Address</dt>
-                    <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                  </dl>
-                </td>
-                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                <td class="p-3">
-                  <button class="bg-green-500 hover:bg-red-600 text-white px-3 py-1 rounded">
-                    Delete Account
-                  </button>
-                </td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="text-base py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                    <dt class="sr-only">Email Address</dt>
-                    <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                  </dl>
-                </td>
-                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                <td class="p-3">
-                  <button class="bg-green-500 hover:bg-red-600 text-white px-3 py-1 rounded">
-                    Delete Account
-                  </button>
-                </td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="text-base py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                    <dt class="sr-only">Email Address</dt>
-                    <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                  </dl>
-                </td>
-                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                <td class="p-3">
-                  <button class="bg-green-500 hover:bg-red-600 text-white px-3 py-1 rounded">
-                    Delete Account
-                  </button>
-                </td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="text-base py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                    <dt class="sr-only">Email Address</dt>
-                    <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                  </dl>
-                </td>
-                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                <td class="p-3">
-                  <button class="bg-green-500 hover:bg-red-600 text-white px-3 py-1 rounded">
-                    Delete Account
-                  </button>
-                </td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="text-base py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                    <dt class="sr-only">Email Address</dt>
-                    <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                  </dl>
-                </td>
-                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                <td class="p-3">
-                  <button class="bg-green-500 hover:bg-red-600 text-white px-3 py-1 rounded">
-                    Delete Account
-                  </button>
-                </td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="text-base py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                    <dt class="sr-only">Email Address</dt>
-                    <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                  </dl>
-                </td>
-                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                <td class="p-3">
-                  <button class="bg-green-500 hover:bg-red-600 text-white px-3 py-1 rounded">
-                    Delete Account
-                  </button>
-                </td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="text-base py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                    <dt class="sr-only">Email Address</dt>
-                    <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                  </dl>
-                </td>
-                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                <td class="p-3">
-                  <button class="bg-green-500 hover:bg-red-600 text-white px-3 py-1 rounded">
-                    Delete Account
-                  </button>
-                </td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="text-base py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                    <dt class="sr-only">Email Address</dt>
-                    <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                  </dl>
-                </td>
-                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                <td class="p-3">
-                  <button class="bg-green-500 hover:bg-red-600 text-white px-3 py-1 rounded">
-                    Delete Account
-                  </button>
-                </td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="text-base py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                    <dt class="sr-only">Email Address</dt>
-                    <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                  </dl>
-                </td>
-                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                <td class="p-3">
-                  <button class="bg-green-500 hover:bg-red-600 text-white px-3 py-1 rounded">
-                    Delete Account
-                  </button>
-                </td>
-              </tr>
 
-
-              <!-- More rows -->
+              <?php if (empty($data['users'])): ?>
+                <p class="text-center">No Users Found</p>
+              <?php else: ?>
+                <?php foreach ($data['users'] as $user): ?>
+                  <tr class="border-b hover:bg-gray-200">
+                    <td class="text-base py-2 px-4"><?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']) ?>
+                      <dl class="lg:hidden gap-1">
+                        <dt class="sr-only">Email Address</dt>
+                        <dd class="md:hidden text-sm text-gray-500"><?= htmlspecialchars($user['email']) ?></dd>
+                      </dl>
+                    </td>
+                    <td class="hidden md:table-cell p-2.5 text-blue-600"><?= htmlspecialchars($user['email']) ?></td>
+                    <td class="p-3">
+                      <button
+                        class="bg-red-500 hover:bg-red-700 text-white px-3 py-1 rounded delete-btn"
+                        data-user-id="<?= htmlspecialchars($user['id']) ?>">
+                        Delete Account
+                      </button>
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
+              <?php endif; ?>
             </tbody>
           </table>
+
+          <form id="deleteForm" method="POST" action="<?php echo URL_ROOT; ?>/admin/deleteUser" style="display:none;">
+            <input type="hidden" name="user_id" id="deleteUserId">
+          </form>
+
         </div>
 
       </div>
@@ -255,7 +159,7 @@
   </div>
 
   <!-- Modal Background for delete account -->
-  <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50" style="display:none;">
+  <div id="logoutModal" class="fixed inset-0 bg-opacity-40 flex items-center justify-center z-50" style="display:none;">
 
     <!-- Modal Container -->
     <div class="bg-[#e5f9e0] w-full max-w-xs rounded-lg shadow-lg relative p-4">
@@ -271,6 +175,7 @@
     </div>
   </div>
 
+  <!-- script for responsive sidebar and flash message-->
   <script>
     // Sidebar controls (named functions) + close on outside click
     const toggleBtn = document.getElementById('toggleSidebar');
@@ -311,61 +216,43 @@
       }
     });
 
-    // Delete account modal and table-row removal
-    (function() {
-      const table = document.querySelector('table');
-      const overlay = document.getElementById('logoutModal');
+    document.addEventListener('DOMContentLoaded', () => {
+      const flashMessage = document.getElementById('flash-message');
+      if (flashMessage) {
+        setTimeout(() => {
+          flashMessage.classList.add('flash-hide');
+          setTimeout(() => flashMessage.remove(), 800); // Matches transition duration
+        }, 3000); // Show for 3 seconds
+      }
+
+      // Delete modal logic
+      const modal = document.getElementById('logoutModal');
       const cancelBtn = document.getElementById('cancelBtn');
       const deleteBtn = document.getElementById('deleteBtn');
-      let activeRow = null;
+      const deleteForm = document.getElementById('deleteForm');
+      const deleteUserIdInput = document.getElementById('deleteUserId');
 
-      function showModal(name) {
-        if (!overlay) return;
-        // set confirmation text if available
-        const p = overlay.querySelector('p');
-        if (p && name) p.textContent = `Are you sure you want to delete ${name}?`;
-        overlay.style.display = 'flex';
-      }
+      let currentUserId = null;
 
-      function hideModal() {
-        if (overlay) overlay.style.display = 'none';
-        activeRow = null;
-      }
+      document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', () => {
+          currentUserId = button.dataset.userId;
+          modal.style.display = 'flex';
+        });
+      });
 
-      // Delegate Delete button clicks in the table
-      if (table) table.addEventListener('click', (e) => {
-        const btn = e.target.closest('button');
-        if (!btn) return;
-        const txt = btn.textContent ? btn.textContent.trim() : '';
-        if (txt === 'Delete Account') {
-          const row = btn.closest('tr');
-          if (!row) return;
-          activeRow = row;
-          // try to extract name from first cell
-          const nameCell = row.querySelector('td');
-          const name = nameCell ? nameCell.textContent.trim().split('\n')[0].trim() : '';
-          showModal(name || 'this user');
+      cancelBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+
+      deleteBtn.addEventListener('click', () => {
+        if (currentUserId) {
+          deleteUserIdInput.value = currentUserId;
+          deleteForm.submit();
         }
       });
-
-      if (cancelBtn) cancelBtn.addEventListener('click', hideModal);
-      if (deleteBtn) deleteBtn.addEventListener('click', () => {
-        if (activeRow) activeRow.remove();
-        hideModal();
-      });
-
-      // close when clicking on overlay background
-      if (overlay) overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) hideModal();
-      });
-
-      // close on Escape
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') hideModal();
-      });
-    })();
+    });
   </script>
-
 </body>
 
 </html>
