@@ -207,7 +207,7 @@
                         <div class="flex flex-col ">
                             <div class="flex items-center gap-2 ">
                                 <span class="text-green-500 text-lg">📢</span>
-                                <span>What: <?php echo htmlspecialchars($announcement['what']); ?></span>
+                                <span>What: <?php echo htmlspecialchars($announcement['title']); ?></span>
                             </div>
                             <div class="flex items-center gap-2 ">
                                 <span class="text-green-500 text-lg">👥</span>

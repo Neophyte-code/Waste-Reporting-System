@@ -182,6 +182,7 @@ class Admin extends Controller
         ]);
     }
 
+    //function to delete user
     public function deleteUser()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -212,9 +213,64 @@ class Admin extends Controller
         // Pass user data to the view
         $userData = $_SESSION['user'];
 
+        $message = null;
+        $messageType = null;
+
+        if (!empty($_SESSION['failed'])) {
+            $message = $_SESSION['failed'];
+            $messageType = 'failed';
+            unset($_SESSION['failed']);
+        } elseif (!empty($_SESSION['success'])) {
+            $message = $_SESSION['success'];
+            $messageType = 'success';
+            unset($_SESSION['success']);
+        }
+
         $this->view('admin/announcement', [
-            'user' => $userData
+            'user' => $userData,
+            'message' => $message,
+            'messageType' => $messageType
         ]);
+    }
+
+    //function to create announcement
+    public function createAnnouncement()
+    {
+
+        $userData = $_SESSION['user'];
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $data = [
+                'barangay_id' => $userData['barangay_id'],
+                'title' => htmlspecialchars(trim($_POST['title'])),
+                'to' => htmlspecialchars(trim($_POST['to'])),
+                'date' => htmlspecialchars(trim($_POST['date'])),
+                'time' => htmlspecialchars(trim($_POST['time'])),
+                'location' => htmlspecialchars(trim($_POST['location'])),
+                'message' => htmlspecialchars(trim($_POST['message']))
+            ];
+
+            //check if all the field are provided with value
+            if (empty($data['barangay_id']) || empty($data['title']) || empty($data['to']) || empty($data['date'])  || empty($data['time']) || empty($data['location'])  || empty($data['message'])) {
+                $_SESSION['failed'] = 'All fields are required';
+                header('Location: ' . URL_ROOT . '/admin/announcement');
+                exit;
+            }
+
+            //instantiate the model for submitting the announcement to database
+            $announementModel = $this->model('AnnouncementModel');
+
+            //send the datas to database
+            if ($announementModel->createAnnouncement($data)) {
+                $_SESSION['success'] = "Announcement created successfully";
+            } else {
+                $_SESSION['failed'] = "Failed to create announcement";
+            }
+
+            header('Location: ' . URL_ROOT . '/admin/announcement');
+            exit;
+        }
     }
 
     //function to display the litterer records UI

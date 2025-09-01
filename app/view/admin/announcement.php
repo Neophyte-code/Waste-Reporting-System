@@ -7,6 +7,37 @@
   <title>Barangay Admin - Announcement</title>
   <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/css/output.css">
 </head>
+<style>
+  .flash-message {
+    position: fixed;
+    top: 30px;
+    right: -10%;
+    transform: translate(-50%, -50%);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    opacity: 1;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    z-index: 9999;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .flash-message.flash-success {
+    background: #22C55E;
+  }
+
+  .flash-message.flash-failed {
+    background: #EF4444;
+  }
+
+  .flash-message.flash-hide {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+</style>
 
 <body class=" font-sans">
 
@@ -81,31 +112,40 @@
       <!-- Announcement Form -->
       <section class=" bg-green-50 p-4 sm:p-6 rounded-lg shadow-md max-h-[calc(100vh-100px)] overflow-y-auto">
         <h2 class="text-xl font-semibold mb-4">Announcement</h2>
-        <form action="">
+
+        <!-- Display flash message -->
+        <?php if (!empty($data['message'])): ?>
+          <div id="flash-message" class="flash-message flash-<?= htmlspecialchars($data['messageType'] ?? 'success') ?>">
+            <?= htmlspecialchars($data['message']); ?>
+          </div>
+        <?php endif; ?>
+
+        <!-- form -->
+        <form method="post" action="<?php echo URL_ROOT; ?>/admin/createAnnouncement">
           <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 ">
             <div class="flex flex-1 flex-col gap-2">
               <div class="">
                 <label class="font-semibold mb-1">Title:</label>
-                <input type="text" id="title" required class="w-full border border-gray-300 p-2 rounded focus:outline-none" placeholder="Enter title">
+                <input name="title" type="text" id="title" required class="w-full border border-gray-300 p-2 rounded focus:outline-none" placeholder="Enter title">
               </div>
               <div class="flex w-full flex-col md:flex-row gap-2 sm:gap-4">
                 <div class=" flex flex-col flex-1">
                   <label class="font-semibold mb-1">To:</label>
-                  <input type="text" id="to" required class="w-full border border-gray-300 p-2 rounded focus:outline-none" placeholder="">
+                  <input name="to" type="text" id="to" required class="w-full border border-gray-300 p-2 rounded focus:outline-none" placeholder="">
                 </div>
                 <div class=" flex flex-col flex-1">
                   <label class="font-semibold mb-1">Date:</label>
-                  <input type="date" id="date" required class="w-full border border-gray-300 p-2 rounded focus:outline-none">
+                  <input name="date" type="date" id="date" required class="w-full border border-gray-300 p-2 rounded focus:outline-none">
                 </div>
               </div>
               <div class="flex flex-col md:flex-row w-full  gap-2 sm:gap-4">
                 <div class=" flex flex-col flex-1">
                   <label class="font-semibold mb-1">Time:</label>
-                  <input type="time" id="time" required class="w-full border border-gray-300 p-2 rounded focus:outline-none">
+                  <input name="time" type="time" id="time" required class="w-full border border-gray-300 p-2 rounded focus:outline-none">
                 </div>
                 <div class=" flex flex-col flex-1">
                   <label class="font-semibold mb-1">Location:</label>
-                  <input type="text" id="location" required class="w-full border border-gray-300 p-2 rounded focus:outline-none" placeholder="Enter Location">
+                  <input name="location" type="text" id="location" required class="w-full border border-gray-300 p-2 rounded focus:outline-none" placeholder="Enter Location">
                 </div>
               </div>
             </div>
@@ -113,14 +153,14 @@
             <!-- Message -->
             <div class="flex flex-1 flex-col ">
               <label class="block font-semibold ">Message:</label>
-              <textarea id="message" rows="5" required class="w-full h-full border border-gray-300 p-2 rounded focus:outline-none" placeholder="Enter announcement message"></textarea>
+              <textarea name="message" id="message" rows="5" required class="w-full h-full border border-gray-300 p-2 rounded focus:outline-none" placeholder="Enter announcement message"></textarea>
             </div>
           </div>
 
           <!-- Buttons -->
           <div class="mt-4 flex justify-end gap-3">
             <button type="button" id="clearBtn" class="bg-red-500 text-white px-8 py-1 rounded hover:bg-red-600">Clear</button>
-            <button type="button" id="saveBtn" class="bg-green-500 text-white px-8 py-1 rounded hover:bg-green-600">Save</button>
+            <button type="submit" id="saveBtn" class="bg-green-500 text-white px-8 py-1 rounded hover:bg-green-600">Save</button>
           </div>
         </form>
 
@@ -187,301 +227,14 @@
       }
     });
 
-    // Announcement CRUD using localStorage
-    (function() {
-      const key = 'announcements';
-      const titleEl = document.getElementById('title');
-      const toEl = document.getElementById('to');
-      const dateEl = document.getElementById('date');
-      const timeEl = document.getElementById('time');
-      const locationEl = document.getElementById('location');
-      const messageEl = document.getElementById('message');
-      const saveBtn = document.getElementById('saveBtn');
-      const clearBtn = document.getElementById('clearBtn');
-      const listEl = document.getElementById('announcementList');
-
-      let editId = null;
-
-      function getAnnouncements() {
-        try {
-          return JSON.parse(localStorage.getItem(key) || '[]');
-        } catch (e) {
-          return [];
-        }
-      }
-
-      function saveAnnouncements(arr) {
-        localStorage.setItem(key, JSON.stringify(arr));
-      }
-
-      function clearForm() {
-        titleEl.value = '';
-        toEl.value = '';
-        dateEl.value = '';
-        timeEl.value = '';
-        locationEl.value = '';
-        messageEl.value = '';
-        editId = null;
-        saveBtn.textContent = 'Save';
-      }
-
-      // Modal helpers
-      const modalOverlay = document.getElementById('modalOverlay');
-      const modalTitle = document.getElementById('modalTitle');
-      const modalMessage = document.getElementById('modalMessage');
-      const modalCancel = document.getElementById('modalCancel');
-      const modalConfirm = document.getElementById('modalConfirm');
-
-      function showModal(title, message, confirmText = 'OK', showCancel = false) {
-        modalTitle.textContent = title;
-        modalMessage.textContent = message;
-        modalConfirm.textContent = confirmText;
-        if (showCancel) {
-          modalCancel.classList.remove('hidden');
-        } else {
-          modalCancel.classList.add('hidden');
-        }
-        modalOverlay.classList.remove('hidden');
-      }
-
-      function hideModal() {
-        modalOverlay.classList.add('hidden');
-      }
-
-      function showConfirm(title, message, confirmText = 'Delete') {
-        return new Promise(resolve => {
-          showModal(title, message, confirmText, true);
-
-          function onConfirm() {
-            cleanup();
-            resolve(true);
-          }
-
-          function onCancel() {
-            cleanup();
-            resolve(false);
-          }
-
-          function onOutside(e) {
-            // close when clicking outside the modal content
-            if (e.target === modalOverlay) {
-              cleanup();
-              resolve(false);
-            }
-          }
-
-          function onKey(e) {
-            if (e.key === 'Escape') {
-              cleanup();
-              resolve(false);
-            }
-          }
-
-          function cleanup() {
-            modalConfirm.removeEventListener('click', onConfirm);
-            modalCancel.removeEventListener('click', onCancel);
-            modalOverlay.removeEventListener('click', onOutside);
-            document.removeEventListener('keydown', onKey);
-            hideModal();
-          }
-          modalConfirm.addEventListener('click', onConfirm, {
-            once: true
-          });
-          modalCancel.addEventListener('click', onCancel, {
-            once: true
-          });
-          modalOverlay.addEventListener('click', onOutside);
-          document.addEventListener('keydown', onKey);
-        });
-      }
-
-      function renderAnnouncements() {
-        const items = getAnnouncements();
-        listEl.innerHTML = '';
-        if (!items.length) {
-          const empty = document.createElement('div');
-          empty.className = 'text-gray-600';
-          empty.textContent = 'No announcements yet.';
-          listEl.appendChild(empty);
-          return;
-        }
-
-        // helper to add 12 hours to HH:MM string
-        function add12Hours(timeStr) {
-          if (!timeStr) return '';
-          const parts = timeStr.split(':');
-          if (parts.length < 2) return timeStr;
-          let hh = parseInt(parts[0], 10);
-          const mm = parts[1];
-          if (Number.isNaN(hh)) return timeStr;
-          hh = (hh + 12) % 24;
-          return String(hh).padStart(2, '0') + ':' + mm;
-        }
-
-        items.slice().reverse().forEach(item => {
-          const row = document.createElement('div');
-          row.className = 'bg-gray-200 p-3 rounded flex justify-between items-center shadow';
-
-          const left = document.createElement('div');
-          left.className = 'flex flex-col';
-          const titleSpan = document.createElement('span');
-          titleSpan.className = 'font-semibold';
-          titleSpan.textContent = item.title || '(no title)';
-          left.appendChild(titleSpan);
-          const meta = document.createElement('small');
-          meta.className = 'text-sm text-gray-700';
-          const parts = [];
-          if (item.date) parts.push(item.date);
-          if (item.time) parts.push(add12Hours(item.time));
-          meta.textContent = parts.join(' • ');
-          left.appendChild(meta);
-
-          const right = document.createElement('div');
-          right.className = 'flex gap-2 items-center';
-
-          const editBtn = document.createElement('button');
-          editBtn.className = 'text-gray-500 hover:text-blue-500';
-          editBtn.title = 'Edit';
-          editBtn.innerText = '✏️';
-          editBtn.addEventListener('click', () => onEdit(item.id));
-
-          const delBtn = document.createElement('button');
-          delBtn.className = 'text-gray-500 hover:text-red-500';
-          delBtn.title = 'Delete';
-          delBtn.innerText = '🗑️';
-          delBtn.addEventListener('click', () => onDelete(item.id));
-
-          right.appendChild(editBtn);
-          right.appendChild(delBtn);
-
-          row.appendChild(left);
-          row.appendChild(right);
-          listEl.appendChild(row);
-        });
-      }
-
-      function onSave() {
-        const title = titleEl.value.trim();
-        const to = toEl.value.trim();
-        const date = dateEl.value;
-        const time = timeEl.value;
-        const location = locationEl.value.trim();
-        const message = messageEl.value.trim();
-
-        const fields = [{
-            name: 'Title',
-            value: title,
-            el: titleEl
-          },
-          {
-            name: 'To',
-            value: to,
-            el: toEl
-          },
-          {
-            name: 'Date',
-            value: date,
-            el: dateEl
-          },
-          {
-            name: 'Time',
-            value: time,
-            el: timeEl
-          },
-          {
-            name: 'Location',
-            value: location,
-            el: locationEl
-          },
-          {
-            name: 'Message',
-            value: message,
-            el: messageEl
-          }
-        ];
-
-        const missing = fields.filter(f => !f.value).map(f => f.name);
-        if (missing.length) {
-          const firstMissingEl = fields.find(f => !f.value).el;
-          showModal('Missing fields', 'Please fill: ' + missing.join(', '), 'OK');
-          modalConfirm.addEventListener('click', () => {
-            hideModal();
-            try {
-              firstMissingEl.focus();
-            } catch (e) {}
-          }, {
-            once: true
-          });
-          return;
-        }
-
-        const items = getAnnouncements();
-        if (editId) {
-          const idx = items.findIndex(i => i.id === editId);
-          if (idx !== -1) {
-            items[idx] = {
-              id: editId,
-              title,
-              to,
-              date,
-              time,
-              location,
-              message
-            };
-          }
-        } else {
-          const id = Date.now().toString();
-          items.push({
-            id,
-            title,
-            to,
-            date,
-            time,
-            location,
-            message
-          });
-        }
-
-        saveAnnouncements(items);
-        renderAnnouncements();
-        clearForm();
-      }
-
-      function onEdit(id) {
-        const items = getAnnouncements();
-        const item = items.find(i => i.id === id);
-        if (!item) return;
-        titleEl.value = item.title || '';
-        toEl.value = item.to || '';
-        dateEl.value = item.date || '';
-        timeEl.value = item.time || '';
-        locationEl.value = item.location || '';
-        messageEl.value = item.message || '';
-        editId = id;
-        saveBtn.textContent = 'Update';
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
-      }
-
-      async function onDelete(id) {
-        const ok = await showConfirm('Delete announcement', 'Delete this announcement? This action cannot be undone.', 'Delete');
-        if (!ok) return;
-        const items = getAnnouncements().filter(i => i.id !== id);
-        saveAnnouncements(items);
-        renderAnnouncements();
-        // if we were editing the deleted item, clear form
-        if (editId === id) clearForm();
-      }
-
-      // wire events
-      saveBtn.addEventListener('click', onSave);
-      clearBtn.addEventListener('click', clearForm);
-
-      // initial render
-      renderAnnouncements();
-    })();
+    //flash message
+    const flashMessage = document.getElementById('flash-message');
+    if (flashMessage) {
+      setTimeout(() => {
+        flashMessage.classList.add('flash-hide');
+        setTimeout(() => flashMessage.remove(), 800);
+      }, 3000);
+    }
   </script>
 
 </body>
