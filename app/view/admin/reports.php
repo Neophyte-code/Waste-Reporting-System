@@ -176,7 +176,7 @@
                 <p class="text-sm text-gray-600" id="wasteReporterEmail"></p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="grid grid-cols-1 gap-6 mb-6">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     <div class="border border-gray-300 rounded overflow-hidden">
                         <img id="wasteImage" src="" alt="Report Image" class="w-full h-40 object-cover">
@@ -220,10 +220,10 @@
                 <p class="text-sm text-gray-600" id="littererReporterEmail"></p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="grid grid-cols-1 gap-6 mb-6">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     <div class="border border-gray-300 rounded overflow-hidden">
-                        <img id="littererImage" src="" alt="Report Image" class="w-full h-40 object-cover">
+                        <img id="littererImage" src="https://via.placeholder.com/400" src="" alt="Report Image" class="w-full h-40 object-cover">
                     </div>
                     <!-- map -->
                     <div class="border border-green-400 rounded overflow-hidden">
@@ -260,6 +260,14 @@
                 <button onclick="approveReport('litterer')" class="bg-green-500 hover:bg-green-600 text-white px-8 py-2 rounded">Approve</button>
                 <button onclick="rejectReport('litterer')" class="bg-red-500 hover:bg-red-600 text-white px-8 py-2 rounded">Reject</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Image Popup Modal -->
+    <div id="imageModal" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+        <div class="relative max-w-3xl w-full">
+            <button id="closeModal" class="absolute top-4 right-4 text-white text-3xl font-bold">&times;</button>
+            <img id="modalImg" class="max-h-[80vh] max-w-full rounded shadow-lg" src="">
         </div>
     </div>
     </main>

@@ -1,5 +1,7 @@
 <?php
 
+use Soap\Url;
+
 class Admin extends Controller
 {
 
@@ -226,10 +228,15 @@ class Admin extends Controller
             unset($_SESSION['success']);
         }
 
+        //instantiate to get the announcement from model
+        $announcementModel = $this->model('AnnouncementModel');
+        $announcement = $announcementModel->getAnnouncementAdmin($userData['barangay_id']);
+
         $this->view('admin/announcement', [
             'user' => $userData,
             'message' => $message,
-            'messageType' => $messageType
+            'messageType' => $messageType,
+            'announcement' => $announcement
         ]);
     }
 
@@ -272,6 +279,51 @@ class Admin extends Controller
             exit;
         }
     }
+
+    // function to update announcement
+    public function updateAnnouncement()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $data = [
+
+                'id' => htmlspecialchars(trim($_POST['id'])),
+                'title' => htmlspecialchars(trim($_POST['title'])),
+                'to' => htmlspecialchars(trim($_POST['to'])),
+                'date' => htmlspecialchars(trim($_POST['date'])),
+                'time' => htmlspecialchars(trim($_POST['time'])),
+                'location' => htmlspecialchars(trim($_POST['location'])),
+                'message' => htmlspecialchars(trim($_POST['message'])),
+            ];
+
+            $announcementModel = $this->model('AnnouncementModel');
+
+            if ($announcementModel->updateAnnouncement($data)) {
+                $_SESSION['success'] = "Announcement updated successfully!";
+            } else {
+                $_SESSION['failed'] = "Failed to update announcement!";
+            }
+
+            header("Location: " . URL_ROOT . "/admin/announcement");
+            exit;
+        }
+    }
+
+    // fucntion to delete announcement
+    public function deleteAnnouncement($id)
+    {
+        $announcementModel = $this->model('AnnouncementModel');
+
+        if ($announcementModel->deleteAnnouncement($id)) {
+            $_SESSION['success'] = "Announcement deleted successfully!";
+        } else {
+            $_SESSION['failed'] = "Failed to delete announcement!";
+        }
+
+        header("Location: " . URL_ROOT . "/admin/announcement");
+        exit;
+    }
+
 
     //function to display the litterer records UI
     public function litterer()

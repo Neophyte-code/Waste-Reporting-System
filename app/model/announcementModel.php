@@ -52,4 +52,59 @@ class announcementModel
             return false;
         }
     }
+
+    //function to get announcement for admin (for admin)
+    public function getAnnouncementAdmin($barangay_id)
+    {
+
+        $stmt = $this->db->prepare("
+        select id, title, to_whom, date, time, location, message from announcements where barangay_id = :barangay_id order by date ASC, time ASC
+        ");
+
+        $stmt->bindParam(':barangay_id', $barangay_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        try {
+        } catch (PDOException $e) {
+            error_log("Database error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    //function to update announcement (for admin)
+    public function updateAnnouncement($data)
+    {
+        try {
+            $stmt = $this->db->prepare("
+            UPDATE announcements 
+            SET title = :title, to_whom = :to_whom, date = :date, time = :time, location = :location, message = :message
+            WHERE id = :id
+        ");
+            $stmt->bindParam(':id', $data['id'], PDO::PARAM_INT);
+            $stmt->bindParam(':title', $data['title']);
+            $stmt->bindParam(':to_whom', $data['to']);
+            $stmt->bindParam(':date', $data['date']);
+            $stmt->bindParam(':time', $data['time']);
+            $stmt->bindParam(':location', $data['location']);
+            $stmt->bindParam(':message', $data['message']);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return false;
+        }
+    }
+
+    //function to delete announcement (for admin)
+    public function deleteAnnouncement($id)
+    {
+        try {
+            $stmt = $this->db->prepare("DELETE FROM announcements WHERE id = :id");
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return false;
+        }
+    }
 }
