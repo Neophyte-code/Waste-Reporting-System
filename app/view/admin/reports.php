@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barangay Admin View Reports</title>
+    <title>Barangay Admin - View Reports</title>
     <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/css/output.css">
     <!-- Local Leaflet CSS -->
     <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/js/leaflet/leaflet.css" />
@@ -117,7 +117,11 @@
                         </thead>
                         <tbody class="bg-white">
                             <?php if (empty($data['reports'])): ?>
-                                <p class="text-center">No Waste Reports Found</p>
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-gray-500">
+                                        No Waste Reports Found
+                                    </td>
+                                </tr>
                             <?php else: ?>
                                 <?php foreach ($data['reports'] as $report): ?>
 
@@ -179,7 +183,7 @@
             <div class="grid grid-cols-1 gap-6 mb-6">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     <div class="border border-gray-300 rounded overflow-hidden">
-                        <img id="wasteImage" src="" alt="Report Image" class="w-full h-40 object-cover">
+                        <img id="wasteImage" src="https://via.placeholder.com/400" alt="Report Image" class="w-full h-40 object-cover">
                     </div>
                     <!-- map -->
                     <div class="border border-green-400 rounded overflow-hidden">
@@ -264,10 +268,10 @@
     </div>
 
     <!-- Image Popup Modal -->
-    <div id="imageModal" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
-        <div class="relative max-w-3xl w-full">
-            <button id="closeModal" class="absolute top-4 right-4 text-white text-3xl font-bold">&times;</button>
-            <img id="modalImg" class="max-h-[80vh] max-w-full rounded shadow-lg" src="">
+    <div id="imageModal" class="hidden fixed inset-0 bg-opacity-80 flex items-center justify-center z-50">
+        <div class="relative">
+            <button id="closeImageModal" class="absolute top-0 right-2 text-white text-3xl font-bold">&times;</button>
+            <img id="modalImg" class="max-h-[80vh] max-w-[90vw] rounded shadow-lg" src="">
         </div>
     </div>
     </main>
@@ -466,6 +470,13 @@
                 currentReportType = null;
             }
 
+            // Close modal when clicking outside of it
+            document.getElementById('modalOverlay').addEventListener('click', function(event) {
+                if (event.target === this) {
+                    window.closeModal();
+                }
+            });
+
             // Approve and reject functions
             window.approveReport = function(type) {
                 if (!currentReportId) return;
@@ -585,6 +596,41 @@
                     notification.remove();
                 }, 3000);
             }
+        });
+    </script>
+
+    <!-- insert litterer modal functonality -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const lImage = document.getElementById("littererImage");
+            const WImage = document.getElementById("wasteImage");
+            const modal = document.getElementById("imageModal");
+            const modalImg = document.getElementById("modalImg");
+            const closeImageModal = document.getElementById("closeImageModal");
+
+            // Open modal on image click
+            lImage.addEventListener("click", function() {
+                modal.classList.remove("hidden");
+                modalImg.src = this.src;
+            });
+
+            // Open modal on image click
+            WImage.addEventListener("click", function() {
+                modal.classList.remove("hidden");
+                modalImg.src = this.src;
+            });
+
+            // Close modal on close button click
+            closeImageModal.addEventListener("click", function() {
+                modal.classList.add("hidden");
+            });
+
+            // Close modal when clicking outside the image
+            modal.addEventListener("click", function(e) {
+                if (e.target === modal) {
+                    modal.classList.add("hidden");
+                }
+            });
         });
     </script>
 </body>

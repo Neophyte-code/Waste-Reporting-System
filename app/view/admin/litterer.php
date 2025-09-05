@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Barangay Admin ViewReports</title>
+  <title>Barangay Admin - Litterer Records </title>
   <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/css/output.css">
 </head>
 
@@ -77,7 +77,10 @@
         <h1 class="text-lg ml-4 md:text-3xl font-bold">Waste Reporting System</h1>
       </div>
       <div class="bg-green-100 shadow-lg rounded-md p-2 sm:p-4">
-        <h2 class="text-xl font-semibold mb-4">User Information</h2>
+        <div class="flex justify-between mb-2">
+          <h2 class="text-xl font-semibold mb-4">User Information</h2>
+          <h2 onclick="openLittererModal()" class="bg-green-500 p-2 text-white rounded items-center">ADD</h2>
+        </div>
 
         <div class="max-h-[calc(93vh-100px)] sm:max-h-[calc(89vh-100px)] overflow-y-auto rounded-md border">
           <table class="w-full text-sm border-collapse table-fixed">
@@ -90,7 +93,6 @@
               </tr>
             </thead>
             <tbody class="bg-white">
-              </tr>
               <tr class="border-b hover:bg-gray-200">
                 <td class="py-2 px-4">Jerwin Noval
                   <dl class="lg:hidden gap-1">
@@ -103,277 +105,51 @@
                 <td class="hidden md:table-cell p-2.5">Magsaysay</td>
                 <td class="hidden sm:table-cell p-2.5">1</td>
                 <td class="p-3 text-yellow-400 font-bold">Warning</td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">2</dd>
-                  </dl>
-                </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">2</td>
-                <td class="p-3 text-yellow-400 font-bold">Warning</td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">3</dd>
-                  </dl>
-                </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">3</td>
-                <td class="p-3 text-red-500 font-bold">Penalty</td>
-              </tr>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">1</dd>
-                  </dl>
-                </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">1</td>
-                <td class="p-3 text-yellow-400 font-bold">Warning</td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">2</dd>
-                  </dl>
-                </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">2</td>
-                <td class="p-3 text-yellow-400 font-bold">Warning</td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">3</dd>
-                  </dl>
-                </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">3</td>
-                <td class="p-3 text-red-500 font-bold">Penalty</td>
-              </tr>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">1</dd>
-                  </dl>
-                </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">1</td>
-                <td class="p-3 text-yellow-400 font-bold">Warning</td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">2</dd>
-                  </dl>
-                </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">2</td>
-                <td class="p-3 text-yellow-400 font-bold">Warning</td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">3</dd>
-                  </dl>
-                </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">3</td>
-                <td class="p-3 text-red-500 font-bold">Penalty</td>
-              </tr>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">1</dd>
-                  </dl>
-                </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">1</td>
-                <td class="p-3 text-yellow-400 font-bold">Warning</td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">2</dd>
-                  </dl>
-                </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">2</td>
-                <td class="p-3 text-yellow-400 font-bold">Warning</td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">3</dd>
-                  </dl>
-                </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">3</td>
-                <td class="p-3 text-red-500 font-bold">Penalty</td>
-              </tr>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">1</dd>
-                  </dl>
-                </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">1</td>
-                <td class="p-3 text-yellow-400 font-bold">Warning</td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">2</dd>
-                  </dl>
-                </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">2</td>
-                <td class="p-3 text-yellow-400 font-bold">Warning</td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">3</dd>
-                  </dl>
-                </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">3</td>
-                <td class="p-3 text-red-500 font-bold">Penalty</td>
-              </tr>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">1</dd>
-                  </dl>
-                </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">1</td>
-                <td class="p-3 text-yellow-400 font-bold">Warning</td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">2</dd>
-                  </dl>
-                </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">2</td>
-                <td class="p-3 text-yellow-400 font-bold">Warning</td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">3</dd>
-                  </dl>
-                </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">3</td>
-                <td class="p-3 text-red-500 font-bold">Penalty</td>
-              </tr>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">1</dd>
-                  </dl>
-                </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">1</td>
-                <td class="p-3 text-yellow-400 font-bold">Warning</td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">2</dd>
-                  </dl>
-                </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">2</td>
-                <td class="p-3 text-yellow-400 font-bold">Warning</td>
-              </tr>
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">3</dd>
-                  </dl>
-                </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">3</td>
-                <td class="p-3 text-red-500 font-bold">Penalty</td>
               </tr>
             </tbody>
           </table>
         </div>
+      </div>
 
+      <!-- Add Litterer Modal -->
+      <div id="addLittererModal" class="bg-[#e5f9e0] w-full max-w-sm sm:max-w-lg md:max-w-2xl rounded-lg shadow-lg relative p-4 sm:p-6 mx-4 hidden">
+        <button onclick="closeModal()" class="absolute top-2 right-4 text-2xl font-bold text-gray-700 hover:text-black">&times;</button>
+
+        <!-- modal header -->
+        <div class="mb-4">
+          <p class="text-xl text-center text-neutral-800 font-semibold pb-5">ADD LITTERER RECORD</p>
+        </div>
+
+        <form action="">
+          <div>
+            <div class="space-y-3">
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="text-sm font-semibold text-gray-700">Name</label>
+                  <input type="text" id="littererAge" class="w-full border border-gray-300 rounded p-2 text-sm" readonly>
+                </div>
+                <div>
+                  <label class="text-sm font-semibold text-gray-700">Contact Number</label>
+                  <input type="text" id="littererGender" class="w-full border border-gray-300 rounded p-2 text-sm" readonly>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-3 mb-2">
+                <div>
+                  <label class="text-sm font-semibold text-gray-700">Address</label>
+                  <input type="text" id="littererAge" class="w-full border border-gray-300 rounded p-2 text-sm" readonly>
+                </div>
+                <div>
+                  <label class="text-sm font-semibold text-gray-700">No. of offense</label>
+                  <input type="text" id="littererGender" class="w-full border border-gray-300 rounded p-2 text-sm" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-center gap-4">
+            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-8 py-2 rounded">Save</button>
+          </div>
+        </form>
       </div>
     </main>
   </div>
@@ -417,6 +193,15 @@
         }
       }
     });
+
+    //open and close litterer modal
+    window.closeModal = function() {
+      document.getElementById('addLittererModal').classList.add('hidden');
+    }
+
+    window.openLittererModal = function() {
+      document.getElementById('addLittererModal').classList.remove('hidden');
+    }
   </script>
 </body>
 

@@ -132,7 +132,7 @@
               <div class="flex w-full flex-col md:flex-row gap-2 sm:gap-4">
                 <div class=" flex flex-col flex-1">
                   <label class="font-semibold mb-1">To:</label>
-                  <input name="to" type="text" id="to" required class="w-full border border-gray-300 p-2 rounded focus:outline-none" placeholder="">
+                  <input name="to" type="text" id="to" required class="w-full border border-gray-300 p-2 rounded focus:outline-none" placeholder="Tapilon Covered Court">
                 </div>
                 <div class=" flex flex-col flex-1">
                   <label class="font-semibold mb-1">Date:</label>
