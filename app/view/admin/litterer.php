@@ -7,6 +7,37 @@
   <title>Barangay Admin - Litterer Records </title>
   <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/css/output.css">
 </head>
+<style>
+  .flash-message {
+    position: fixed;
+    top: 30px;
+    right: -100px;
+    transform: translate(-50%, -50%);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    opacity: 1;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    z-index: 9999;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .flash-message.flash-success {
+    background: #22C55E;
+  }
+
+  .flash-message.flash-failed {
+    background: #EF4444;
+  }
+
+  .flash-message.flash-hide {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+</style>
 
 <body class="bg-green-200 flex flex-col font-sans overflow-hidden">
 
@@ -75,82 +106,105 @@
 
         <!-- Header -->
         <h1 class="text-lg ml-4 md:text-3xl font-bold">Waste Reporting System</h1>
+
+        <!-- Display flash message -->
+        <?php if (!empty($data['message'])): ?>
+          <div id="flash-message" class="flash-message flash-<?= htmlspecialchars($data['messageType'] ?? 'success') ?>">
+            <?= htmlspecialchars($data['message']); ?>
+          </div>
+        <?php endif; ?>
       </div>
       <div class="bg-green-100 shadow-lg rounded-md p-2 sm:p-4">
         <div class="flex justify-between mb-2">
           <h2 class="text-xl font-semibold mb-4">User Information</h2>
-          <h2 onclick="openLittererModal()" class="bg-green-500 p-2 text-white rounded items-center">ADD</h2>
+          <img onclick="openLittererModal()" src="<?php echo URL_ROOT; ?>/images/icons/plus.png" alt="" class="h-10">
         </div>
 
         <div class="max-h-[calc(93vh-100px)] sm:max-h-[calc(89vh-100px)] overflow-y-auto rounded-md border">
           <table class="w-full text-sm border-collapse table-fixed">
             <thead class="sticky top-0 bg-green-500 text-white">
               <tr>
-                <th class="sticky top-0 z-10 bg-green-500 py-2 px-4 text-left ">Name</th>
-                <th class="sticky top-0 z-10 bg-green-500 p-2.5 hidden md:table-cell text-left ">Address</th>
-                <th class="sticky top-0 z-10 bg-green-500 p-2.5 hidden sm:table-cell text-left ">No. of Offense</th>
-                <th class="sticky top-0 z-10 bg-green-500 p-2.5 text-left w-[110px]">Remarks</th>
+                <th class="sticky top-0 z-10 bg-green-500 py-2 px-4 text-center ">Name</th>
+                <th class="sticky top-0 z-10 bg-green-500 py-2 px-4 text-center ">Contact Number</th>
+                <th class="sticky top-0 z-10 bg-green-500 p-2.5 hidden md:table-cell text-center">Address</th>
+                <th class="sticky top-0 z-10 bg-green-500 p-2.5 hidden sm:table-cell text-center">Offense</th>
+                <th class="sticky top-0 z-10 bg-green-500 py-2 px-4 text-center ">Action</th>
               </tr>
             </thead>
             <tbody class="bg-white">
               <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4">Jerwin Noval
+                <td class="py-2 px-4 text-center">Jerwin Noval
                   <dl class="lg:hidden gap-1">
-                    <dt class="sr-only">Address</dt>
+                    <dt class="sr-only ">Address</dt>
                     <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">No. of Offense:</dt>
+                    <dt class="sm:hidden inline text-sm text-gray-600">Offense:</dt>
                     <dd class="inline sm:hidden text-sm text-gray-500">1</dd>
                   </dl>
                 </td>
-                <td class="hidden md:table-cell p-2.5">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5">1</td>
-                <td class="p-3 text-yellow-400 font-bold">Warning</td>
+                <td class="p-3 text-center">09632122818</td>
+                <td class="hidden md:table-cell p-2.5 text-center">Magsaysay</td>
+                <td class="hidden sm:table-cell p-2.5 text-center">2</td>
+                <td class="p-3 flex justify-center items-center"><img src="<?php echo URL_ROOT; ?>/images/icons/edit.png" alt="" class="size-5 items-center"></td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- Add Litterer Modal -->
-      <div id="addLittererModal" class="bg-[#e5f9e0] w-full max-w-sm sm:max-w-lg md:max-w-2xl rounded-lg shadow-lg relative p-4 sm:p-6 mx-4 hidden">
-        <button onclick="closeModal()" class="absolute top-2 right-4 text-2xl font-bold text-gray-700 hover:text-black">&times;</button>
+      <!-- Modal Overlay -->
+      <div id="modalOverlay" class="hidden fixed inset-0 bg-opacity-50 flex items-center justify-center z-40">
 
-        <!-- modal header -->
-        <div class="mb-4">
-          <p class="text-xl text-center text-neutral-800 font-semibold pb-5">ADD LITTERER RECORD</p>
-        </div>
+        <!-- Add Litterer Modal -->
+        <div id="addLittererModal"
+          class="bg-[#e5f9e0] w-full max-w-sm sm:max-w-lg md:max-w-2xl rounded-lg shadow-lg relative p-4 sm:p-6 mx-4 z-50">
 
-        <form action="">
-          <div>
+          <button onclick="closeModal()"
+            class="absolute top-2 right-4 text-2xl font-bold text-gray-700 hover:text-black">&times;</button>
+
+          <!-- modal header -->
+          <div class="mb-4">
+            <p class="text-xl text-center text-neutral-800 font-semibold pb-5">
+              ADD LITTERER RECORD
+            </p>
+          </div>
+
+          <form action="<?php echo URL_ROOT; ?>/admin/createLitterer" method="post">
             <div class="space-y-3">
               <div class="grid grid-cols-2 gap-3">
                 <div>
-                  <label class="text-sm font-semibold text-gray-700">Name</label>
-                  <input type="text" id="littererAge" class="w-full border border-gray-300 rounded p-2 text-sm" readonly>
+                  <label class="text-sm font-semibold text-gray-700">Fullname</label>
+                  <input name="name" placeholder="Enter fullname" type="text" class="w-full border border-gray-300 rounded p-2 text-sm">
                 </div>
                 <div>
                   <label class="text-sm font-semibold text-gray-700">Contact Number</label>
-                  <input type="text" id="littererGender" class="w-full border border-gray-300 rounded p-2 text-sm" readonly>
+                  <input name="number" placeholder="09123456789" type="tel" class="w-full border border-gray-300 rounded p-2 text-sm">
                 </div>
               </div>
               <div class="grid grid-cols-2 gap-3 mb-2">
                 <div>
                   <label class="text-sm font-semibold text-gray-700">Address</label>
-                  <input type="text" id="littererAge" class="w-full border border-gray-300 rounded p-2 text-sm" readonly>
+                  <input name="address" placeholder="Enter address" type="text" class="w-full border border-gray-300 rounded p-2 text-sm">
                 </div>
                 <div>
                   <label class="text-sm font-semibold text-gray-700">No. of offense</label>
-                  <input type="text" id="littererGender" class="w-full border border-gray-300 rounded p-2 text-sm" readonly>
+                  <div class="flex items-center">
+                    <input name="offense" type="number" id="offenseInput" value="0" class="w-full border border-gray-300 rounded p-2 text-sm">
+                    <button type="button" onclick="decrementValue('offenseInput')" class="px-3 py-2 bg-red-400 hover:bg-red-300"> – </button>
+                    <button type="button" onclick="incrementValue('offenseInput')" class="px-3 py-2 bg-green-400 hover:bg-green-300"> + </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-
-          <div class="flex justify-center gap-4">
-            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-8 py-2 rounded">Save</button>
-          </div>
-        </form>
+            <div class="flex justify-center gap-4">
+              <button type="submit"
+                class="bg-green-500 hover:bg-green-600 text-white px-8 py-2 rounded">
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
+
     </main>
   </div>
 
@@ -197,10 +251,44 @@
     //open and close litterer modal
     window.closeModal = function() {
       document.getElementById('addLittererModal').classList.add('hidden');
+      document.getElementById('modalOverlay').classList.add('hidden');
     }
 
     window.openLittererModal = function() {
+      document.getElementById('modalOverlay').classList.remove('hidden');
       document.getElementById('addLittererModal').classList.remove('hidden');
+    }
+
+    //hide modal when the outside of the modal is click
+    const modal = document.getElementById('modalOverlay');
+    modal.addEventListener("click", function(e) {
+      if (e.target === modal) {
+        modal.classList.add("hidden");
+      }
+    });
+
+    //add and minus offense
+    function incrementValue(id) {
+      const input = document.getElementById(id);
+      let value = parseInt(input.value) || 0;
+      input.value = value + 1;
+    }
+
+    function decrementValue(id) {
+      const input = document.getElementById(id);
+      let value = parseInt(input.value) || 0;
+      if (value > 0) {
+        input.value = value - 1;
+      }
+    }
+
+    //flash message
+    const flashMessage = document.getElementById('flash-message');
+    if (flashMessage) {
+      setTimeout(() => {
+        flashMessage.classList.add('flash-hide');
+        setTimeout(() => flashMessage.remove(), 800);
+      }, 3000);
     }
   </script>
 </body>

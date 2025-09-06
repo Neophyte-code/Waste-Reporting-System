@@ -11,7 +11,7 @@
   .flash-message {
     position: fixed;
     top: 30px;
-    right: -10%;
+    right: -150px;
     transform: translate(-50%, -50%);
     color: white;
     padding: 16px 24px;
@@ -108,17 +108,16 @@
 
         <!-- Header -->
         <h1 class="text-lg ml-4 md:text-3xl font-bold">Waste Reporting System</h1>
-      </div>
-      <!-- Announcement Form -->
-      <section class=" bg-green-50 p-4 sm:p-6 rounded-lg shadow-md overflow-y-auto">
-        <h2 class="text-xl font-semibold mb-4">Announcement</h2>
-
         <!-- Display flash message -->
         <?php if (!empty($data['message'])): ?>
           <div id="flash-message" class="flash-message flash-<?= htmlspecialchars($data['messageType'] ?? 'success') ?>">
             <?= htmlspecialchars($data['message']); ?>
           </div>
         <?php endif; ?>
+      </div>
+      <!-- Announcement Form -->
+      <section class=" bg-green-50 p-4 sm:p-6 rounded-lg shadow-md overflow-y-auto">
+        <h2 class="text-xl font-semibold mb-4">Announcement</h2>
 
         <!-- form -->
         <form method="post" action="<?php echo URL_ROOT; ?>/admin/createAnnouncement">

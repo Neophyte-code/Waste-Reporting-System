@@ -8,6 +8,7 @@
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
     --color-red-100: oklch(93.6% 0.032 17.717);
+    --color-red-300: oklch(80.8% 0.114 19.571);
     --color-red-400: oklch(70.4% 0.191 22.216);
     --color-red-500: oklch(63.7% 0.237 25.331);
     --color-red-600: oklch(57.7% 0.245 27.325);
@@ -355,6 +356,9 @@
   .z-20 {
     z-index: 20;
   }
+  .z-40 {
+    z-index: 40;
+  }
   .z-50 {
     z-index: 50;
   }
@@ -511,6 +515,12 @@
   }
   .h-6 {
     height: calc(var(--spacing) * 6);
+  }
+  .h-7 {
+    height: calc(var(--spacing) * 7);
+  }
+  .h-8 {
+    height: calc(var(--spacing) * 8);
   }
   .h-10 {
     height: calc(var(--spacing) * 10);
@@ -916,8 +926,16 @@
   .rounded-xl {
     border-radius: var(--radius-xl);
   }
+  .rounded-l {
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+  }
   .rounded-tl-2xl {
     border-top-left-radius: var(--radius-2xl);
+  }
+  .rounded-r {
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
   }
   .rounded-tr-2xl {
     border-top-right-radius: var(--radius-2xl);
@@ -933,6 +951,10 @@
   .border-4 {
     border-style: var(--tw-border-style);
     border-width: 4px;
+  }
+  .border-y {
+    border-block-style: var(--tw-border-style);
+    border-block-width: 1px;
   }
   .border-t-2 {
     border-top-style: var(--tw-border-style);
@@ -1045,6 +1067,9 @@
   }
   .bg-red-100 {
     background-color: var(--color-red-100);
+  }
+  .bg-red-400 {
+    background-color: var(--color-red-400);
   }
   .bg-red-500 {
     background-color: var(--color-red-500);
@@ -1656,6 +1681,13 @@
       }
     }
   }
+  .hover\:bg-green-300 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-green-300);
+      }
+    }
+  }
   .hover\:bg-green-500 {
     &:hover {
       @media (hover: hover) {
@@ -1681,6 +1713,13 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-red-100);
+      }
+    }
+  }
+  .hover\:bg-red-300 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-red-300);
       }
     }
   }

@@ -331,9 +331,69 @@ class Admin extends Controller
         // Pass user data to the view
         $userData = $_SESSION['user'];
 
+        $message = null;
+        $messageType = null;
+
+        if (!empty($_SESSION['failed'])) {
+            $message = $_SESSION['failed'];
+            $messageType = 'failed';
+            unset($_SESSION['failed']);
+        } elseif (!empty($_SESSION['success'])) {
+            $message = $_SESSION['success'];
+            $messageType = 'success';
+            unset($_SESSION['success']);
+        }
+
         $this->view('admin/litterer', [
-            'user' => $userData
+            'user' => $userData,
+            'message' => $message,
+            'messageType' => $messageType,
         ]);
+    }
+
+    //function to create litterer records
+    public function createLitterer()
+    {
+
+        if ($_SERVER['REQUEST_METHOD'] === "POST") {
+
+            //get data from user session
+            $userData = $_SESSION['user'];
+
+            $data = [
+                'barangay_id' => htmlspecialchars(trim($userData['barangay_id'])),
+                'name' => htmlspecialchars(trim($_POST['name'])),
+                'number' => htmlspecialchars(trim($_POST['number'])),
+                'address' => htmlspecialchars(trim($_POST['address'])),
+                'offense' => htmlspecialchars(trim($_POST['offense']))
+            ];
+
+
+            //validate inputs
+            if (empty($data['name']) || empty($data['number']) || empty($data['address']) || empty($data['offense'])) {
+                $_SESSION['failed'] = "All fields are required!";
+                header("Location: " . URL_ROOT . '/admin/litterer');
+                exit;
+            }
+
+            //i validate ang phone number
+            if (!preg_match('/^09[0-9]{9}$/', $data['number'])) {
+                $_SESSION['failed'] = "Invalid number format!";
+                header('Location: ' . URL_ROOT . '/admin/litterer');
+                exit;
+            }
+
+            $littererModel = $this->model('LittererModel');
+
+            if ($littererModel->createLittererRecord($data)) {
+                $_SESSION['success'] = "Record created successfully!";
+            } else {
+                $_SESSION['failed'] = "Failed to create record!";
+            }
+
+            header("Location: " . URL_ROOT . '/admin/litterer');
+            exit;
+        }
     }
 
     //function to display the redemptions UI
