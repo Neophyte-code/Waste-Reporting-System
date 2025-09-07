@@ -35,15 +35,36 @@ class LittererModel
     //function to get litterer records
     public function getLittererRecords($barangay_id)
     {
-
         try {
             $stmt = $this->db->prepare("
-            select name, number, address, offense from litterers where barangay_id = :barangay_id
+            SELECT id, name, number, address, offense 
+            FROM litterers 
+            WHERE barangay_id = :barangay_id
         ");
             $stmt->bindParam(':barangay_id', $barangay_id);
-            $result = $stmt->execute();
+            $stmt->execute();
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Database error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function updateRecord($data)
+    {
+        try {
+            $stmt = $this->db->prepare("
+            UPDATE litterers
+            SET name = :name, number = :number, address = :address, offense = :offense
+            WHERE id = :id
+        ");
+            $stmt->bindParam(':id', $data['id']);
+            $stmt->bindParam(':name', $data['name']);
+            $stmt->bindParam(':number', $data['number']);
+            $stmt->bindParam(':address', $data['address']);
+            $stmt->bindParam(':offense', $data['offense']);
+            return $stmt->execute();
         } catch (PDOException $e) {
             error_log("Database error: " . $e->getMessage());
             return false;

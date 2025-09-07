@@ -145,14 +145,25 @@
                       <dl class="lg:hidden gap-1">
                         <dt class="sr-only ">Address</dt>
                         <dd class="md:hidden text-sm text-gray-700"><?= htmlspecialchars($litterer['address']) ?></dd>
-                        <dt class="sm:hidden inline text-sm text-gray-600">Offense:</dt>
+                        <dt class="sm:hidden inline text-sm text-gray-600">Offense</dt>
                         <dd class="inline sm:hidden text-sm text-gray-500"><?= htmlspecialchars($litterer['offense']) ?></dd>
                       </dl>
                     </td>
                     <td class="p-3 text-center"><?= htmlspecialchars($litterer['number']) ?></td>
                     <td class="hidden md:table-cell p-2.5 text-center"><?= htmlspecialchars($litterer['address']) ?></td>
                     <td class="hidden sm:table-cell p-2.5 text-center"><?= htmlspecialchars($litterer['offense']) ?></td>
-                    <td class="p-3 flex justify-center items-center"><img src="<?php echo URL_ROOT; ?>/images/icons/edit.png" alt="" class="size-5 items-center"></td>
+                    <td class="p-3 flex justify-center items-center">
+                      <button
+                        class="editBtn"
+                        data-id="<?= $litterer['id'] ?>"
+                        data-name="<?= htmlspecialchars($litterer['name']) ?>"
+                        data-number="<?= htmlspecialchars($litterer['number']) ?>"
+                        data-address="<?= htmlspecialchars($litterer['address']) ?>"
+                        data-offense="<?= htmlspecialchars($litterer['offense']) ?>">
+                        <img src="<?php echo URL_ROOT; ?>/images/icons/edit.png" alt="Edit" class="size-5 items-center">
+                      </button>
+                    </td>
+
                   </tr>
                 <?php endforeach; ?>
               <?php endif; ?>
@@ -178,27 +189,29 @@
             </p>
           </div>
 
-          <form action="<?php echo URL_ROOT; ?>/admin/createLitterer" method="post">
+          <form id="littererForm" action="<?php echo URL_ROOT; ?>/admin/createLitterer" method="post">
+            <input type="hidden" name="id" id="littererId">
+
             <div class="space-y-3">
               <div class="grid grid-cols-2 gap-3">
                 <div>
                   <label class="text-sm font-semibold text-gray-700">Fullname</label>
-                  <input name="name" placeholder="Enter fullname" type="text" class="w-full border border-gray-300 rounded p-2 text-sm">
+                  <input name="name" id="nameInput" placeholder="Enter fullname" type="text" class="w-full border border-gray-300 rounded p-2 text-sm">
                 </div>
                 <div>
                   <label class="text-sm font-semibold text-gray-700">Contact Number</label>
-                  <input name="number" placeholder="09123456789" type="tel" class="w-full border border-gray-300 rounded p-2 text-sm">
+                  <input name="number" id="numberInput" placeholder="09123456789" type="tel" class="w-full border border-gray-300 rounded p-2 text-sm">
                 </div>
               </div>
               <div class="grid grid-cols-2 gap-3 mb-2">
                 <div>
                   <label class="text-sm font-semibold text-gray-700">Address</label>
-                  <input name="address" placeholder="Enter address" type="text" class="w-full border border-gray-300 rounded p-2 text-sm">
+                  <input name="address" id="addressInput" placeholder="Enter address" type="text" class="w-full border border-gray-300 rounded p-2 text-sm">
                 </div>
                 <div>
                   <label class="text-sm font-semibold text-gray-700">No. of offense</label>
                   <div class="flex items-center">
-                    <input name="offense" type="number" id="offenseInput" value="0" class="w-full border border-gray-300 rounded p-2 text-sm">
+                    <input name="offense" id="offenseInput" type="number" value="0" class="w-full border border-gray-300 rounded p-2 text-sm">
                     <button type="button" onclick="decrementValue('offenseInput')" class="px-3 py-2 bg-red-400 hover:bg-red-300"> – </button>
                     <button type="button" onclick="incrementValue('offenseInput')" class="px-3 py-2 bg-green-400 hover:bg-green-300"> + </button>
                   </div>
@@ -206,8 +219,7 @@
               </div>
             </div>
             <div class="flex justify-center gap-4">
-              <button type="submit"
-                class="bg-green-500 hover:bg-green-600 text-white px-8 py-2 rounded">
+              <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-8 py-2 rounded">
                 Save
               </button>
             </div>
@@ -299,6 +311,40 @@
         flashMessage.classList.add('flash-hide');
         setTimeout(() => flashMessage.remove(), 800);
       }, 3000);
+    }
+
+    const modalOverlay = document.getElementById("modalOverlay");
+    const form = document.getElementById("littererForm");
+    const idField = document.getElementById("littererId");
+    const nameField = document.getElementById("nameInput");
+    const numberField = document.getElementById("numberInput");
+    const addressField = document.getElementById("addressInput");
+    const offenseField = document.getElementById("offenseInput");
+
+    // Handle edit button clicks
+    document.querySelectorAll(".editBtn").forEach(btn => {
+      btn.addEventListener("click", function() {
+        // Set form values
+        idField.value = this.dataset.id;
+        nameField.value = this.dataset.name;
+        numberField.value = this.dataset.number;
+        addressField.value = this.dataset.address;
+        offenseField.value = this.dataset.offense;
+
+        // Change form action to update
+        form.action = "<?php echo URL_ROOT; ?>/admin/updateLitterer";
+
+        // Open modal
+        modalOverlay.classList.remove("hidden");
+      });
+    });
+
+    function closeModal() {
+      modalOverlay.classList.add("hidden");
+
+      // Reset form back to "create" when closing
+      form.action = "<?php echo URL_ROOT; ?>/admin/createLitterer";
+      form.reset();
     }
   </script>
 </body>

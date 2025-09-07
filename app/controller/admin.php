@@ -398,6 +398,33 @@ class Admin extends Controller
         }
     }
 
+    //function to update litterer record
+    public function updateLitterer()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $id = $_POST['id'];
+            $data = [
+                'id' => $id,
+                'name' => trim($_POST['name']),
+                'number' => trim($_POST['number']),
+                'address' => trim($_POST['address']),
+                'offense' => (int)$_POST['offense'],
+            ];
+
+            $littererModel = $this->model('LittererModel');
+
+            if ($littererModel->updateRecord($data)) {
+                $_SESSION['success'] = "Record updated successfully!";
+            } else {
+                $_SESSION['failed'] = "Failed to update record!";
+            }
+
+            header("Location: " . URL_ROOT . '/admin/litterer');
+            exit;
+        }
+    }
+
+
     //function to display the redemptions UI
     public function redemptions()
     {
