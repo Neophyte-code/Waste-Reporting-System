@@ -1,7 +1,5 @@
 <?php
 
-use Soap\Url;
-
 class Admin extends Controller
 {
 
@@ -344,10 +342,14 @@ class Admin extends Controller
             unset($_SESSION['success']);
         }
 
+        $littererModel = $this->model('LittererModel');
+        $litterer = $littererModel->getLittererRecords($userData['barangay_id']);
+
         $this->view('admin/litterer', [
             'user' => $userData,
             'message' => $message,
             'messageType' => $messageType,
+            'litterer' => $litterer
         ]);
     }
 

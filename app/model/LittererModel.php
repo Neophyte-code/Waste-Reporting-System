@@ -31,4 +31,22 @@ class LittererModel
             return false;
         }
     }
+
+    //function to get litterer records
+    public function getLittererRecords($barangay_id)
+    {
+
+        try {
+            $stmt = $this->db->prepare("
+            select name, number, address, offense from litterers where barangay_id = :barangay_id
+        ");
+            $stmt->bindParam(':barangay_id', $barangay_id);
+            $result = $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Database error: " . $e->getMessage());
+            return false;
+        }
+    }
 }

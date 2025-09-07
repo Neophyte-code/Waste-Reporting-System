@@ -132,20 +132,30 @@
               </tr>
             </thead>
             <tbody class="bg-white">
-              <tr class="border-b hover:bg-gray-200">
-                <td class="py-2 px-4 text-center">Jerwin Noval
-                  <dl class="lg:hidden gap-1">
-                    <dt class="sr-only ">Address</dt>
-                    <dd class="md:hidden text-sm text-gray-700">Magsaysay</dd>
-                    <dt class="sm:hidden inline text-sm text-gray-600">Offense:</dt>
-                    <dd class="inline sm:hidden text-sm text-gray-500">1</dd>
-                  </dl>
-                </td>
-                <td class="p-3 text-center">09632122818</td>
-                <td class="hidden md:table-cell p-2.5 text-center">Magsaysay</td>
-                <td class="hidden sm:table-cell p-2.5 text-center">2</td>
-                <td class="p-3 flex justify-center items-center"><img src="<?php echo URL_ROOT; ?>/images/icons/edit.png" alt="" class="size-5 items-center"></td>
-              </tr>
+              <?php if (empty($data['litterer'])): ?>
+                <tr>
+                  <td colspan="5" class="text-center py-4 text-gray-500">
+                    No litterer record found
+                  </td>
+                </tr>
+              <?php else: ?>
+                <?php foreach ($data['litterer'] as $litterer): ?>
+                  <tr class="border-b hover:bg-gray-200">
+                    <td class="py-2 px-4 text-center"><?= htmlspecialchars($litterer['name']) ?>
+                      <dl class="lg:hidden gap-1">
+                        <dt class="sr-only ">Address</dt>
+                        <dd class="md:hidden text-sm text-gray-700"><?= htmlspecialchars($litterer['address']) ?></dd>
+                        <dt class="sm:hidden inline text-sm text-gray-600">Offense:</dt>
+                        <dd class="inline sm:hidden text-sm text-gray-500"><?= htmlspecialchars($litterer['offense']) ?></dd>
+                      </dl>
+                    </td>
+                    <td class="p-3 text-center"><?= htmlspecialchars($litterer['number']) ?></td>
+                    <td class="hidden md:table-cell p-2.5 text-center"><?= htmlspecialchars($litterer['address']) ?></td>
+                    <td class="hidden sm:table-cell p-2.5 text-center"><?= htmlspecialchars($litterer['offense']) ?></td>
+                    <td class="p-3 flex justify-center items-center"><img src="<?php echo URL_ROOT; ?>/images/icons/edit.png" alt="" class="size-5 items-center"></td>
+                  </tr>
+                <?php endforeach; ?>
+              <?php endif; ?>
             </tbody>
           </table>
         </div>

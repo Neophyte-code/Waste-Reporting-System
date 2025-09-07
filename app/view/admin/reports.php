@@ -270,7 +270,7 @@
     <!-- Image Popup Modal -->
     <div id="imageModal" class="hidden fixed inset-0 bg-opacity-80 flex items-center justify-center z-50">
         <div class="relative">
-            <button id="closeImageModal" class="absolute top-0 right-2 text-white text-3xl font-bold">&times;</button>
+            <button id="closeImageModal" class="absolute top-0 right-2 text-black text-3xl font-bold">&times;</button>
             <img id="modalImg" class="max-h-[80vh] max-w-[90vw] rounded shadow-lg" src="">
         </div>
     </div>

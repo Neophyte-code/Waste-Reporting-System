@@ -56,16 +56,15 @@ class announcementModel
     //function to get announcement for admin (for admin)
     public function getAnnouncementAdmin($barangay_id)
     {
-
-        $stmt = $this->db->prepare("
+        try {
+            $stmt = $this->db->prepare("
         select id, title, to_whom, date, time, location, message from announcements where barangay_id = :barangay_id order by date ASC, time ASC
         ");
 
-        $stmt->bindParam(':barangay_id', $barangay_id, PDO::PARAM_INT);
-        $stmt->execute();
+            $stmt->bindParam(':barangay_id', $barangay_id, PDO::PARAM_INT);
+            $stmt->execute();
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        try {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             error_log("Database error: " . $e->getMessage());
             return false;
