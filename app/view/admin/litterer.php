@@ -270,26 +270,32 @@
       }
     });
 
-    //open and close litterer modal
-    window.closeModal = function() {
-      document.getElementById('addLittererModal').classList.add('hidden');
-      document.getElementById('modalOverlay').classList.add('hidden');
-    }
-
+    // Open modal manually (if needed elsewhere)
     window.openLittererModal = function() {
       document.getElementById('modalOverlay').classList.remove('hidden');
       document.getElementById('addLittererModal').classList.remove('hidden');
     }
 
-    //hide modal when the outside of the modal is click
-    const modal = document.getElementById('modalOverlay');
-    modal.addEventListener("click", function(e) {
-      if (e.target === modal) {
-        modal.classList.add("hidden");
+    // Close modal
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.add('hidden');
+      document.getElementById('addLittererModal').classList.add('hidden');
+
+      // Reset form back to "create"
+      form.action = "<?php echo URL_ROOT; ?>/admin/createLitterer";
+      form.reset();
+    }
+    window.closeModal = closeModal; // make it usable in onclick="closeModal()"
+
+    // Hide modal when clicking outside
+    const modalOverlay = document.getElementById('modalOverlay');
+    modalOverlay.addEventListener("click", function(e) {
+      if (e.target === modalOverlay) {
+        closeModal();
       }
     });
 
-    //add and minus offense
+    // Add and minus offense
     function incrementValue(id) {
       const input = document.getElementById(id);
       let value = parseInt(input.value) || 0;
@@ -304,7 +310,7 @@
       }
     }
 
-    //flash message
+    // Flash message
     const flashMessage = document.getElementById('flash-message');
     if (flashMessage) {
       setTimeout(() => {
@@ -313,7 +319,7 @@
       }, 3000);
     }
 
-    const modalOverlay = document.getElementById("modalOverlay");
+    // Form and fields
     const form = document.getElementById("littererForm");
     const idField = document.getElementById("littererId");
     const nameField = document.getElementById("nameInput");
@@ -334,18 +340,11 @@
         // Change form action to update
         form.action = "<?php echo URL_ROOT; ?>/admin/updateLitterer";
 
-        // Open modal
+        // Open modal (overlay + modal box)
         modalOverlay.classList.remove("hidden");
+        document.getElementById("addLittererModal").classList.remove("hidden");
       });
     });
-
-    function closeModal() {
-      modalOverlay.classList.add("hidden");
-
-      // Reset form back to "create" when closing
-      form.action = "<?php echo URL_ROOT; ?>/admin/createLitterer";
-      form.reset();
-    }
   </script>
 </body>
 
