@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barangay Admin ViewReports</title>
+    <title>Barangay Admin - Redemptions</title>
     <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/css/output.css">
 </head>
 
@@ -86,290 +86,104 @@
                         <thead>
                             <tr class="text-white">
                                 <th class="sticky top-0 z-10 bg-green-500 py-2 px-4 text-left">Name</th>
-                                <th class="sticky top-0 z-10 bg-green-500 p-2.5 hidden sm:table-cell text-left">Address</th>
                                 <th class="sticky top-0 z-10 bg-green-500 p-2.5 hidden md:table-cell text-left">Email Address</th>
                                 <th class="sticky top-0 z-10 bg-green-500 p-2.5 hidden lg:table-cell text-left w-[250px]">Date & Time</th>
                                 <th class="sticky top-0 z-10 bg-green-500 p-2.5 text-left w-[110px]">Action</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white">
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden gap-1">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Scan
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Scan
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Scan
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Scan
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Scan
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Scan
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Scan
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Scan
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Scan
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Scan
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="text-base py-2 px-4">Jerwin Noval
-                                    <dl class="lg:hidden">
-                                        <dt class="sr-only">Address</dt>
-                                        <dd class="sm:hidden text-sm text-gray-600">Magsaysay</dd>
-                                        <dt class="sr-only">Email Address</dt>
-                                        <dd class="md:hidden text-sm text-gray-500">jerwinnoval@gmail.com</dd>
-                                        <dt class="sr-only">Date & Time</dt>
-                                        <dd class="lg:hidden mt-1 text-xs text-gray-400">May 28, 2025 12:00:00 AM GMT+8</dd>
-                                    </dl>
-                                </td>
-                                <td class="hidden sm:table-cell p-2.5">Magsaysay</td>
-                                <td class="hidden md:table-cell p-2.5 text-blue-600">jerwinoval@gmail.com</td>
-                                <td class="hidden lg:table-cell p-2.5">May 28, 2025 12:00:00 AM GMT+8</td>
-                                <td class=" p-2.5">
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded">
-                                        Scan
-                                    </button>
-                                </td>
-                            </tr>
-                            <!-- Add more rows -->
+                            <?php if (empty($data['redemption'])): ?>
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-gray-500">
+                                        No Waste Reports Found
+                                    </td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($data['redemption'] as $redemption): ?>
+                                    <tr class="border-b">
+                                        <td class="text-base py-2 px-4"><?= htmlspecialchars($redemption['firstname'] . ' ' . $redemption['lastname']) ?>
+                                            <dl class="lg:hidden gap-1">
+                                                <dt class="sr-only">Email Address</dt>
+                                                <dd class="md:hidden text-sm text-gray-500"><?= htmlspecialchars($redemption['email']) ?></dd>
+                                                <dt class="sr-only">Date & Time</dt>
+                                                <dd class="lg:hidden mt-1 text-xs text-gray-400"><?= htmlspecialchars($redemption['request_date']) ?></dd>
+                                            </dl>
+                                        </td>
+                                        <td class="hidden md:table-cell p-2.5 text-blue-600"><?= htmlspecialchars($redemption['email']) ?></td>
+                                        <td class="hidden lg:table-cell p-2.5"><?= htmlspecialchars($redemption['request_date']) ?></td>
+                                        <td class=" p-2.5">
+                                            <button
+                                                class="scan-btn bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded"
+                                                data-id="<?= $redemption['id'] ?>"
+                                                data-fullname="<?= htmlspecialchars($redemption['firstname'] . ' ' . $redemption['lastname']) ?>"
+                                                data-email="<?= htmlspecialchars($redemption['email']) ?>"
+                                                data-amount="<?= htmlspecialchars($redemption['points_amount']) ?>"
+                                                data-gcash="<?= htmlspecialchars($redemption['gcash_number']) ?>"
+                                                data-gcash-name="<?= htmlspecialchars($redemption['gcash_name']) ?>"
+                                                data-qr="<?= htmlspecialchars($redemption['qr_code_path']) ?>">
+                                                Scan
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
             </div>
 
             <!-- Modal Background -->
-            <div id="modalOverlay" class="fixed inset-0 bg-black bg-opacity-40 items-center justify-center z-50 hidden">
+            <div id="modalOverlay" class="fixed inset-0 bg-opacity-40 flex items-center justify-center z-50 hidden">
 
                 <!-- Modal Container for scan -->
-                <div id="wasteModal" class="bg-[#e5f9e0] w-full max-w-sm sm:max-w-md md:max-w-lg rounded-lg shadow-lg relative p-4 sm:p-6  mx-4 hidden">
+                <div id="scanModal" class="bg-[#e5f9e0] w-full max-w-sm sm:max-w-md md:max-w-lg rounded-lg shadow-lg relative p-4 sm:p-6  mx-4 hidden">
                     <!-- Close Button -->
                     <button id="wasteClose" class="absolute top-2 right-4 text-2xl font-bold text-gray-700 hover:text-black">&times;</button>
 
-                    <!-- Reporter Info -->
+                    <!-- scan Info -->
                     <div class="mb-2 border-b-2 border-gray-400 flex justify-center items-center">
                         <p class="text-2xl font-semibold pb-4">QR Code</p>
                     </div>
 
-                    <div class="w-full flex flex-col justify-center items-center mb-4 hidden">
-                        <p class="text-lg font-semibold">&#8369; <span class="font-bold">100.00</span></p>
-                        <p class="font-semibold">09263547382</p>
+                    <!-- Fullname & Email -->
+                    <div class="mb-4 text-center">
+                        <p id="modalFullname" class="text-lg font-semibold text-gray-800"></p>
+                        <p id="modalEmail" class="text-sm text-gray-600"></p>
                     </div>
 
+                    <!-- Amount -->
                     <div class="flex justify-center items-center w-full mt-2 mb-2">
-                        <label class="text-xl pt-1 font-semibold text-gray-700 ">&#8369;</label>
-                        <input type="text" value="100.00" class="max-w-16 bg-transparent font-semibold text-gray-700 rounded text-center mt-1 text-xl focus:outline-none" readonly>
+                        <label class="text-xl pt-1 font-semibold text-gray-700">&#8369;</label>
+                        <input id="modalAmount" type="text" class="max-w-16 bg-transparent font-semibold text-gray-700 rounded text-center mt-1 text-xl focus:outline-none" readonly>
                     </div>
 
                     <!-- QR Image -->
-                    <div class=" mb-4 flex h-60 justify-center items-center rounded overflow-hidden">
-                        <img src="images/QR Code.jpg" alt="QR Code" class="w-full h-full object-contain ">
+                    <div class="mb-4 flex h-60 justify-center items-center rounded overflow-hidden">
+                        <img id="modalQr" src="" alt="QR Code" class="w-full h-full object-contain">
                     </div>
 
-
-
+                    <!-- GCash Info -->
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         <div>
                             <label class="text-sm font-semibold text-gray-700">Name</label>
-                            <input type="text" value="Jeriwin A. Noval" class="w-full border border-gray-300 rounded p-2 text-center mt-1 text-sm focus:outline-none" readonly>
+                            <input id="modalGcashName" type="text" class="w-full border border-gray-300 rounded p-2 text-center mt-1 text-sm focus:outline-none" readonly>
                         </div>
                         <div>
                             <label class="text-sm font-semibold text-gray-700">Number</label>
-                            <input type="text" value="09374652863" class="w-full border border-gray-300 rounded p-2 text-center mt-1 text-sm focus:outline-none" readonly>
+                            <input id="modalGcashNumber" type="text" class="w-full border border-gray-300 rounded p-2 text-center mt-1 text-sm focus:outline-none" readonly>
                         </div>
                     </div>
 
                     <!-- Action Buttons -->
                     <div class="flex justify-center">
-                        <button id="wasteDone" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">Approve</button>
+                        <button id="approve" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">Approve</button>
                     </div>
                 </div>
-
             </div>
         </main>
     </div>
 
+    <!-- for responsive navbar -->
     <script>
         // Sidebar controls (named functions) + close on outside click
         const toggleBtn = document.getElementById('toggleSidebar');
@@ -409,60 +223,58 @@
                 }
             }
         });
+    </script>
+    <!-- for redemptions modal functionality -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const scanButtons = document.querySelectorAll(".scan-btn");
+            const modalOverlay = document.getElementById("modalOverlay");
+            const scanModal = document.getElementById("scanModal");
+            const closeModal = document.getElementById("wasteClose");
 
+            // Fields inside modal
+            const amountInput = document.getElementById("modalAmount");
+            const qrImage = document.getElementById("modalQr");
+            const gcashNameInput = document.getElementById("modalGcashName");
+            const gcashNumberInput = document.getElementById("modalGcashNumber");
+            const baseURL = "<?= URL_ROOT ?>/";
 
-        // Modal wiring for Scan -> open wasteModal
-        (function() {
-            const overlay = document.getElementById('modalOverlay');
-            const wasteModal = document.getElementById('wasteModal');
-            const wasteClose = document.getElementById('wasteClose');
-            const wasteDone = document.getElementById('wasteDone');
+            // Show modal with data
+            scanButtons.forEach(button => {
+                button.addEventListener("click", function() {
+                    const amount = this.getAttribute("data-amount");
+                    const qr = this.getAttribute("data-qr");
+                    const gcashName = this.getAttribute("data-gcash-name");
+                    const gcashNumber = this.getAttribute("data-gcash");
 
-            let activeRow = null;
+                    // Update modal fields
+                    amountInput.value = amount;
+                    console.log("QR path:", qr);
+                    qrImage.src = baseURL + qr;
+                    gcashNameInput.value = gcashName;
+                    gcashNumberInput.value = gcashNumber;
 
-            function showModal(name) {
-                if (!overlay || !wasteModal) return;
-                overlay.classList.remove('hidden');
-                overlay.classList.add('flex');
-                wasteModal.classList.remove('hidden');
-            }
+                    // Show modal
+                    modalOverlay.classList.remove("hidden");
+                    scanModal.classList.remove("hidden");
+                });
+            });
 
-            function hideModal() {
-                if (!overlay || !wasteModal) return;
-                overlay.classList.add('hidden');
-                overlay.classList.remove('flex');
-                wasteModal.classList.add('hidden');
-                activeRow = null;
-            }
+            // Close modal
+            closeModal.addEventListener("click", function() {
+                modalOverlay.classList.add("hidden");
+                scanModal.classList.add("hidden");
+            });
 
-            // Delegate Scan clicks
-            document.querySelector('main').addEventListener('click', (e) => {
-                const btn = e.target.closest('button');
-                if (!btn) return;
-                if (btn.textContent && btn.textContent.trim() === 'Scan') {
-                    const row = btn.closest('tr');
-                    activeRow = row || null;
-                    const nameCell = row ? row.querySelector('td') : null;
-                    const name = nameCell ? nameCell.textContent.trim().split('\n')[0].trim() : 'Reporter';
-                    showModal(name);
+            // Close when clicking outside modal
+            modalOverlay.addEventListener("click", function(e) {
+                if (e.target === modalOverlay) {
+                    modalOverlay.classList.add("hidden");
+                    scanModal.classList.add("hidden");
                 }
             });
-
-            // close handlers
-            if (wasteClose) wasteClose.addEventListener('click', hideModal);
-            if (wasteDone) wasteDone.addEventListener('click', () => {
-                if (activeRow && activeRow.parentElement) activeRow.remove();
-                hideModal();
-            });
-            if (overlay) overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) hideModal();
-            });
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') hideModal();
-            });
-        })();
+        });
     </script>
-
 </body>
 
 </html>

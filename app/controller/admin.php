@@ -431,8 +431,12 @@ class Admin extends Controller
         // Pass user data to the view
         $userData = $_SESSION['user'];
 
+        $reportModel = $this->model('ReportModel');
+        $redemption = $reportModel->getRedemptions($userData['barangay_id']);
+
         $this->view('admin/redemptions', [
-            'user' => $userData
+            'user' => $userData,
+            'redemption' => $redemption
         ]);
     }
 
