@@ -434,11 +434,51 @@ class Admin extends Controller
         $reportModel = $this->model('ReportModel');
         $redemption = $reportModel->getRedemptions($userData['barangay_id']);
 
+        $message = null;
+        $messageType = null;
+
+        if (!empty($_SESSION['failed'])) {
+            $message = $_SESSION['failed'];
+            $messageType = 'failed';
+            unset($_SESSION['failed']);
+        } elseif (!empty($_SESSION['success'])) {
+            $message = $_SESSION['success'];
+            $messageType = 'success';
+            unset($_SESSION['success']);
+        }
+
         $this->view('admin/redemptions', [
             'user' => $userData,
-            'redemption' => $redemption
+            'redemption' => $redemption,
+            'message' => $message,
+            'messageType' => $messageType,
         ]);
     }
+
+    // function to approve redemption request
+    public function approveRedemption()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $id = $_POST['id'];
+
+            $data = [
+                'id' => (int)$id,
+            ];
+
+            $redemptionModel = $this->model('ReportModel');
+
+            if ($redemptionModel->approveRequest($data)) {
+                $_SESSION['success'] = "Redemption approved successfully!";
+            } else {
+                $_SESSION['failed'] = "Failed to approve redemption!";
+            }
+
+            header("Location: " . URL_ROOT . '/admin/redemptions');
+            exit;
+        }
+    }
+
+
 
     //function to display the settings UI
     public function settings()

@@ -10,9 +10,8 @@
 <style>
   .flash-message {
     position: fixed;
-    top: 30px;
-    right: -150px;
-    transform: translate(-50%, -50%);
+    top: 5px;
+    right: 5px;
     color: white;
     padding: 16px 24px;
     border-radius: 8px;
@@ -35,9 +34,15 @@
 
   .flash-message.flash-hide {
     opacity: 0;
-    transform: translate(-50%, -60%);
+    transform: translateX(10px);
   }
 </style>
+<!-- Display flash message -->
+<?php if (!empty($data['message'])): ?>
+  <div id="flash-message" class="flash-message flash-<?= htmlspecialchars($data['messageType'] ?? 'success') ?>">
+    <?= htmlspecialchars($data['message']); ?>
+  </div>
+<?php endif; ?>
 
 <body class=" font-sans">
 
@@ -108,12 +113,6 @@
 
         <!-- Header -->
         <h1 class="text-lg ml-4 md:text-3xl font-bold">Waste Reporting System</h1>
-        <!-- Display flash message -->
-        <?php if (!empty($data['message'])): ?>
-          <div id="flash-message" class="flash-message flash-<?= htmlspecialchars($data['messageType'] ?? 'success') ?>">
-            <?= htmlspecialchars($data['message']); ?>
-          </div>
-        <?php endif; ?>
       </div>
       <!-- Announcement Form -->
       <section class=" bg-green-50 p-4 sm:p-6 rounded-lg shadow-md overflow-y-auto">

@@ -10,9 +10,8 @@
 <style>
   .flash-message {
     position: fixed;
-    top: 30px;
-    right: -100px;
-    transform: translate(-50%, -50%);
+    top: 5px;
+    right: 5px;
     color: white;
     padding: 16px 24px;
     border-radius: 8px;
@@ -35,9 +34,15 @@
 
   .flash-message.flash-hide {
     opacity: 0;
-    transform: translate(-50%, -60%);
+    transform: translateX(10px);
   }
 </style>
+<!-- Display flash message -->
+<?php if (!empty($data['message'])): ?>
+  <div id="flash-message" class="flash-message flash-<?= htmlspecialchars($data['messageType'] ?? 'success') ?>">
+    <?= htmlspecialchars($data['message']); ?>
+  </div>
+<?php endif; ?>
 
 <body class="bg-green-200 flex flex-col font-sans overflow-hidden">
 
@@ -106,13 +111,6 @@
 
         <!-- Header -->
         <h1 class="text-lg ml-4 md:text-3xl font-bold">Waste Reporting System</h1>
-
-        <!-- Display flash message -->
-        <?php if (!empty($data['message'])): ?>
-          <div id="flash-message" class="flash-message flash-<?= htmlspecialchars($data['messageType'] ?? 'success') ?>">
-            <?= htmlspecialchars($data['message']); ?>
-          </div>
-        <?php endif; ?>
       </div>
       <div class="bg-green-100 shadow-lg rounded-md p-2 sm:p-4">
         <div class="flex justify-between mb-2">
@@ -285,7 +283,7 @@
       form.action = "<?php echo URL_ROOT; ?>/admin/createLitterer";
       form.reset();
     }
-    window.closeModal = closeModal; // make it usable in onclick="closeModal()"
+    window.closeModal = closeModal;
 
     // Hide modal when clicking outside
     const modalOverlay = document.getElementById('modalOverlay');

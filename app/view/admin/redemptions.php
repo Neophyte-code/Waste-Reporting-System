@@ -7,6 +7,42 @@
     <title>Barangay Admin - Redemptions</title>
     <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/css/output.css">
 </head>
+<style>
+    .flash-message {
+        position: fixed;
+        top: 5px;
+        right: 5px;
+        color: white;
+        padding: 16px 24px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+        text-align: center;
+        opacity: 1;
+        transition: opacity 0.8s ease, transform 0.8s ease;
+        z-index: 9999;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .flash-message.flash-success {
+        background: #22C55E;
+    }
+
+    .flash-message.flash-failed {
+        background: #EF4444;
+    }
+
+    .flash-message.flash-hide {
+        opacity: 0;
+        transform: translateX(10px);
+    }
+</style>
+<!-- Display flash message -->
+<?php if (!empty($data['message'])): ?>
+    <div id="flash-message" class="flash-message flash-<?= htmlspecialchars($data['messageType'] ?? 'success') ?>">
+        <?= htmlspecialchars($data['message']); ?>
+    </div>
+<?php endif; ?>
 
 <body class="min-h-screen h-screen  overflow-hidden flex flex-col bg-gradient-to-r from-green-100 via-emerald-200 to-green-500">
 
@@ -64,7 +100,6 @@
                 <p>May 28, 2025</p>
             </div>
         </aside>
-
         <!-- Main Content -->
         <main class="p-4 md:p-6 flex-1 relative overflow-hidden h-full">
 
@@ -174,10 +209,15 @@
                         </div>
                     </div>
 
-                    <!-- Action Buttons -->
-                    <div class="flex justify-center">
-                        <button id="approve" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">Approve</button>
-                    </div>
+
+                    <form id="approveForm" action="<?= URL_ROOT ?>/admin/approveRedemption" method="POST">
+                        <input type="hidden" name="id" id="modalRedemptionId">
+                        <div class="flex justify-center">
+                            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">
+                                Approve
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </main>
@@ -237,22 +277,36 @@
             const qrImage = document.getElementById("modalQr");
             const gcashNameInput = document.getElementById("modalGcashName");
             const gcashNumberInput = document.getElementById("modalGcashNumber");
+            const fullnameText = document.getElementById("modalFullname");
+            const emailText = document.getElementById("modalEmail");
+
+            // Hidden input for approve form
+            const redemptionIdInput = document.getElementById("modalRedemptionId");
+
+            // Base URL
             const baseURL = "<?= URL_ROOT ?>/";
 
             // Show modal with data
             scanButtons.forEach(button => {
                 button.addEventListener("click", function() {
+                    const id = this.getAttribute("data-id");
+                    const fullname = this.getAttribute("data-fullname");
+                    const email = this.getAttribute("data-email");
                     const amount = this.getAttribute("data-amount");
                     const qr = this.getAttribute("data-qr");
                     const gcashName = this.getAttribute("data-gcash-name");
                     const gcashNumber = this.getAttribute("data-gcash");
 
                     // Update modal fields
+                    fullnameText.textContent = fullname;
+                    emailText.textContent = email;
                     amountInput.value = amount;
-                    console.log("QR path:", qr);
                     qrImage.src = baseURL + qr;
                     gcashNameInput.value = gcashName;
                     gcashNumberInput.value = gcashNumber;
+
+                    // Set redemption ID into form hidden input
+                    redemptionIdInput.value = id;
 
                     // Show modal
                     modalOverlay.classList.remove("hidden");
@@ -260,7 +314,7 @@
                 });
             });
 
-            // Close modal
+            // Close modal (X button)
             closeModal.addEventListener("click", function() {
                 modalOverlay.classList.add("hidden");
                 scanModal.classList.add("hidden");
@@ -274,7 +328,17 @@
                 }
             });
         });
+
+        //flash message
+        const flashMessage = document.getElementById('flash-message');
+        if (flashMessage) {
+            setTimeout(() => {
+                flashMessage.classList.add('flash-hide');
+                setTimeout(() => flashMessage.remove(), 800);
+            }, 3000);
+        }
     </script>
+
 </body>
 
 </html>

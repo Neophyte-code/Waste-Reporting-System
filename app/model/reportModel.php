@@ -427,4 +427,17 @@ class ReportModel
             return [];
         }
     }
+
+    // Approve redemption request by ID (for admin)
+    public function approveRequest($id)
+    {
+        try {
+            $stmt = $this->db->prepare("UPDATE redemption_requests SET status = 'approved' WHERE id = :id");
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Database error: " . $e->getMessage());
+            return false;
+        }
+    }
 }

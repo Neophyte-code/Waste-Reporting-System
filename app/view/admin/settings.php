@@ -196,13 +196,6 @@
 
               <div class="flex flex-col justify-between">
 
-                <p class="font-semibold">Contact</p>
-                <input id="contactInput" type="text" value="096521485692" class="w-full border border-gray-300 rounded p-2 mt-1 text-md focus:outline-none" readonly>
-
-              </div>
-
-              <div class="flex flex-col justify-between">
-
                 <p class="font-semibold">Email Address</p>
                 <input id="emailInput" type="text" value="<?php echo htmlspecialchars($data['user']['email'] ?? 'guest@example.com'); ?>" class="w-full border border-gray-300 rounded p-2 mt-1 text-md focus:outline-none" readonly>
 
