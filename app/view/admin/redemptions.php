@@ -95,9 +95,10 @@
                 </ul>
             </nav>
 
+            <!-- time and date -->
             <div class="mt-auto text-center text-xs text-gray-600">
-                <p>Tuesday | 8:00 am</p>
-                <p>May 28, 2025</p>
+                <p id="sidebar-time"></p>
+                <p id="sidebar-date"></p>
             </div>
         </aside>
         <!-- Main Content -->
@@ -263,6 +264,37 @@
                 }
             }
         });
+
+        // time and date
+        function updateDateTime() {
+            const timeElement = document.getElementById("sidebar-time");
+            const dateElement = document.getElementById("sidebar-date");
+
+            const now = new Date();
+
+            // Format options
+            const optionsTime = {
+                weekday: "long",
+                hour: "numeric",
+                minute: "numeric",
+                hour12: true
+            };
+            const optionsDate = {
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+            };
+
+            // Update content
+            timeElement.textContent = now.toLocaleTimeString("en-US", optionsTime);
+            dateElement.textContent = now.toLocaleDateString("en-US", optionsDate);
+        }
+
+        // Run once immediately
+        updateDateTime();
+
+        // Update every 30 seconds
+        setInterval(updateDateTime, 30000);
     </script>
     <!-- for redemptions modal functionality -->
     <script>
