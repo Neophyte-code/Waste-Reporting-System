@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Barangay Admin</title>
+  <title>Barangay Admin - Settings</title>
   <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/css/output.css">
   <style>
     /* Dark mode overrides (class-based) */
@@ -94,7 +94,7 @@
       </nav>
 
       <!-- time and date -->
-      <div class="mt-auto text-center text-xs text-gray-600">
+      <div class="mt-auto text-center text-xs text-black">
         <p id="sidebar-time"></p>
         <p id="sidebar-date"></p>
       </div>
@@ -117,46 +117,6 @@
 
         <div class="flex justify-between mb-4">
           <h2 class="text-xl font-semibold ">Settings</h2>
-
-          <div class="flex gap-4">
-
-            <label class="flex items-center relative">
-              <input class="peer hidden" id="toggle" type="checkbox" />
-              <div
-                class="relative w-[70px] h-[30px] bg-white peer-checked:bg-zinc-500 rounded-full after:absolute after:content-[''] after:w-[20px] after:h-[20px] after:bg-gradient-to-r from-orange-500 to-yellow-400 peer-checked:after:from-zinc-900 peer-checked:after:to-zinc-900 after:rounded-full after:top-[5px] after:left-[8px] active:after:w-[50px] peer-checked:after:left-[62px] peer-checked:after:translate-x-[-100%] shadow-sm duration-300 after:duration-300 after:shadow-md"></div>
-              <svg
-                height="0"
-                width="100"
-                viewBox="0 0 24 24"
-                data-name="Layer 1"
-                id="Layer_1"
-                xmlns="http://www.w3.org/2000/svg"
-                class="fill-white peer-checked:opacity-60 absolute w-6 h-3 left-[6px]">
-                <path
-                  d="M12,17c-2.76,0-5-2.24-5-5s2.24-5,5-5,5,2.24,5,5-2.24,5-5,5ZM13,0h-2V5h2V0Zm0,19h-2v5h2v-5ZM5,11H0v2H5v-2Zm19,0h-5v2h5v-2Zm-2.81-6.78l-1.41-1.41-3.54,3.54,1.41,1.41,3.54-3.54ZM7.76,17.66l-1.41-1.41-3.54,3.54,1.41,1.41,3.54-3.54Zm0-11.31l-3.54-3.54-1.41,1.41,3.54,3.54,1.41-1.41Zm13.44,13.44l-3.54-3.54-1.41,1.41,3.54,3.54,1.41-1.41Z"></path>
-              </svg>
-              <svg
-                height="512"
-                width="512"
-                viewBox="0 0 24 24"
-                data-name="Layer 1"
-                id="Layer_1"
-                xmlns="http://www.w3.org/2000/svg"
-                class="fill-black opacity-60 peer-checked:opacity-70 peer-checked:fill-white absolute w-6 h-3 right-[6px]">
-                <path
-                  d="M12.009,24A12.067,12.067,0,0,1,.075,10.725,12.121,12.121,0,0,1,10.1.152a13,13,0,0,1,5.03.206,2.5,2.5,0,0,1,1.8,1.8,2.47,2.47,0,0,1-.7,2.425c-4.559,4.168-4.165,10.645.807,14.412h0a2.5,2.5,0,0,1-.7,4.319A13.875,13.875,0,0,1,12.009,24Zm.074-22a10.776,10.776,0,0,0-1.675.127,10.1,10.1,0,0,0-8.344,8.8A9.928,9.928,0,0,0,4.581,18.7a10.473,10.473,0,0,0,11.093,2.734.5.5,0,0,0,.138-.856h0C9.883,16.1,9.417,8.087,14.865,3.124a.459.459,0,0,0,.127-.465.491.491,0,0,0-.356-.362A10.68,10.68,0,0,0,12.083,2ZM20.5,12a1,1,0,0,1-.97-.757l-.358-1.43L17.74,9.428a1,1,0,0,1,.035-1.94l1.4-.325.351-1.406a1,1,0,0,1,1.94,0l.355,1.418,1.418.355a1,1,0,0,1,0,1.94l-1.418.355-.355,1.418A1,1,0,0,1,20.5,12ZM16,14a1,1,0,0,0,2,0A1,1,0,0,0,16,14Zm6,4a1,1,0,0,0,2,0A1,1,0,0,0,22,18Z"></path>
-              </svg>
-            </label>
-
-            <button class="Btn flex flex-col bg-green-400 hover:bg-green-500 py-2 px-5 rounded-md">
-              <svg class="svgIcon h-2.5 w-4" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
-                <path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
-              </svg>
-              <span class="icon2 w-30 h-1 border-b-2 border-r-2 border-l-2 border-black"></span>
-            </button>
-
-          </div>
-
         </div>
 
         <div class="bg-green-50 p-2 sm:p-6 rounded-lg shadow flex flex-col md:flex-row gap-6 max-h-[calc(120vh-100px)]">
@@ -201,6 +161,19 @@
                 <input id="emailInput" type="text" value="<?php echo htmlspecialchars($data['user']['email'] ?? 'guest@example.com'); ?>" class="w-full border border-gray-300 rounded p-2 mt-1 text-md focus:outline-none" readonly>
 
               </div>
+
+              <div class="flex l justify-between items-center border-t-2 border-gray-400 mt-6 py-5">
+
+                <p class="font-semibold">Records</p>
+
+                <select class="w-40 py-1 px-2 outline-none border-gray-900" name="" id="">
+                  <option>Select year</option>
+                  <option value="">2025</option>
+                  <option value="">2026</option>
+                  <option value="">2027</option>
+                </select>
+              </div>
+              <button class="w-full py-1 text-white text-center bg-green-400 rounded hover:bg-green-500 cursor-pointer">Download Records</button>
             </div>
           </div>
 
@@ -296,97 +269,6 @@
 
       // Update every 30 seconds
       setInterval(updateDateTime, 30000);
-
-      // Profile edit/update/save and persistence
-      (function() {
-        const editBtn = document.getElementById('editBtn');
-        const updateBtn = document.getElementById('updateBtn');
-        const saveBtn = document.getElementById('saveBtn');
-        const nameInput = document.getElementById('nameInput');
-        const addressInput = document.getElementById('addressInput');
-        const contactInput = document.getElementById('contactInput');
-        const emailInput = document.getElementById('emailInput');
-
-        function setReadOnly(readonly) {
-          [nameInput, addressInput, contactInput, emailInput].forEach(i => {
-            if (!i) return;
-            i.readOnly = !!readonly;
-            i.classList.toggle('bg-white', !readonly);
-          });
-        }
-
-        function loadProfile() {
-          try {
-            const raw = localStorage.getItem('profile');
-            if (!raw) return;
-            const p = JSON.parse(raw);
-            if (p.name) nameInput.value = p.name;
-            if (p.address) addressInput.value = p.address;
-            if (p.contact) contactInput.value = p.contact;
-            if (p.email) emailInput.value = p.email;
-          } catch (e) {
-            /* ignore */
-          }
-        }
-
-        function saveProfile() {
-          const p = {
-            name: nameInput.value,
-            address: addressInput.value,
-            contact: contactInput.value,
-            email: emailInput.value
-          };
-          localStorage.setItem('profile', JSON.stringify(p));
-        }
-
-        loadProfile();
-        setReadOnly(true);
-
-        if (editBtn) editBtn.addEventListener('click', () => {
-          setReadOnly(false);
-          editBtn.classList.add('hidden');
-          updateBtn.classList.remove('hidden');
-          saveBtn.classList.remove('hidden');
-        });
-
-        if (updateBtn) updateBtn.addEventListener('click', () => {
-          // Cancel edits: reload profile values and exit edit mode
-          loadProfile();
-          setReadOnly(true);
-          editBtn.classList.remove('hidden');
-          updateBtn.classList.add('hidden');
-          saveBtn.classList.add('hidden');
-        });
-
-        if (saveBtn) saveBtn.addEventListener('click', () => {
-          saveProfile();
-          setReadOnly(true);
-          editBtn.classList.remove('hidden');
-          updateBtn.classList.add('hidden');
-          saveBtn.classList.add('hidden');
-        });
-      })();
-
-      // Dark toggle (checkbox #toggle)
-      (function() {
-        const darkToggleCheckbox = document.getElementById('toggle');
-
-        function applyDark(enabled) {
-          document.body.classList.toggle('dark', enabled);
-          try {
-            localStorage.setItem('darkMode', enabled ? 'true' : 'false');
-          } catch (e) {}
-        }
-        // init
-        const stored = localStorage.getItem('darkMode');
-        if (stored === 'true') {
-          applyDark(true);
-          if (darkToggleCheckbox) darkToggleCheckbox.checked = true;
-        }
-        if (darkToggleCheckbox) darkToggleCheckbox.addEventListener('change', (e) => {
-          applyDark(!!e.target.checked);
-        });
-      })();
 
       // Logout modal handlers
       (function() {

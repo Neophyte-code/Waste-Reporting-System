@@ -2,14 +2,12 @@
 
 class App
 {
-
     protected $controller = 'Auth'; // Default controller
     protected $method = 'index'; // Default method
     protected $params = []; // Parameters
 
     public function __construct()
     {
-
         $url = $this->parseUrl();
 
         // Check if the first URL segment exists and if the controller file exists
@@ -31,13 +29,23 @@ class App
                 unset($url[1]);
             } else {
                 // Method doesn't exist, show 404
-                $this->controller = new PageError();
-                $this->method = 'notFound';
+                $this->loadNotFound();
+                return;
             }
         }
 
         // Set parameters
         $this->params = $url ? array_values($url) : [];
+
+        // ✅ Check if parameter count is valid
+        $reflection = new ReflectionMethod($this->controller, $this->method);
+        $requiredParams = $reflection->getNumberOfRequiredParameters();
+        $maxParams = $reflection->getNumberOfParameters();
+
+        if (count($this->params) < $requiredParams || count($this->params) > $maxParams) {
+            $this->loadNotFound();
+            return;
+        }
 
         // Call the method with the parameters
         call_user_func_array([$this->controller, $this->method], $this->params);
@@ -49,5 +57,14 @@ class App
             return explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL));
         }
         return [];
+    }
+
+    private function loadNotFound()
+    {
+        require_once '../app/controller/PageError.php';
+        $this->controller = new PageError();
+        $this->method = 'notFound';
+        $this->params = [];
+        call_user_func([$this->controller, $this->method]);
     }
 }

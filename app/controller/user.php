@@ -113,10 +113,12 @@ class User extends Controller
             if ($userModel->updateProfile($data)) {
                 // Update session data
                 $_SESSION['user'] = [
+                    'id' => $_SESSION['user']['id'],
+                    'role' => $_SESSION['user']['role'],
                     'email' => $data['email'],
                     'firstname' => $data['firstname'],
                     'lastname' => $data['lastname'],
-                    'barangay' => $data['barangay'],
+                    'barangay_id' => $data['barangay'],
                     'profile_picture' => $data['profile_picture']
                 ];
                 $_SESSION['profile_success'] = 'Profile updated successfully';

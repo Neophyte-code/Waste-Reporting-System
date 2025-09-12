@@ -184,7 +184,7 @@
           <!-- modal header -->
           <div class="mb-4">
             <p class="text-xl text-center text-neutral-800 font-semibold pb-5">
-              ADD LITTERER RECORD
+              LITTERER RECORD
             </p>
           </div>
 

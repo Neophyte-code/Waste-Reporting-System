@@ -28,18 +28,6 @@
                     <li>
                         <a class="hover:text-green-500" href="<?php echo URL_ROOT; ?>/user/announcement">ANNOUNCEMENT</a>
                     </li>
-                    <li class="relative">
-                        <button onclick="toggleDropdown()" class="hover:text-green-500 cursor-pointer flex items-center gap-1 font-bold">
-                            REPORT
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.23 8.29a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                        <div id="reportDropdown" class="absolute hidden bg-white shadow-lg mt-2 rounded w-44 z-20 text-sm">
-                            <a href="<?php echo URL_ROOT; ?>/user/waste" class="block px-4 py-2 hover:bg-green-100 text-black">Report Waste</a>
-                            <a href="<?php echo URL_ROOT; ?>/user/litterer" class="block px-4 py-2 hover:bg-green-100 text-black">Report Litterer</a>
-                        </div>
-                    </li>
                 </ul>
             </div>
 
