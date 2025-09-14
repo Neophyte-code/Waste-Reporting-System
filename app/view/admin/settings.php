@@ -6,40 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Barangay Admin - Settings</title>
   <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/css/output.css">
-  <style>
-    /* Dark mode overrides (class-based) */
-    body.dark {
-      background: #071218 !important;
-      color: #dff7ea;
-    }
 
-    body.dark .bg-green-100 {
-      background-color: #0e2a21 !important;
-    }
-
-    body.dark .bg-green-50 {
-      background-color: #072015 !important;
-    }
-
-    body.dark .bg-gradient-to-br {
-      background: linear-gradient(135deg, #07221a, #0a2431) !important;
-    }
-
-    body.dark input,
-    body.dark textarea {
-      background-color: #0f2b22 !important;
-      color: #e6f7ee !important;
-      border-color: #234 !important;
-    }
-
-    body.dark .text-gray-600 {
-      color: #9fcfb6 !important;
-    }
-
-    body.dark .svgIcon {
-      filter: brightness(0.9) saturate(0.6);
-    }
-  </style>
 </head>
 
 <body class="bg-green-100 font-sans flex flex-col min-h-screen">
@@ -119,61 +86,86 @@
           <h2 class="text-xl font-semibold ">Settings</h2>
         </div>
 
-        <div class="bg-green-50 p-2 sm:p-6 rounded-lg shadow flex flex-col md:flex-row gap-6 max-h-[calc(120vh-100px)]">
+        <div class="bg-green-50 p-2 sm:p-6 rounded-lg shadow flex flex-col md:flex-row gap-6 lg:gap-6 h-[calc(100vh-100px)] lg:h-[calc(85vh-100px)]">
 
           <!-- Left Side -->
-          <div class="flex flex-col sm:justify-center sm:items-center w-full ">
+          <div class="flex flex-col justify-center items-center w-full ">
 
-            <div class="sm:w-[450px] md:w-[400px] lg:w-[500px] space-y-2 p-1 sm:p-4">
+            <div class="w-[450px] sm:w-[500px] md:w-[600px] lg:w-[900px] flex flex-col lg:flex-row space-y-5 lg:space-y-0 lg:space-x-5 p-1 sm:px-4">
 
-              <div class="flex justify-end gap-2 pt-1">
-                <div class="flex justify-end gap-2">
-                  <button id="editBtn" class="px-3 py-1 bg-green-400 text-white rounded">Edit</button>
-                  <button id="updateBtn" class="px-3 py-1 bg-yellow-400 text-white rounded hidden">Cancel</button>
-                  <button id="saveBtn" class="px-3 py-1 bg-blue-600 text-white rounded hidden">Save</button>
+              <div class="flex-1 pb-4 lg:pb-0 border-b-2 lg:border-b-0  lg:border-r-2  border-gray-300 px-6 py-2  ">
+                <div class="flex justify-end gap-2 pt-1">
+                  <div class="flex justify-end gap-2">
+                    <button id="editBtn" class="px-3 py-1 bg-green-400 text-white rounded">Edit</button>
+                    <button id="updateBtn" class="px-3 py-1 bg-yellow-400 text-white rounded hidden">Cancel</button>
+                    <button id="saveBtn" class="px-3 py-1 bg-blue-600 text-white rounded hidden">Save</button>
+                  </div>
+                  <button id="logoutBtn" class="flex bg-green-400 hover:bg-green-500 py-2 px-4 items-center rounded-md">
+                    <svg class="svgIcon h-3.5 w-4 -rotate-90" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
+                    </svg>
+                    <span class="icon2 w-1 h-4 border-b-2 border-r-2 border-t-2 border-black"></span>
+                  </button>
                 </div>
-                <button id="logoutBtn" class="flex bg-green-400 hover:bg-green-500 py-2 px-4 items-center rounded-md">
-                  <svg class="svgIcon h-3.5 w-4 -rotate-90" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
-                  </svg>
-                  <span class="icon2 w-1 h-4 border-b-2 border-r-2 border-t-2 border-black"></span>
-                </button>
+
+
+                <div class="flex flex-col justify-between">
+
+                  <p class="font-semibold">Name</p>
+                  <input id="nameInput" type="text" value="<?php echo htmlspecialchars($data['user']['firstname'] . ' ' . $data['user']['lastname'] ?? 'Guest User'); ?>" class="w-full border border-gray-300 rounded p-2 mt-1 text-md focus:outline-none" readonly>
+
+                </div>
+
+                <div class="flex flex-col justify-between">
+
+                  <p class="font-semibold">Barangay</p>
+                  <input id="addressInput" type="text" value="<?php echo htmlspecialchars($data['user']['barangay'] ?? 'Unknown'); ?>" class="w-full border border-gray-300 rounded p-2 mt-1 text-md focus:outline-none" readonly>
+
+                </div>
+
+                <div class="flex flex-col justify-between">
+
+                  <p class="font-semibold">Email Address</p>
+                  <input id="emailInput" type="text" value="<?php echo htmlspecialchars($data['user']['email'] ?? 'guest@example.com'); ?>" class="w-full border border-gray-300 rounded p-2 mt-1 text-md focus:outline-none" readonly>
+
+                </div>
               </div>
 
+              <div class=" flex-1 flex flex-col justify-evenly items-center px-2 py-4  ">
+                <p class="text-gray font-semibold text-xl tracking-tight">Records</p>
+                <div class="flex flex-wrap space-y-6 space-x-4">
+                  <!-- Year -->
+                  <select id="year" class="w-40 sm:w-35 px-4 py-2 bg-gray-50 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent text-sm font-medium text-gray-700 transition duration-200">
+                    <option value="">Select year</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                  </select>
 
-              <div class="flex flex-col justify-between">
+                  <!-- Month -->
+                  <select id="month" class="w-40 sm:w-35 px-4 py-2 bg-gray-50 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent text-sm font-medium text-gray-700 transition duration-200">
+                    <option value="">Select month</option>
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                  </select>
 
-                <p class="font-semibold">Name</p>
-                <input id="nameInput" type="text" value="<?php echo htmlspecialchars($data['user']['firstname'] . ' ' . $data['user']['lastname'] ?? 'Guest User'); ?>" class="w-full border border-gray-300 rounded p-2 mt-1 text-md focus:outline-none" readonly>
-
+                  <!-- Day -->
+                  <input type="number" id="day" min="1" max="31" placeholder="Day (1-31)" class="w-35 h-fit px-4 py-2 bg-gray-50 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent text-sm font-medium text-gray-700 transition duration-200" />
+                </div>
+                <button id="downloadBtn"
+                  class="w-xs py-1 shadow-lg text-white text-center bg-green-400 rounded hover:bg-green-500 cursor-pointer">
+                  Download Records </button>
               </div>
-
-              <div class="flex flex-col justify-between">
-
-                <p class="font-semibold">Barangay</p>
-                <input id="addressInput" type="text" value="<?php echo htmlspecialchars($data['user']['barangay'] ?? 'Unknown'); ?>" class="w-full border border-gray-300 rounded p-2 mt-1 text-md focus:outline-none" readonly>
-
-              </div>
-
-              <div class="flex flex-col justify-between">
-
-                <p class="font-semibold">Email Address</p>
-                <input id="emailInput" type="text" value="<?php echo htmlspecialchars($data['user']['email'] ?? 'guest@example.com'); ?>" class="w-full border border-gray-300 rounded p-2 mt-1 text-md focus:outline-none" readonly>
-
-              </div>
-
-              <div class="flex l justify-between items-center border-t-2 border-gray-400 mt-6 py-5">
-
-                <p class="font-semibold">Records</p>
-
-                <select class="w-40 py-1 px-2 outline-none border-gray-900" name="" id="">
-                  <option>Select year</option>
-                  <option value="">2025</option>
-                  <option value="">2026</option>
-                  <option value="">2027</option>
-                </select>
-              </div>
-              <button class="w-full py-1 text-white text-center bg-green-400 rounded hover:bg-green-500 cursor-pointer">Download Records</button>
             </div>
           </div>
 
@@ -304,6 +296,25 @@
           if (e.key === 'Escape') hideLogoutModal();
         });
       })();
+
+
+
+      // download data
+      document.getElementById("downloadBtn").addEventListener("click", function() {
+        const year = document.getElementById("year").value;
+        const month = document.getElementById("month").value;
+        const day = document.getElementById("day").value;
+
+        const params = new URLSearchParams({
+          year,
+          month,
+          day
+        });
+
+        const baseUrl = "<?php echo URL_ROOT; ?>"
+
+        window.open(baseUrl + "/admin/downloadSummaryReport?" + params.toString(), "_blank");
+      });
     </script>
 </body>
 

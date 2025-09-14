@@ -13,7 +13,9 @@
     <header class="bg-white w-full">
         <nav class="flex justify-between items-center w-[92%] mx-auto">
             <div>
-                <img class="w-27 cursor-pointer " src="<?php echo URL_ROOT; ?>/images/WasteWise.png" alt="...">
+                <a href="<?php echo URL_ROOT; ?>/user">
+                    <img class="w-[100px] cursor-pointer" src="<?php echo URL_ROOT; ?>/images/WasteWise.png" alt="WasteWise Logo">
+                </a>
             </div>
             <div class="nav-links duration-500 md:static absolute bg-white md:min-h-fit min-h-[38vh] left-0 top-[-100%] md:w-auto z-1 w-full flex items-center px-5 py-8 sm:py-0">
                 <ul class="w-full flex items-center justify-center md:flex-row flex-col md:text-md md:h-full md:items-center md:gap-[2vw] gap-8 font-bold">

@@ -2,7 +2,8 @@
     "require": {
         "vlucas/phpdotenv": "^5.6",
         "gemini-api-php/client": "^1.7",
-        "guzzlehttp/guzzle": "^7.9"
+        "guzzlehttp/guzzle": "^7.9",
+        "setasign/fpdf": "^1.8"
     },
     "config": {
         "allow-plugins": {
