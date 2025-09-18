@@ -119,7 +119,7 @@
           <img onclick="openLittererModal()" src="<?php echo URL_ROOT; ?>/images/icons/plus.png" alt="" class="h-10">
         </div>
 
-        <div class="max-h-[calc(93vh-100px)] sm:max-h-[calc(89vh-100px)] overflow-y-auto rounded-md border">
+        <div class="max-h-[calc(93vh-100px)] sm:max-h-[calc(89vh-100px)] overflow-y-auto rounded-md">
           <table class="w-full text-sm border-collapse table-fixed">
             <thead class="sticky top-0 bg-green-500 text-white">
               <tr>
@@ -139,7 +139,7 @@
                 </tr>
               <?php else: ?>
                 <?php foreach ($data['litterer'] as $litterer): ?>
-                  <tr class="border-b hover:bg-gray-200">
+                  <tr class="border-b border-gray-400 hover:bg-gray-200">
                     <td class="py-2 px-4 text-center"><?= htmlspecialchars($litterer['name']) ?>
                       <dl class="lg:hidden gap-1">
                         <dt class="sr-only ">Address</dt>

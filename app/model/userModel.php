@@ -99,8 +99,6 @@ class UserModel
         return ($result && isset($result['points'])) ? (float)$result['points'] : 0.00;
     }
 
-
-
     //function to get all users (for admin)
     public function getDashboardStats($barangay_id)
     {

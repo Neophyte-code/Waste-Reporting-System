@@ -104,7 +104,7 @@
             <div class="bg-green-100 shadow-xl rounded-md p-2">
                 <h2 class="text-xl font-semibold mb-4">View Reports</h2>
 
-                <div class="max-h-[calc(92vh-100px)] sm:max-h-[calc(91vh-100px)]max-h-[calc(92vh-100px)] sm:max-h-[calc(91vh-100px)] overflow-auto rounded-md border">
+                <div class="max-h-[calc(92vh-100px)] sm:max-h-[calc(91vh-100px)]max-h-[calc(92vh-100px)] sm:max-h-[calc(91vh-100px)] overflow-auto rounded-md">
                     <!-- table -->
                     <table class="w-full text-sm border-collapse  rounded-md">
                         <thead>
@@ -126,7 +126,7 @@
                             <?php else: ?>
                                 <?php foreach ($data['reports'] as $report): ?>
 
-                                    <tr class="border-b">
+                                    <tr class="border-b border-gray-400">
                                         <td class="text-base py-2 px-4"><?= htmlspecialchars($report['firstname'] . ' ' . $report['lastname']) ?>
                                             <dl class="lg:hidden">
                                                 <dt class="sr-only">Email Address</dt>

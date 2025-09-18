@@ -133,7 +133,7 @@
 
               <div class=" flex-1 flex flex-col justify-evenly items-center px-2 py-4  ">
                 <p class="text-gray font-semibold text-xl tracking-tight">Records</p>
-                <div class="flex flex-wrap space-y-6 space-x-4">
+                <div class="flex  space-y-6 space-x-4">
                   <!-- Year -->
                   <select id="year" class="w-40 sm:w-35 px-4 py-2 bg-gray-50 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent text-sm font-medium text-gray-700 transition duration-200">
                     <option value="">Select year</option>
@@ -283,7 +283,7 @@
         });
         if (cancelBtn) cancelBtn.addEventListener('click', hideLogoutModal);
         if (confirmBtn) confirmBtn.addEventListener('click', () => {
-          hideLogoutModal(); /* add logout logic here */
+          hideLogoutModal();
         });
 
         // close when clicking on overlay background

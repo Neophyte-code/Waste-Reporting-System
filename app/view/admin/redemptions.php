@@ -117,7 +117,7 @@
             <div class="bg-green-100 shadow-xl rounded-md p-2">
                 <h2 class="text-xl font-semibold mb-4">Redemptions</h2>
 
-                <div class="max-h-[calc(92vh-100px)] sm:max-h-[calc(91vh-100px)]max-h-[calc(92vh-100px)] sm:max-h-[calc(91vh-100px)] overflow-auto rounded-md border">
+                <div class="max-h-[calc(92vh-100px)] sm:max-h-[calc(91vh-100px)]max-h-[calc(92vh-100px)] sm:max-h-[calc(91vh-100px)] overflow-auto rounded-md border-none">
                     <table class="w-full text-sm border-collapse  rounded-md">
                         <thead>
                             <tr class="text-white">
@@ -127,16 +127,16 @@
                                 <th class="sticky top-0 z-10 bg-green-500 p-2.5 text-left w-[110px]">Action</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white">
+                        <tbody class="bg-white ">
                             <?php if (empty($data['redemption'])): ?>
                                 <tr>
-                                    <td colspan="5" class="text-center py-4 text-gray-500">
+                                    <td colspan="5" class="text-center py-4 text-gray-500 ">
                                         No Waste Reports Found
                                     </td>
                                 </tr>
                             <?php else: ?>
                                 <?php foreach ($data['redemption'] as $redemption): ?>
-                                    <tr class="border-b">
+                                    <tr class="border-b border-gray-400">
                                         <td class="text-base py-2 px-4"><?= htmlspecialchars($redemption['firstname'] . ' ' . $redemption['lastname']) ?>
                                             <dl class="lg:hidden gap-1">
                                                 <dt class="sr-only">Email Address</dt>
@@ -147,7 +147,7 @@
                                         </td>
                                         <td class="hidden md:table-cell p-2.5 text-blue-600"><?= htmlspecialchars($redemption['email']) ?></td>
                                         <td class="hidden lg:table-cell p-2.5"><?= htmlspecialchars($redemption['request_date']) ?></td>
-                                        <td class=" p-2.5">
+                                        <td class="p-2.5">
                                             <button
                                                 class="scan-btn bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded"
                                                 data-id="<?= $redemption['id'] ?>"

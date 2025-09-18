@@ -105,7 +105,7 @@
       <div class="bg-green-100 shadow-lg rounded-md p-2 sm:p-4">
         <h2 class="text-xl font-semibold mb-4">User Information</h2>
 
-        <div class="max-h-[calc(92vh-100px)] sm:max-h-[calc(86vh-100px)] overflow-auto border">
+        <div class="max-h-[calc(92vh-100px)] sm:max-h-[calc(86vh-100px)] overflow-auto rounded">
 
           <!-- display flash message -->
           <?php if (!empty($data['message'])): ?>
@@ -128,7 +128,7 @@
                 <p class="text-center">No Users Found</p>
               <?php else: ?>
                 <?php foreach ($data['users'] as $user): ?>
-                  <tr class="border-b hover:bg-gray-200">
+                  <tr class="border-b border-gray-400 hover:bg-gray-200">
                     <td class="text-base py-2 px-4"><?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']) ?>
                       <dl class="lg:hidden gap-1">
                         <dt class="sr-only">Email Address</dt>
