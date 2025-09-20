@@ -9,6 +9,7 @@ class Auth extends Controller
         $this->view("auth/index", []);
     }
 
+    // function for user registration
     public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -60,6 +61,7 @@ class Auth extends Controller
         }
     }
 
+    // function for loggin in
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -122,6 +124,7 @@ class Auth extends Controller
         }
     }
 
+    // function for logging out
     public function logout()
     {
         session_destroy();
