@@ -19,11 +19,80 @@ class Superadmin extends Controller
     public function index()
     {
 
+        //pass user data to the view
         $userData = $_SESSION['user'];
 
+        $message = null;
+        $messageType = null;
+
+        if (!empty($_SESSION['failed'])) {
+            $message = $_SESSION['failed'];
+            $messageType = 'failed';
+            unset($_SESSION['failed']);
+        } elseif (!empty($_SESSION['success'])) {
+            $message = $_SESSION['success'];
+            $messageType = 'success';
+            unset($_SESSION['success']);
+        }
+
         $this->view('superadmin/admin', [
-            'user' => $userData
+            'user' => $userData,
+            'message' => $message,
+            'messageType' => $messageType,
         ]);
+    }
+
+    //function to add a admin accoun
+    public function createAdmin()
+    {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $data = [
+                'firstname' => htmlspecialchars(trim($_POST['firstname'])),
+                'lastname' => htmlspecialchars(trim($_POST['lastname'])),
+                'password' => htmlspecialchars(trim($_POST['password'])),
+                'email' => htmlspecialchars(trim($_POST['email'])),
+                'barangay' => htmlspecialchars(trim($_POST['barangay']))
+            ];
+
+            //get the user model
+            $userModel = $this->model('UserModel');
+
+            //field validation ensure that allfields have value
+            if (empty($data['firstname']) || empty($data['lastname']) || empty($data['email']) || empty($data['barangay'])) {
+                $_SESSION['failed'] = 'All fields are required!';
+                header('Location: ' . URL_ROOT . '/superadmin');
+                exit;
+            }
+
+            // Validate if email is already registered
+            if ($userModel->emailExist($data['email'])) {
+                $_SESSION['failed'] = 'Email already registered!';
+                header('Location: ' . URL_ROOT . '/superadmin');
+                exit;
+            }
+
+            // Validate the chosen barangay
+            $barangay_id = $userModel->getBarangayIdByName($data['barangay']);
+            if (!$barangay_id) {
+                $_SESSION['failed'] = 'Invalid barangay selected';
+                exit;
+            }
+
+            // assign the validated choosen barangay
+            $data['barangay'] = $barangay_id;
+
+            // pass the data to the model
+            if ($userModel->createAdmin($data)) {
+                $_SESSION['success'] = "Account created successfully";
+            } else {
+                $_SESSION['failed'] = "Failed to create account";
+            }
+
+            header('Location: ' . URL_ROOT . '/superadmin');
+            exit;
+        }
     }
 
     //function for displaying UI for managing admins

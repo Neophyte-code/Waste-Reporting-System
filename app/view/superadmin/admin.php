@@ -5,8 +5,44 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Admin Management — Super Admin</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="<?php echo URL_ROOT; ?>/css/output.css" rel="stylesheet">
 </head>
+<style>
+    .flash-message {
+        position: fixed;
+        top: 5px;
+        right: 5px;
+        color: white;
+        padding: 16px 24px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+        text-align: center;
+        opacity: 1;
+        transition: opacity 0.8s ease, transform 0.8s ease;
+        z-index: 9999;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .flash-message.flash-success {
+        background: #22C55E;
+    }
+
+    .flash-message.flash-failed {
+        background: #EF4444;
+    }
+
+    .flash-message.flash-hide {
+        opacity: 0;
+        transform: translateX(10px);
+    }
+</style>
+<!-- Display flash message -->
+<?php if (!empty($data['message'])): ?>
+    <div id="flash-message" class="flash-message flash-<?= htmlspecialchars($data['messageType'] ?? 'success') ?>">
+        <?= htmlspecialchars($data['message']); ?>
+    </div>
+<?php endif; ?>
 
 <body class="bg-green-50 text-green-900 overflow-hidden">
     <div class="min-h-screen flex ">
@@ -327,25 +363,34 @@
     </div>
 
     <!-- Add Modal -->
-    <div id="addModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50">
+    <div id="addModal" class="fixed inset-0 hidden items-center justify-center z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
             <h2 class="text-lg font-semibold text-green-800 mb-4">Add Admin</h2>
-            <form id="addForm" class="space-y-3">
+            <form id="addForm" action="<?php echo URL_ROOT; ?>/superadmin/createAdmin" method="POST" class="space-y-3">
                 <div>
-                    <label class="block text-sm font-medium text-green-700">Name</label>
-                    <input type="text" id="addName" class="w-full p-2 border rounded text-sm outline-none focus:outline-none" required>
+                    <label class="block text-sm font-medium text-green-700">Firstname</label>
+                    <input name="firstname" type="text" id="addFirstname" class="w-full p-2 border rounded text-sm outline-none focus:outline-none" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-green-700">Lastname</label>
+                    <input name="lastname" type="text" id="addLastname" class="w-full p-2 border rounded text-sm outline-none focus:outline-none" required>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-green-700">Password</label>
-                    <input type="text" id="addPassword" class="w-full p-2 border rounded text-sm outline-none focus:outline-none" required>
+                    <input name="password" type="text" id="addPassword" class="w-full p-2 border rounded text-sm outline-none focus:outline-none" required>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-green-700">Email</label>
-                    <input type="email" id="addEmail" class="w-full p-2 border rounded text-sm outline-none focus:outline-none" required>
+                    <input name="email" type="email" id="addEmail" class="w-full p-2 border rounded text-sm outline-none focus:outline-none" required>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-green-700">Barangay</label>
-                    <input type="text" id="addBarangay" class="w-full p-2 border rounded text-sm outline-none focus:outline-none" required>
+                    <select name="barangay" type="text" id="addBarangay" class="w-full p-2 border rounded text-sm outline-none focus:outline-none" required>
+                        <option value="" selected>Select Barangay</option>
+                        <option value="Tapilon">Tapilon</option>
+                        <option value="Maya">Maya</option>
+                        <option value="Poblacion">Poblacion</option>
+                    </select>
                 </div>
                 <div class="flex justify-end gap-3 mt-4">
                     <button type="button" id="cancelAdd" class="px-4 py-2 rounded bg-slate-100 hover:bg-slate-200 text-sm">Cancel</button>
@@ -356,218 +401,73 @@
     </div>
 
     <!-- Logout Confirmation Modal -->
-    <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div id="logoutModal" class="fixed inset-0 flex items-center justify-center hidden z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg w-80">
             <h2 class="text-lg font-semibold text-green-700 mb-3">Confirm Logout</h2>
             <p class="text-sm text-gray-600 mb-5">Are you sure you want to logout?</p>
             <div class="flex justify-end gap-3">
                 <button id="cancelLogout" class="px-3 py-1 rounded bg-gray-100 hover:bg-gray-200">Cancel</button>
-                <a href="logout.html" class="px-3 py-1 rounded bg-red-500 hover:bg-red-600 text-white">Logout</a>
+                <a href="<?php echo URL_ROOT; ?>/auth/logout" class="px-3 py-1 rounded bg-red-500 hover:bg-red-600 text-white">Logout</a>
             </div>
         </div>
     </div>
 
-
-
     <script>
-        // Toggle Sidebar
-        const toggleSidebar = document.getElementById("toggleSidebar");
-        const sidebar = document.getElementById("sidebar");
-
-        toggleSidebar.addEventListener("click", () => {
-            if (sidebar.classList.contains("-translate-x-full")) {
-                sidebar.classList.remove("-translate-x-full");
-                sidebar.classList.add("translate-x-0");
-            } else {
-                sidebar.classList.add("-translate-x-full");
-                sidebar.classList.remove("translate-x-0");
-            }
-        });
-
-        function updateClock() {
-            const clock = document.getElementById("clock");
-            const now = new Date();
-            let hours = now.getHours();
-            let minutes = now.getMinutes();
-            let seconds = now.getSeconds();
-            const ampm = hours >= 12 ? "PM" : "AM";
-
-            hours = hours % 12;
-            hours = hours ? hours : 12; // 12-hour format
-            minutes = minutes < 10 ? "0" + minutes : minutes;
-            seconds = seconds < 10 ? "0" + seconds : seconds;
-
-            clock.textContent = $;
-            {
-                hours
-            }
-            $;
-            {
-                minutes
-            }
-            $;
-            {
-                seconds
-            }
-            $;
-            {
-                ampm
-            };
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-
-        // search engene
-        document.getElementById("searchInput").addEventListener("keyup", function() {
-            let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll("#adminTable tr");
-
-            rows.forEach(row => {
-                let name = row.cells[0].textContent.toLowerCase();
-                let email = row.cells[2].textContent.toLowerCase();
-                let barangay = row.cells[3].textContent.toLowerCase();
-
-                if (name.includes(filter) || email.includes(filter) || barangay.includes(filter)) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
-            });
-        });
-
-        const editModal = document.getElementById("editModal");
+        // Get elements
+        const addAdminBtn = document.getElementById("addAdminBtn");
         const addModal = document.getElementById("addModal");
-        const editForm = document.getElementById("editForm");
-        const addForm = document.getElementById("addForm");
-        const cancelEdit = document.getElementById("cancelEdit");
         const cancelAdd = document.getElementById("cancelAdd");
-        const adminTable = document.getElementById("adminTable");
-        let editingRow = null;
 
-        // Open edit modal
-        document.querySelectorAll(".editBtn").forEach((btn) => {
-            btn.addEventListener("click", () => {
-                const row = btn.closest("tr");
-                editingRow = row;
-                document.getElementById("editName").value = row.children[0].innerText;
-                document.getElementById("editPassword").value = row.children[1].dataset.password;
-                document.getElementById("editEmail").value = row.children[2].innerText;
-                document.getElementById("editBarangay").value = row.children[3].innerText;
-                editModal.classList.remove("hidden");
-                editModal.classList.add("flex");
-            });
-        });
-
-        // Save edit
-        editForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            editingRow.children[0].innerText = document.getElementById("editName").value;
-            editingRow.children[1].dataset.password = document.getElementById("editPassword").value;
-            editingRow.children[1].innerText = "••••••"; // hide in table
-            editingRow.children[2].innerText = document.getElementById("editEmail").value;
-            editingRow.children[3].innerText = document.getElementById("editBarangay").value;
-            editModal.classList.add("hidden");
-            editModal.classList.remove("flex");
-        });
-
-        cancelEdit.addEventListener("click", () => {
-            editModal.classList.add("hidden");
-            editModal.classList.remove("flex");
-        });
-
-        // Add admin
-        document.getElementById("addAdminBtn").addEventListener("click", () => {
+        // Open modal when button is clicked
+        addAdminBtn.addEventListener("click", () => {
             addModal.classList.remove("hidden");
             addModal.classList.add("flex");
         });
 
-        addForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            const name = document.getElementById("addName").value;
-            const password = document.getElementById("addPassword").value;
-            const email = document.getElementById("addEmail").value;
-            const barangay = document.getElementById("addBarangay").value;
-
-            const newRow = document.createElement("tr");
-            newRow.classList.add("hover:bg-green-50");
-            newRow.innerHTML = `
-        <td class="p-3 border-b">${name}</td>
-        <td class="p-3 border-b" data-password="${password}">••••••</td>
-        <td class="p-3 border-b">${email}</td>
-        <td class="p-3 border-b">${barangay}</td>
-        <td class="p-3 border-b">
-          <span class="status px-2 py-1 text-xs rounded-full bg-red-100 text-red-600">Inactive</span>
-        </td>
-        <td class="p-3 border-b">
-          <button class="editBtn px-2 py-1 text-xs rounded border border-green-300 hover:bg-green-100">Edit</button>
-          <button class="toggleBtn px-2 py-1 text-xs rounded border border-green-400 hover:bg-green-100 ml-2">Activate</button>
-        </td>
-      `;
-            adminTable.appendChild(newRow);
-
-            // Rebind events
-            bindRowEvents(newRow);
-
-            addModal.classList.add("hidden");
-            addModal.classList.remove("flex");
-            addForm.reset();
-        });
-
+        // Close modal when cancel button is clicked
         cancelAdd.addEventListener("click", () => {
             addModal.classList.add("hidden");
             addModal.classList.remove("flex");
         });
 
-        // Toggle activate/deactivate
-        function bindRowEvents(row) {
-            row.querySelector(".editBtn").addEventListener("click", () => {
-                editingRow = row;
-                document.getElementById("editName").value = row.children[0].innerText;
-                document.getElementById("editPassword").value = row.children[1].dataset.password;
-                document.getElementById("editEmail").value = row.children[2].innerText;
-                document.getElementById("editBarangay").value = row.children[3].innerText;
-                editModal.classList.remove("hidden");
-                editModal.classList.add("flex");
-            });
+        //Close modal when clicking outside of modal content
+        addModal.addEventListener("click", (e) => {
+            if (e.target === addModal) {
+                addModal.classList.add("hidden");
+                addModal.classList.remove("flex");
+            }
+        });
 
-            row.querySelector(".toggleBtn").addEventListener("click", (btn) => {
-                const statusSpan = row.querySelector(".status");
-                const toggleBtn = row.querySelector(".toggleBtn");
-                if (statusSpan.innerText === "Active") {
-                    statusSpan.innerText = "Inactive";
-                    statusSpan.className = "status px-2 py-1 text-xs rounded-full bg-red-100 text-red-600";
-                    toggleBtn.innerText = "Activate";
-                    toggleBtn.className = "toggleBtn px-2 py-1 text-xs rounded border border-green-400 hover:bg-green-100 ml-2";
-                } else {
-                    statusSpan.innerText = "Active";
-                    statusSpan.className = "status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700";
-                    toggleBtn.innerText = "Deactivate";
-                    toggleBtn.className = "toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100 ml-2";
-                }
-            });
+        //flash message
+        const flashMessage = document.getElementById('flash-message');
+        if (flashMessage) {
+            setTimeout(() => {
+                flashMessage.classList.add('flash-hide');
+                setTimeout(() => flashMessage.remove(), 800);
+            }, 3000);
         }
 
-        // Bind existing rows
-        document.querySelectorAll("#adminTable tr").forEach(bindRowEvents);
-
-        // Logout modal logic
-        const logoutBtn = document.getElementById("logoutBtn");
+        // Elements
         const logoutModal = document.getElementById("logoutModal");
+        const logoutTrigger = document.getElementById("logoutBtn");
         const cancelLogout = document.getElementById("cancelLogout");
-        const confirmLogout = document.getElementById("confirmLogout");
 
-        logoutBtn.addEventListener("click", () => {
+        // Show modal when logout button is clicked
+        logoutTrigger.addEventListener("click", (e) => {
+            e.preventDefault(); // stop immediate navigation
             logoutModal.classList.remove("hidden");
         });
 
+        // Hide modal when cancel is clicked
         cancelLogout.addEventListener("click", () => {
             logoutModal.classList.add("hidden");
         });
 
-        confirmLogout.addEventListener("click", () => {
-            // Redirect to login page or perform logout action
-            window.location.href = "login.html";
+        // Hide modal when clicking outside modal box
+        logoutModal.addEventListener("click", (e) => {
+            if (e.target === logoutModal) {
+                logoutModal.classList.add("hidden");
+            }
         });
     </script>
 </body>

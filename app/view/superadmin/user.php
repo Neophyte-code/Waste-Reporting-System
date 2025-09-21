@@ -5,14 +5,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>User Management — Super Admin</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="<?php echo URL_ROOT; ?>/css/output.css" rel="stylesheet">
 </head>
 
 <body class="bg-green-50 text-green-900">
     <div class="min-h-screen flex">
         <!-- Sidebar -->
-        <aside id="sidebar" class="sidebar fixed md:static top-0 left-0 h-screen w-64 bg-white border-r p-4 
-      transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-50 flex-shrink-0">
+        <aside id="sidebar" class="sidebar fixed md:static top-0 left-0 h-screen w-64 bg-white border-r p-4 transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-50 flex-shrink-0">
 
             <div class="flex items-center gap-3 mb-6">
                 <!-- Logo container (no SA text anymore) -->
@@ -204,13 +203,13 @@
     </div>
 
     <!-- Logout Confirmation Modal -->
-    <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div id="logoutModal" class="fixed inset-0 flex items-center justify-center hidden z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg w-80">
             <h2 class="text-lg font-semibold text-green-700 mb-3">Confirm Logout</h2>
             <p class="text-sm text-gray-600 mb-5">Are you sure you want to logout?</p>
             <div class="flex justify-end gap-3">
                 <button id="cancelLogout" class="px-3 py-1 rounded bg-gray-100 hover:bg-gray-200">Cancel</button>
-                <a href="logout.html" class="px-3 py-1 rounded bg-red-500 hover:bg-red-600 text-white">Logout</a>
+                <a href="<?php echo URL_ROOT; ?>/auth/logout" class="px-3 py-1 rounded bg-red-500 hover:bg-red-600 text-white">Logout</a>
             </div>
         </div>
     </div>
@@ -317,6 +316,30 @@
             window.location.href = "login.html";
         });
     </script> -->
+    <script>
+        // Elements
+        const logoutModal = document.getElementById("logoutModal");
+        const logoutTrigger = document.getElementById("logoutBtn");
+        const cancelLogout = document.getElementById("cancelLogout");
+
+        // Show modal when logout button is clicked
+        logoutTrigger.addEventListener("click", (e) => {
+            e.preventDefault(); // stop immediate navigation
+            logoutModal.classList.remove("hidden");
+        });
+
+        // Hide modal when cancel is clicked
+        cancelLogout.addEventListener("click", () => {
+            logoutModal.classList.add("hidden");
+        });
+
+        // Hide modal when clicking outside modal box
+        logoutModal.addEventListener("click", (e) => {
+            if (e.target === logoutModal) {
+                logoutModal.classList.add("hidden");
+            }
+        });
+    </script>
 </body>
 
 </html>

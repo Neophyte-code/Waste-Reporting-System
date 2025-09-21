@@ -542,4 +542,30 @@ class UserModel
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    //function to create admin (for superadmin)
+    public function createAdmin($data)
+    {
+        try {
+            $stmt = $this->db->prepare("
+                insert into users (firstname, lastname, barangay_id, email, password, role)
+                values (:firstname, :lastname, :barangay, :email, :password, 'admin')
+            ");
+
+            // Hash password before saving
+            $hashedPassword = password_hash($data['password'], PASSWORD_BCRYPT);
+
+            // Bind values
+            $stmt->bindParam(':firstname', $data['firstname']);
+            $stmt->bindParam(':lastname', $data['lastname']);
+            $stmt->bindParam(':barangay', $data['barangay']);
+            $stmt->bindParam(':email', $data['email']);
+            $stmt->bindParam(':password', $hashedPassword);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Database error: " . $e->getMessage());
+            return false;
+        }
+    }
 }

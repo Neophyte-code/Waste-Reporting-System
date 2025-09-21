@@ -268,7 +268,7 @@ class Admin extends Controller
             //instantiate the model for submitting the announcement to database
             $announementModel = $this->model('AnnouncementModel');
 
-            //send the datas to database
+            //send the datas to model
             if ($announementModel->createAnnouncement($data)) {
                 $_SESSION['success'] = "Announcement created successfully";
             } else {
