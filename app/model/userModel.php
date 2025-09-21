@@ -568,4 +568,21 @@ class UserModel
             return false;
         }
     }
+
+    //function to retrieve admin from db (for superadmin)
+    public function getAdmin()
+    {
+
+        try {
+            $stmt = $this->db->prepare("
+            select u.id, u.firstname, u.lastname, b.name, u.email, u.password from users u join barangays b on  b.id = u.barangay_id where role = 'admin'
+            ");
+
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Database error: " . $e->getMessage());
+            return false;
+        }
+    }
 }

@@ -35,10 +35,15 @@ class Superadmin extends Controller
             unset($_SESSION['success']);
         }
 
+        // instanciate the model for getting the admins
+        $userModel = $this->model('UserModel');
+        $admin = $userModel->getAdmin();
+
         $this->view('superadmin/admin', [
             'user' => $userData,
             'message' => $message,
             'messageType' => $messageType,
+            'admin' => $admin
         ]);
     }
 

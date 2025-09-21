@@ -47,7 +47,7 @@
 <body class="bg-green-50 text-green-900 overflow-hidden">
     <div class="min-h-screen flex ">
         <!-- Sidebar -->
-        <aside id="sidebar" class="sidebar fixed md:static top-0 left-0 h-screen w-64 bg-white border-r p-4 transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-50 flex-shrink-0">
+        <aside id="sidebar" class="sidebar fixed md:static top-0 left-0 h-screen w-64 bg-white p-4 transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-50 flex-shrink-0">
             <div class="flex items-center gap-3 mb-6">
                 <!-- Logo container (no SA text anymore) -->
                 <div id="sidebarLogo" class="h-12 w-12  flex items-center justify-center overflow-hidden">
@@ -116,214 +116,29 @@
                                     </tr>
                                 </thead>
                                 <tbody id="adminTable">
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Alicia Ramos</td>
-                                        <td class="p-3 border-b" data-password="123456">••••••</td>
-                                        <td class="p-3 border-b">alicia@city.gov</td>
-                                        <td class="p-3 border-b">Tapilon</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
-                                        </td>
-                                        <td class="p-3 border-b">
-                                            <button class="editBtn px-2 py-1 text-xs rounded border border-green-300 hover:bg-green-100">Edit</button>
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100 ml-2">Deactivate</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Miguel Santos</td>
-                                        <td class="p-3 border-b" data-password="mypassword">••••••</td>
-                                        <td class="p-3 border-b">miguel@city.gov</td>
-                                        <td class="p-3 border-b">Maya</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-red-100 text-red-600">Inactive</span>
-                                        </td>
-                                        <td class="p-3 border-b">
-                                            <button class="editBtn px-2 py-1 text-xs rounded border border-green-300 hover:bg-green-100">Edit</button>
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-green-400 hover:bg-green-100 ml-2">Activate</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Alicia Ramos</td>
-                                        <td class="p-3 border-b" data-password="123456">••••••</td>
-                                        <td class="p-3 border-b">alicia@city.gov</td>
-                                        <td class="p-3 border-b">Tapilon</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
-                                        </td>
-                                        <td class="p-3 border-b">
-                                            <button class="editBtn px-2 py-1 text-xs rounded border border-green-300 hover:bg-green-100">Edit</button>
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100 ml-2">Deactivate</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Miguel Santos</td>
-                                        <td class="p-3 border-b" data-password="mypassword">••••••</td>
-                                        <td class="p-3 border-b">miguel@city.gov</td>
-                                        <td class="p-3 border-b">Maya</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-red-100 text-red-600">Inactive</span>
-                                        </td>
-                                        <td class="p-3 border-b">
-                                            <button class="editBtn px-2 py-1 text-xs rounded border border-green-300 hover:bg-green-100">Edit</button>
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-green-400 hover:bg-green-100 ml-2">Activate</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Alicia Ramos</td>
-                                        <td class="p-3 border-b" data-password="123456">••••••</td>
-                                        <td class="p-3 border-b">alicia@city.gov</td>
-                                        <td class="p-3 border-b">Tapilon</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
-                                        </td>
-                                        <td class="p-3 border-b">
-                                            <button class="editBtn px-2 py-1 text-xs rounded border border-green-300 hover:bg-green-100">Edit</button>
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100 ml-2">Deactivate</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Miguel Santos</td>
-                                        <td class="p-3 border-b" data-password="mypassword">••••••</td>
-                                        <td class="p-3 border-b">miguel@city.gov</td>
-                                        <td class="p-3 border-b">Maya</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-red-100 text-red-600">Inactive</span>
-                                        </td>
-                                        <td class="p-3 border-b">
-                                            <button class="editBtn px-2 py-1 text-xs rounded border border-green-300 hover:bg-green-100">Edit</button>
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-green-400 hover:bg-green-100 ml-2">Activate</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Alicia Ramos</td>
-                                        <td class="p-3 border-b" data-password="123456">••••••</td>
-                                        <td class="p-3 border-b">alicia@city.gov</td>
-                                        <td class="p-3 border-b">Tapilon</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
-                                        </td>
-                                        <td class="p-3 border-b">
-                                            <button class="editBtn px-2 py-1 text-xs rounded border border-green-300 hover:bg-green-100">Edit</button>
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100 ml-2">Deactivate</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Miguel Santos</td>
-                                        <td class="p-3 border-b" data-password="mypassword">••••••</td>
-                                        <td class="p-3 border-b">miguel@city.gov</td>
-                                        <td class="p-3 border-b">Maya</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-red-100 text-red-600">Inactive</span>
-                                        </td>
-                                        <td class="p-3 border-b">
-                                            <button class="editBtn px-2 py-1 text-xs rounded border border-green-300 hover:bg-green-100">Edit</button>
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-green-400 hover:bg-green-100 ml-2">Activate</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Alicia Ramos</td>
-                                        <td class="p-3 border-b" data-password="123456">••••••</td>
-                                        <td class="p-3 border-b">alicia@city.gov</td>
-                                        <td class="p-3 border-b">Tapilon</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
-                                        </td>
-                                        <td class="p-3 border-b">
-                                            <button class="editBtn px-2 py-1 text-xs rounded border border-green-300 hover:bg-green-100">Edit</button>
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100 ml-2">Deactivate</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Miguel Santos</td>
-                                        <td class="p-3 border-b" data-password="mypassword">••••••</td>
-                                        <td class="p-3 border-b">miguel@city.gov</td>
-                                        <td class="p-3 border-b">Maya</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-red-100 text-red-600">Inactive</span>
-                                        </td>
-                                        <td class="p-3 border-b">
-                                            <button class="editBtn px-2 py-1 text-xs rounded border border-green-300 hover:bg-green-100">Edit</button>
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-green-400 hover:bg-green-100 ml-2">Activate</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Alicia Ramos</td>
-                                        <td class="p-3 border-b" data-password="123456">••••••</td>
-                                        <td class="p-3 border-b">alicia@city.gov</td>
-                                        <td class="p-3 border-b">Tapilon</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
-                                        </td>
-                                        <td class="p-3 border-b">
-                                            <button class="editBtn px-2 py-1 text-xs rounded border border-green-300 hover:bg-green-100">Edit</button>
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100 ml-2">Deactivate</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Miguel Santos</td>
-                                        <td class="p-3 border-b" data-password="mypassword">••••••</td>
-                                        <td class="p-3 border-b">miguel@city.gov</td>
-                                        <td class="p-3 border-b">Maya</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-red-100 text-red-600">Inactive</span>
-                                        </td>
-                                        <td class="p-3 border-b">
-                                            <button class="editBtn px-2 py-1 text-xs rounded border border-green-300 hover:bg-green-100">Edit</button>
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-green-400 hover:bg-green-100 ml-2">Activate</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Alicia Ramos</td>
-                                        <td class="p-3 border-b" data-password="123456">••••••</td>
-                                        <td class="p-3 border-b">alicia@city.gov</td>
-                                        <td class="p-3 border-b">Tapilon</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
-                                        </td>
-                                        <td class="p-3 border-b">
-                                            <button class="editBtn px-2 py-1 text-xs rounded border border-green-300 hover:bg-green-100">Edit</button>
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100 ml-2">Deactivate</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Miguel Santos</td>
-                                        <td class="p-3 border-b" data-password="mypassword">••••••</td>
-                                        <td class="p-3 border-b">miguel@city.gov</td>
-                                        <td class="p-3 border-b">Maya</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-red-100 text-red-600">Inactive</span>
-                                        </td>
-                                        <td class="p-3 border-b">
-                                            <button class="editBtn px-2 py-1 text-xs rounded border border-green-300 hover:bg-green-100">Edit</button>
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-green-400 hover:bg-green-100 ml-2">Activate</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Alicia Ramos</td>
-                                        <td class="p-3 border-b" data-password="123456">••••••</td>
-                                        <td class="p-3 border-b">alicia@city.gov</td>
-                                        <td class="p-3 border-b">Tapilon</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
-                                        </td>
-                                        <td class="p-3 border-b">
-                                            <button class="editBtn px-2 py-1 text-xs rounded border border-green-300 hover:bg-green-100">Edit</button>
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100 ml-2">Deactivate</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Miguel Santos</td>
-                                        <td class="p-3 border-b" data-password="mypassword">••••••</td>
-                                        <td class="p-3 border-b">miguel@city.gov</td>
-                                        <td class="p-3 border-b">Maya</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-red-100 text-red-600">Inactive</span>
-                                        </td>
-                                        <td class="p-3 border-b">
-                                            <button class="editBtn px-2 py-1 text-xs rounded border border-green-300 hover:bg-green-100">Edit</button>
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-green-400 hover:bg-green-100 ml-2">Activate</button>
-                                        </td>
-                                    </tr>
+                                    <?php if (empty($data['admin'])): ?>
+                                        <tr>
+                                            <td colspan="5" class="text-center py-4 text-gray-500">
+                                                No Admin Found
+                                            </td>
+                                        </tr>
+                                    <?php else: ?>
+                                        <?php foreach ($data['admin'] as $admin): ?>
+                                            <tr class="hover:bg-green-50">
+                                                <td class="p-3 border-b border-gray-400"><?= htmlspecialchars($admin['firstname'] . ' ' . $admin['lastname']) ?></td>
+                                                <td class="p-3 border-b border-gray-400" data-password="<?= htmlspecialchars($admin['password']) ?>">•••••••</td>
+                                                <td class="p-3 border-b border-gray-400"><?= htmlspecialchars($admin['email']) ?></td>
+                                                <td class="p-3 border-b border-gray-400"><?= htmlspecialchars($admin['name']) ?></td>
+                                                <td class="p-3 border-b border-gray-400">
+                                                    <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
+                                                </td>
+                                                <td class="p-3 border-b">
+                                                    <button class="editBtn px-2 py-1 text-xs rounded border border-green-300 hover:bg-green-100">Edit</button>
+                                                    <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100 ml-2">Deactivate</button>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
