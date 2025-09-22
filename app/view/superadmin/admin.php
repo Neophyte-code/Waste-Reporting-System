@@ -68,7 +68,7 @@
         <!-- Main -->
         <div class="flex-1 flex flex-col">
             <!-- Topbar -->
-            <header class="flex items-center justify-between p-4 border-b bg-white">
+            <header class="flex items-center justify-between p-4 shadow-md bg-white">
                 <div class="flex items-center gap-3">
                     <!-- Toggle Button -->
                     <button id="toggleSidebar" class="md:hidden px-3 py-2 rounded bg-green-100 hover:bg-green-200">
@@ -94,7 +94,7 @@
                                 type="text"
                                 id="searchInput"
                                 placeholder="Search admin..."
-                                class="p-2 text-sm border rounded outline-none focus:outline-none">
+                                class="p-2 text-sm border border-gray-400 rounded outline-none focus:outline-none">
                             <!-- Add Admin Button -->
                             <button id="addAdminBtn" class="px-3 py-2 rounded bg-green-600 hover:bg-green-700 text-white text-sm">
                                 + Add Admin
@@ -111,7 +111,6 @@
                                         <th class="p-3 border-b text-left">Password</th>
                                         <th class="p-3 border-b text-left">Email</th>
                                         <th class="p-3 border-b text-left">Barangay</th>
-                                        <th class="p-3 border-b text-left">Status</th>
                                         <th class="p-3 border-b text-left">Actions</th>
                                     </tr>
                                 </thead>
@@ -126,15 +125,21 @@
                                         <?php foreach ($data['admin'] as $admin): ?>
                                             <tr class="hover:bg-green-50">
                                                 <td class="p-3 border-b border-gray-400"><?= htmlspecialchars($admin['firstname'] . ' ' . $admin['lastname']) ?></td>
-                                                <td class="p-3 border-b border-gray-400" data-password="<?= htmlspecialchars($admin['password']) ?>">•••••••</td>
+                                                <td class="p-3 border-b border-gray-400">•••••••</td>
                                                 <td class="p-3 border-b border-gray-400"><?= htmlspecialchars($admin['email']) ?></td>
                                                 <td class="p-3 border-b border-gray-400"><?= htmlspecialchars($admin['name']) ?></td>
                                                 <td class="p-3 border-b border-gray-400">
-                                                    <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
-                                                </td>
-                                                <td class="p-3 border-b">
-                                                    <button class="editBtn px-2 py-1 text-xs rounded border border-green-300 hover:bg-green-100">Edit</button>
-                                                    <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100 ml-2">Deactivate</button>
+                                                    <button
+                                                        class="editBtn px-2 py-1 text-xs rounded border border-green-400 hover:bg-green-300 hover:text-white"
+                                                        data-id="<?= htmlspecialchars($admin['id']) ?>"
+                                                        data-firstname="<?= htmlspecialchars($admin['firstname']) ?>"
+                                                        data-lastname="<?= htmlspecialchars($admin['lastname']) ?>"
+                                                        data-email="<?= htmlspecialchars($admin['email']) ?>"
+                                                        data-barangay="<?= htmlspecialchars($admin['name']) ?>">
+                                                        Edit
+                                                    </button>
+
+                                                    <button class="deleteBtn px-2 py-1 text-xs rounded border border-red-400 hover:bg-red-300 hover:text-white">Delete</button>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -149,29 +154,39 @@
     </div>
 
     <!-- Edit Modal -->
-    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50">
+    <div id="editModal" class="fixed inset-0 flex hidden items-center justify-center z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
             <h2 class="text-lg font-semibold text-green-800 mb-4">Edit Admin</h2>
-            <form id="editForm" class="space-y-3">
+
+            <form id="editForm" action="<?php echo URL_ROOT; ?>/superadmin/editAdmin" method="POST" class="space-y-3">
+                <input type="hidden" name="editId" id="editId">
                 <div>
-                    <label class="block text-sm font-medium text-green-700">Name</label>
-                    <input type="text" id="editName" class="w-full p-2 border rounded text-sm outline-none focus:outline-none" required>
+                    <label class="block text-sm font-medium text-green-700">Firstname</label>
+                    <input name="editFirstname" type="text" id="addFirstname" class="w-full p-2 border rounded text-sm outline-none focus:outline-none" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-green-700">Lastname</label>
+                    <input name="editLastname" type="text" id="addLastname" class="w-full p-2 border rounded text-sm outline-none focus:outline-none" required>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-green-700">Password</label>
-                    <input type="text" id="editPassword" class="w-full p-2 border rounded text-sm outline-none focus:outline-none" required>
+                    <input name="editPassword" type="text" id="editPassword" class="w-full p-2 border rounded text-sm outline-none focus:outline-none" required>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-green-700">Email</label>
-                    <input type="email" id="editEmail" class="w-full p-2 border rounded text-sm outline-none focus:outline-none" required>
+                    <input name="editEmail" type="email" id="editEmail" class="w-full p-2 border rounded text-sm outline-none focus:outline-none" required>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-green-700">Barangay</label>
-                    <input type="text" id="editBarangay" class="w-full p-2 border rounded text-sm outline-none focus:outline-none" required>
+                    <select name="barangay" class="w-full p-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none focus:border-transparent">
+                        <option value="Tapilon">Tapilon</option>
+                        <option value="Maya">Maya</option>
+                        <option value="Poblacion">Poblacion</option>
+                    </select>
                 </div>
-                <div class="flex justify-end gap-3 mt-4">
-                    <button type="button" id="cancelEdit" class="px-4 py-2 rounded bg-slate-100 hover:bg-slate-200 text-sm">Cancel</button>
-                    <button type="submit" class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white text-sm">Save</button>
+                <div class="flex justify-end gap-3 mt-4 text-white">
+                    <button type="button" id="cancelEdit" class="px-4 py-2 rounded bg-red-600 hover:bg-red-700  hover:text-white text-sm">Cancel</button>
+                    <button type="submit" class="px-4 py-2 rounded bg-green-600 hover:bg-green-700  text-white hover:text-white text-sm">Save</button>
                 </div>
             </form>
         </div>
@@ -283,6 +298,51 @@
             if (e.target === logoutModal) {
                 logoutModal.classList.add("hidden");
             }
+        });
+
+
+        // js functionality for editing/updating account
+        document.addEventListener("DOMContentLoaded", () => {
+            const editButtons = document.querySelectorAll(".editBtn");
+            const modal = document.getElementById("editModal");
+            const cancelBtn = document.getElementById("cancelEdit");
+
+            const idInput = document.getElementById("editId");
+            const firstnameInput = document.getElementById("addFirstname");
+            const lastnameInput = document.getElementById("addLastname");
+            const emailInput = document.getElementById("editEmail");
+            const barangaySelect = document.querySelector("select[name='barangay']");
+
+            // Open modal and fill data
+            editButtons.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    idInput.value = btn.dataset.id;
+                    firstnameInput.value = btn.dataset.firstname;
+                    lastnameInput.value = btn.dataset.lastname;
+                    emailInput.value = btn.dataset.email;
+
+                    // Select barangay
+                    for (let option of barangaySelect.options) {
+                        if (option.value === btn.dataset.barangay) {
+                            option.selected = true;
+                        }
+                    }
+
+                    modal.classList.remove("hidden");
+                });
+            });
+
+            // Close modal
+            cancelBtn.addEventListener("click", () => {
+                modal.classList.add("hidden");
+            });
+
+            // Hide modal when clicking outside modal box
+            modal.addEventListener("click", (e) => {
+                if (e.target === modal) {
+                    modal.classList.add("hidden");
+                }
+            });
         });
     </script>
 </body>

@@ -575,11 +575,42 @@ class UserModel
 
         try {
             $stmt = $this->db->prepare("
-            select u.id, u.firstname, u.lastname, b.name, u.email, u.password from users u join barangays b on  b.id = u.barangay_id where role = 'admin'
+            select u.id, u.firstname, u.lastname, b.name, u.email from users u join barangays b on  b.id = u.barangay_id where role = 'admin'
             ");
 
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Database error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    // function to edit admin account (for superadmin)
+    public function updateAdmin($data)
+    {
+        try {
+            $stmt = $this->db->prepare("
+            update users 
+            SET firstname = :firstname,
+                lastname = :lastname,
+                email = :email,
+                barangay_id = :barangay,
+                password = :password
+            WHERE id = :id AND role = 'admin'
+        ");
+
+            $stmt->bindParam(':id', $data['id'], PDO::PARAM_INT);
+            $stmt->bindParam(':firstname', $data['firstname']);
+            $stmt->bindParam(':lastname', $data['lastname']);
+            $stmt->bindParam(':email', $data['email']);
+            $stmt->bindParam(':barangay', $data['barangay'], PDO::PARAM_INT);
+
+            // hash the new password
+            $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+            $stmt->bindParam(':password', $hashedPassword);
+
+            return $stmt->execute();
         } catch (PDOException $e) {
             error_log("Database error: " . $e->getMessage());
             return false;

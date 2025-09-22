@@ -47,7 +47,7 @@ class Superadmin extends Controller
         ]);
     }
 
-    //function to add a admin accoun
+    //function to add a admin account
     public function createAdmin()
     {
 
@@ -93,6 +93,53 @@ class Superadmin extends Controller
                 $_SESSION['success'] = "Account created successfully";
             } else {
                 $_SESSION['failed'] = "Failed to create account";
+            }
+
+            header('Location: ' . URL_ROOT . '/superadmin');
+            exit;
+        }
+    }
+
+    //function to edit an admin account
+    public function editAdmin()
+    {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $data = [
+                'id' => htmlspecialchars(trim($_POST['editId'])),
+                'firstname' => htmlspecialchars(trim($_POST['editFirstname'])),
+                'lastname' => htmlspecialchars(trim($_POST['editLastname'])),
+                'password' => htmlspecialchars(trim($_POST['editPassword'])),
+                'email' => htmlspecialchars(trim($_POST['editEmail'])),
+                'barangay' => htmlspecialchars(trim($_POST['barangay']))
+            ];
+
+            //get the user model
+            $userModel = $this->model('UserModel');
+
+            //field validation ensure that allfields have value
+            if (empty($data['id']) || empty($data['firstname']) || empty($data['lastname']) || empty($data['email']) || empty($data['barangay'])) {
+                $_SESSION['failed'] = 'All fields are required!';
+                header('Location: ' . URL_ROOT . '/superadmin');
+                exit;
+            }
+
+            // Validate the chosen barangay
+            $barangay_id = $userModel->getBarangayIdByName($data['barangay']);
+            if (!$barangay_id) {
+                $_SESSION['failed'] = 'Invalid barangay selected';
+                exit;
+            }
+
+            // assign the validated choosen barangay
+            $data['barangay'] = $barangay_id;
+
+            // pass the data to the model
+            if ($userModel->updateAdmin($data)) {
+                $_SESSION['success'] = "Account updated successfully";
+            } else {
+                $_SESSION['failed'] = "Failed to update account";
             }
 
             header('Location: ' . URL_ROOT . '/superadmin');
