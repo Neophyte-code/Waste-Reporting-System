@@ -11,7 +11,7 @@
 <body class="bg-green-50 text-green-900">
     <div class="min-h-screen flex">
         <!-- Sidebar -->
-        <aside id="sidebar" class="sidebar fixed md:static top-0 left-0 h-screen w-64 bg-white border-r p-4 transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-50 flex-shrink-0">
+        <aside id="sidebar" class="sidebar fixed md:static top-0 left-0 h-screen w-64 bg-white p-4 transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-50 flex-shrink-0">
 
             <div class="flex items-center gap-3 mb-6">
                 <!-- Logo container (no SA text anymore) -->
@@ -33,7 +33,7 @@
         <!-- Main -->
         <div class="flex-1 flex flex-col">
             <!-- Topbar -->
-            <header class="flex items-center justify-between p-4 border-b bg-white">
+            <header class="flex items-center justify-between p-4 bg-white shadow-md">
                 <div class="flex items-center gap-3">
                     <!-- Toggle Button -->
                     <button id="toggleSidebar" class="md:hidden px-3 py-2 rounded bg-green-100 hover:bg-green-200">
@@ -73,126 +73,79 @@
                                     </tr>
                                 </thead>
                                 <tbody id="userTable">
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Juan Dela Cruz</td>
-                                        <td class="p-3 border-b">juan@example.com</td>
-                                        <td class="p-3 border-b">Tapilon</td>
-                                        <td class="p-3 border-b">120</td>
-                                        <td class="p-3 border-b">
+                                    <tr class="hover:bg-green-50 border-b border-gray-400   ">
+                                        <td class="p-3 ">Juan Dela Cruz</td>
+                                        <td class="p-3 ">juan@example.com</td>
+                                        <td class="p-3 ">Tapilon</td>
+                                        <td class="p-3 ">120</td>
+                                        <td class="p-3 ">
                                             <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
                                         </td>
-                                        <td class="p-3 border-b">
+                                        <td class="p-3">
                                             <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100">Ban</button>
                                         </td>
                                     </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Maria Lopez</td>
-                                        <td class="p-3 border-b">maria@example.com</td>
-                                        <td class="p-3 border-b">Maya</td>
-                                        <td class="p-3 border-b">85</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">Pending</span>
-                                        </td>
-                                        <td class="p-3 border-b">
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-green-400 hover:bg-green-100">Verify</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Juan Dela Cruz</td>
-                                        <td class="p-3 border-b">juan@example.com</td>
-                                        <td class="p-3 border-b">Tapilon</td>
-                                        <td class="p-3 border-b">120</td>
-                                        <td class="p-3 border-b">
+                                    <tr class="hover:bg-green-50 border-b border-gray-400   ">
+                                        <td class="p-3 ">Juan Dela Cruz</td>
+                                        <td class="p-3 ">juan@example.com</td>
+                                        <td class="p-3 ">Tapilon</td>
+                                        <td class="p-3 ">120</td>
+                                        <td class="p-3 ">
                                             <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
                                         </td>
-                                        <td class="p-3 border-b">
+                                        <td class="p-3">
                                             <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100">Ban</button>
                                         </td>
                                     </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Maria Lopez</td>
-                                        <td class="p-3 border-b">maria@example.com</td>
-                                        <td class="p-3 border-b">Maya</td>
-                                        <td class="p-3 border-b">85</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">Pending</span>
-                                        </td>
-                                        <td class="p-3 border-b">
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-green-400 hover:bg-green-100">Verify</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Juan Dela Cruz</td>
-                                        <td class="p-3 border-b">juan@example.com</td>
-                                        <td class="p-3 border-b">Tapilon</td>
-                                        <td class="p-3 border-b">120</td>
-                                        <td class="p-3 border-b">
+                                    <tr class="hover:bg-green-50 border-b border-gray-400   ">
+                                        <td class="p-3 ">Juan Dela Cruz</td>
+                                        <td class="p-3 ">juan@example.com</td>
+                                        <td class="p-3 ">Tapilon</td>
+                                        <td class="p-3 ">120</td>
+                                        <td class="p-3 ">
                                             <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
                                         </td>
-                                        <td class="p-3 border-b">
+                                        <td class="p-3">
                                             <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100">Ban</button>
                                         </td>
                                     </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Maria Lopez</td>
-                                        <td class="p-3 border-b">maria@example.com</td>
-                                        <td class="p-3 border-b">Maya</td>
-                                        <td class="p-3 border-b">85</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">Pending</span>
-                                        </td>
-                                        <td class="p-3 border-b">
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-green-400 hover:bg-green-100">Verify</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Juan Dela Cruz</td>
-                                        <td class="p-3 border-b">juan@example.com</td>
-                                        <td class="p-3 border-b">Tapilon</td>
-                                        <td class="p-3 border-b">120</td>
-                                        <td class="p-3 border-b">
+                                    <tr class="hover:bg-green-50 border-b border-gray-400   ">
+                                        <td class="p-3 ">Juan Dela Cruz</td>
+                                        <td class="p-3 ">juan@example.com</td>
+                                        <td class="p-3 ">Tapilon</td>
+                                        <td class="p-3 ">120</td>
+                                        <td class="p-3 ">
                                             <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
                                         </td>
-                                        <td class="p-3 border-b">
+                                        <td class="p-3">
                                             <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100">Ban</button>
                                         </td>
                                     </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Maria Lopez</td>
-                                        <td class="p-3 border-b">maria@example.com</td>
-                                        <td class="p-3 border-b">Maya</td>
-                                        <td class="p-3 border-b">85</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">Pending</span>
-                                        </td>
-                                        <td class="p-3 border-b">
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-green-400 hover:bg-green-100">Verify</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Juan Dela Cruz</td>
-                                        <td class="p-3 border-b">juan@example.com</td>
-                                        <td class="p-3 border-b">Tapilon</td>
-                                        <td class="p-3 border-b">120</td>
-                                        <td class="p-3 border-b">
+                                    <tr class="hover:bg-green-50 border-b border-gray-400   ">
+                                        <td class="p-3 ">Juan Dela Cruz</td>
+                                        <td class="p-3 ">juan@example.com</td>
+                                        <td class="p-3 ">Tapilon</td>
+                                        <td class="p-3 ">120</td>
+                                        <td class="p-3 ">
                                             <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
                                         </td>
-                                        <td class="p-3 border-b">
+                                        <td class="p-3">
                                             <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100">Ban</button>
                                         </td>
                                     </tr>
-                                    <tr class="hover:bg-green-50">
-                                        <td class="p-3 border-b">Maria Lopez</td>
-                                        <td class="p-3 border-b">maria@example.com</td>
-                                        <td class="p-3 border-b">Maya</td>
-                                        <td class="p-3 border-b">85</td>
-                                        <td class="p-3 border-b">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">Pending</span>
+                                    <tr class="hover:bg-green-50 border-b border-gray-400   ">
+                                        <td class="p-3 ">Juan Dela Cruz</td>
+                                        <td class="p-3 ">juan@example.com</td>
+                                        <td class="p-3 ">Tapilon</td>
+                                        <td class="p-3 ">120</td>
+                                        <td class="p-3 ">
+                                            <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
                                         </td>
-                                        <td class="p-3 border-b">
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-green-400 hover:bg-green-100">Verify</button>
+                                        <td class="p-3">
+                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100">Ban</button>
                                         </td>
                                     </tr>
+
                                 </tbody>
                             </table>
                         </div>
