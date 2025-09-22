@@ -147,6 +147,26 @@ class Superadmin extends Controller
         }
     }
 
+    //function to delete admin account
+    public function deleteAdmin()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'];
+
+            // load UserModel
+            $userModel = $this->model('UserModel');
+
+            if ($userModel->deleteAdmin($id)) {
+                $_SESSION['success'] = "Admin account deleted successfully";
+            } else {
+                $_SESSION['failed'] = "Failed to delete admin account";
+            }
+
+            header('Location: ' . URL_ROOT . '/superadmin');
+            exit;
+        }
+    }
+
     //function for displaying UI for managing admins
     public function user()
     {

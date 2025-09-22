@@ -616,4 +616,17 @@ class UserModel
             return false;
         }
     }
+
+    //funtion to delete delete admin account (for superadmin)
+    public function deleteAdmin($id)
+    {
+        try {
+            $stmt = $this->db->prepare("delete FROM users WHERE id = :id AND role = 'admin'");
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Database error: " . $e->getMessage());
+            return false;
+        }
+    }
 }

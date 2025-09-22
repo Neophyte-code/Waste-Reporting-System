@@ -138,8 +138,12 @@
                                                         data-barangay="<?= htmlspecialchars($admin['name']) ?>">
                                                         Edit
                                                     </button>
+                                                    <button
+                                                        class="deleteBtn px-2 py-1 text-xs rounded border border-red-400 hover:bg-red-300 hover:text-white"
+                                                        data-id="<?= htmlspecialchars($admin['id']) ?>">
+                                                        Delete
+                                                    </button>
 
-                                                    <button class="deleteBtn px-2 py-1 text-xs rounded border border-red-400 hover:bg-red-300 hover:text-white">Delete</button>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -229,6 +233,28 @@
             </form>
         </div>
     </div>
+
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="fixed inset-0 flex hidden items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h2 class="text-lg font-semibold text-red-600 mb-4">Delete Admin</h2>
+            <p class="text-sm text-gray-700 mb-4">Are you sure you want to delete this admin account?</p>
+
+            <form id="deleteForm" action="<?php echo URL_ROOT; ?>/superadmin/deleteAdmin" method="POST">
+                <input type="hidden" name="id" id="deleteId">
+                <div class="flex justify-end gap-3">
+                    <button type="button" id="cancelDelete" class="px-4 py-2 rounded bg-gray-400 hover:bg-gray-500 text-sm text-white">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-white text-sm">
+                        Delete
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
     <!-- Logout Confirmation Modal -->
     <div id="logoutModal" class="fixed inset-0 flex items-center justify-center hidden z-50">
@@ -338,6 +364,36 @@
             });
 
             // Hide modal when clicking outside modal box
+            modal.addEventListener("click", (e) => {
+                if (e.target === modal) {
+                    modal.classList.add("hidden");
+                }
+            });
+        });
+
+
+        //use to delete account
+        document.addEventListener("DOMContentLoaded", () => {
+            const deleteButtons = document.querySelectorAll(".deleteBtn");
+            const modal = document.getElementById("deleteModal");
+            const cancelBtn = document.getElementById("cancelDelete");
+            const deleteIdInput = document.getElementById("deleteId");
+
+            // Open modal when delete button is clicked
+            deleteButtons.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const adminId = btn.dataset.id;
+                    deleteIdInput.value = adminId;
+                    modal.classList.remove("hidden");
+                });
+            });
+
+            // Close modal when cancel is clicked
+            cancelBtn.addEventListener("click", () => {
+                modal.classList.add("hidden");
+            });
+
+            // Optional: close modal if background overlay is clicked
             modal.addEventListener("click", (e) => {
                 if (e.target === modal) {
                     modal.classList.add("hidden");
