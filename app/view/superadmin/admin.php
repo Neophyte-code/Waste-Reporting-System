@@ -104,7 +104,7 @@
 
                     <div class="overflow-hidden">
                         <div class="max-h-[68vh] overflow-auto">
-                            <table class="w-full text-sm border-collapse">
+                            <table id="adminTable" class="w-full text-sm border-collapse">
                                 <thead class="sticky top-0 bg-green-100 text-green-800 z-10">
                                     <tr>
                                         <th class="p-3 border-b text-left">Name</th>
@@ -397,6 +397,30 @@
             modal.addEventListener("click", (e) => {
                 if (e.target === modal) {
                     modal.classList.add("hidden");
+                }
+            });
+        });
+
+
+        //javascript for search admin algorithm
+        document.addEventListener("DOMContentLoaded", () => {
+            const searchInput = document.getElementById("searchInput");
+            const table = document.getElementById("adminTable");
+            const rows = table.getElementsByTagName("tr");
+
+            searchInput.addEventListener("keyup", () => {
+                const filter = searchInput.value.toLowerCase();
+
+                // Loop through table rows
+                for (let i = 1; i < rows.length; i++) {
+                    let row = rows[i];
+                    let text = row.textContent.toLowerCase();
+
+                    if (text.includes(filter)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
                 }
             });
         });
