@@ -25,7 +25,7 @@ class Admin extends Controller
 
         //initialize and get the dashboard stats from model
         $userModel = $this->model('UserModel');
-        $stats = $userModel->getDashboardStats($userData['barangay_id']);
+        $summary = $userModel->getDashboardSummary($userData['barangay_id']);
 
         // Get chart data for all timeframes
         $dailyChartData = $userModel->getChartData($userData['barangay_id'], 'daily');
@@ -35,10 +35,10 @@ class Admin extends Controller
 
         $this->view('admin/dashboard', [
             'user' => $userData,
-            'totalUsers' => $stats['total_users'],
-            'totalReports' => $stats['total_waste_reports'] + $stats['total_litterer_reports'],
-            'total_verified_reports' => $stats['total_verified_waste_reports'] + $stats['total_verified_litterer_reports'],
-            'total_pending_reports' => $stats['total_pending_waste_reports'] + $stats['total_pending_litterer_reports'],
+            'totalUsers' => $summary['totalUsers'],
+            'totalReports' => $summary['totalReports'],
+            'total_verified_reports' => $summary['total_verified_reports'],
+            'total_pending_reports' => $summary['total_pending_reports'],
             'dailyChartData' => json_encode($dailyChartData),
             'weeklyChartData' => json_encode($weeklyChartData),
             'monthlyChartData' => json_encode($monthlyChartData),

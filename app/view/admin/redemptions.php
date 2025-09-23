@@ -131,7 +131,7 @@
                             <?php if (empty($data['redemption'])): ?>
                                 <tr>
                                     <td colspan="5" class="text-center py-4 text-gray-500 ">
-                                        No Waste Reports Found
+                                        No redemption request found
                                     </td>
                                 </tr>
                             <?php else: ?>

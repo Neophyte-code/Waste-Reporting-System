@@ -100,36 +100,95 @@ class UserModel
     }
 
     //function to get all users (for admin)
-    public function getDashboardStats($barangay_id)
+    public function getDashboardSummary($barangay_id)
     {
-
         try {
-            $stmt = $this->db->prepare(
-                "Select
-                    (select count(*) from users where barangay_id = :barangay_id and role not in ('admin', 'superadmin')) as total_users,
-                    (select count(*) from waste_reports wr join users u on wr.user_id = u.id where u.barangay_id = :barangay_id) as total_waste_reports,
-                    (select count(*) from litterer_reports lr join users u on lr.user_id = u.id where u.barangay_id = :barangay_id) as total_litterer_reports,
-                    (select count(*) from waste_reports wr join users u on wr.user_id = u.id where u.barangay_id = :barangay_id and status = 'approved') as total_verified_waste_reports,
-                    (select count(*) from litterer_reports lr join users u on lr.user_id = u.id where u.barangay_id = :barangay_id and status = 'approved') as total_verified_litterer_reports,
-                    (select count(*) from waste_reports wr join users u on wr.user_id = u.id where u.barangay_id = :barangay_id and status = 'pending') as total_pending_waste_reports,
-                    (select count(*) from litterer_reports lr join users u on lr.user_id = u.id where u.barangay_id = :barangay_id and status = 'pending') as total_pending_litterer_reports
-                "
-            );
+            // ✅ Total users in the barangay (exclude admins & superadmins)
+            $stmt = $this->db->prepare("
+                SELECT COUNT(*) as totalUsers
+                FROM users
+                WHERE barangay_id = :barangay_id
+                  AND role = 'user'
+            ");
+            $stmt->execute([':barangay_id' => $barangay_id]);
+            $totalUsers = $stmt->fetch(PDO::FETCH_ASSOC)['totalUsers'] ?? 0;
 
-            $stmt->bindParam(':barangay_id', $barangay_id, PDO::PARAM_INT);
-            $stmt->execute();
+            // ✅ Total reports (waste + litterer) for the barangay
+            $stmt = $this->db->prepare("
+                SELECT COUNT(*) as totalReports
+                FROM (
+                    SELECT wr.id 
+                    FROM waste_reports wr
+                    INNER JOIN users u ON wr.user_id = u.id
+                    WHERE u.barangay_id = :barangay_id
 
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            error_log('Database error: ' . $e->getMessage());
+                    UNION ALL
+
+                    SELECT lr.id
+                    FROM litterer_reports lr
+                    INNER JOIN users u ON lr.user_id = u.id
+                    WHERE u.barangay_id = :barangay_id
+                ) reports
+            ");
+            $stmt->execute([':barangay_id' => $barangay_id]);
+            $totalReports = $stmt->fetch(PDO::FETCH_ASSOC)['totalReports'] ?? 0;
+
+            // ✅ Verified reports
+            $stmt = $this->db->prepare("
+                SELECT COUNT(*) as total_verified_reports
+                FROM (
+                    SELECT wr.id 
+                    FROM waste_reports wr
+                    INNER JOIN users u ON wr.user_id = u.id
+                    WHERE wr.status = 'approved' AND u.barangay_id = :barangay_id
+
+                    UNION ALL
+
+                    SELECT lr.id
+                    FROM litterer_reports lr
+                    INNER JOIN users u ON lr.user_id = u.id
+                    WHERE lr.status = 'approved' AND u.barangay_id = :barangay_id
+                ) reports
+            ");
+            $stmt->execute([':barangay_id' => $barangay_id]);
+            $total_verified_reports = $stmt->fetch(PDO::FETCH_ASSOC)['total_verified_reports'] ?? 0;
+
+            // ✅ Pending reports
+            $stmt = $this->db->prepare("
+                SELECT COUNT(*) as total_pending_reports
+                FROM (
+                    SELECT wr.id 
+                    FROM waste_reports wr
+                    INNER JOIN users u ON wr.user_id = u.id
+                    WHERE wr.status = 'pending' AND u.barangay_id = :barangay_id
+
+                    UNION ALL
+
+                    SELECT lr.id
+                    FROM litterer_reports lr
+                    INNER JOIN users u ON lr.user_id = u.id
+                    WHERE lr.status = 'pending' AND u.barangay_id = :barangay_id
+                ) reports
+            ");
+            $stmt->execute([':barangay_id' => $barangay_id]);
+            $total_pending_reports = $stmt->fetch(PDO::FETCH_ASSOC)['total_pending_reports'] ?? 0;
+
             return [
-                'total_users' => 0,
-                'total_waste_reports' => 0,
-                'total_litterer_reports' => 0,
-                'total_verified_waste_reports' => 0,
-                'total_verified_litterer_reports' => 0,
-                'total_pending_waste_reports' =>  0,
-                'total_pending_litterer_reports' => 0
+                'totalUsers' => $totalUsers,
+                'totalReports' => $totalReports,
+                'total_verified_reports' => $total_verified_reports,
+                'total_pending_reports' => $total_pending_reports
+            ];
+        } catch (PDOException $e) {
+            // Log error if needed
+            error_log("Dashboard Summary Error: " . $e->getMessage());
+
+            // Return safe defaults if something fails
+            return [
+                'totalUsers' => 0,
+                'totalReports' => 0,
+                'total_verified_reports' => 0,
+                'total_pending_reports' => 0
             ];
         }
     }
