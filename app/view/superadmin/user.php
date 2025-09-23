@@ -56,7 +56,7 @@
                             type="text"
                             id="searchInput"
                             placeholder="Search user..."
-                            class="p-2 text-sm border rounded outline-none focus:ring-1 focus:ring-green-400">
+                            class="p-2 text-sm border border-gray-400 rounded outline-none focus:ring-1 focus:ring-green-400">
                     </div>
 
                     <div class="overflow-x-auto">
@@ -73,79 +73,28 @@
                                     </tr>
                                 </thead>
                                 <tbody id="userTable">
-                                    <tr class="hover:bg-green-50 border-b border-gray-400   ">
-                                        <td class="p-3 ">Juan Dela Cruz</td>
-                                        <td class="p-3 ">juan@example.com</td>
-                                        <td class="p-3 ">Tapilon</td>
-                                        <td class="p-3 ">120</td>
-                                        <td class="p-3 ">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
-                                        </td>
-                                        <td class="p-3">
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100">Ban</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50 border-b border-gray-400   ">
-                                        <td class="p-3 ">Juan Dela Cruz</td>
-                                        <td class="p-3 ">juan@example.com</td>
-                                        <td class="p-3 ">Tapilon</td>
-                                        <td class="p-3 ">120</td>
-                                        <td class="p-3 ">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
-                                        </td>
-                                        <td class="p-3">
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100">Ban</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50 border-b border-gray-400   ">
-                                        <td class="p-3 ">Juan Dela Cruz</td>
-                                        <td class="p-3 ">juan@example.com</td>
-                                        <td class="p-3 ">Tapilon</td>
-                                        <td class="p-3 ">120</td>
-                                        <td class="p-3 ">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
-                                        </td>
-                                        <td class="p-3">
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100">Ban</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50 border-b border-gray-400   ">
-                                        <td class="p-3 ">Juan Dela Cruz</td>
-                                        <td class="p-3 ">juan@example.com</td>
-                                        <td class="p-3 ">Tapilon</td>
-                                        <td class="p-3 ">120</td>
-                                        <td class="p-3 ">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
-                                        </td>
-                                        <td class="p-3">
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100">Ban</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50 border-b border-gray-400   ">
-                                        <td class="p-3 ">Juan Dela Cruz</td>
-                                        <td class="p-3 ">juan@example.com</td>
-                                        <td class="p-3 ">Tapilon</td>
-                                        <td class="p-3 ">120</td>
-                                        <td class="p-3 ">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
-                                        </td>
-                                        <td class="p-3">
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100">Ban</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-green-50 border-b border-gray-400   ">
-                                        <td class="p-3 ">Juan Dela Cruz</td>
-                                        <td class="p-3 ">juan@example.com</td>
-                                        <td class="p-3 ">Tapilon</td>
-                                        <td class="p-3 ">120</td>
-                                        <td class="p-3 ">
-                                            <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
-                                        </td>
-                                        <td class="p-3">
-                                            <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100">Ban</button>
-                                        </td>
-                                    </tr>
-
+                                    <?php if (empty($data['users'])): ?>
+                                        <tr>
+                                            <td colspan="5" class="text-center py-4 text-gray-500">
+                                                No registered user
+                                            </td>
+                                        </tr>
+                                    <?php else: ?>
+                                        <?php foreach ($data['users'] as $user): ?>
+                                            <tr class="hover:bg-green-50 border-b border-gray-400   ">
+                                                <td class="p-3 "><?php echo $user['firstname'] . ' ' . $user['lastname'] ?></td>
+                                                <td class="p-3 "><?php echo $user['email'] ?></td>
+                                                <td class="p-3 "><?php echo $user['name'] ?></td>
+                                                <td class="p-3 "><?php echo $user['points'] ?></td>
+                                                <td class="p-3 ">
+                                                    <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
+                                                </td>
+                                                <td class="p-3">
+                                                    <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100">Ban</button>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -166,109 +115,6 @@
             </div>
         </div>
     </div>
-
-    <!-- <script>
-        // Real-time clock
-        function updateClock() {
-            const clock = document.getElementById("clock");
-            const now = new Date();
-            let hours = now.getHours();
-            let minutes = now.getMinutes();
-            let seconds = now.getSeconds();
-            const ampm = hours >= 12 ? "PM" : "AM";
-
-            hours = hours % 12 || 12;
-            minutes = minutes < 10 ? "0" + minutes : minutes;
-            seconds = seconds < 10 ? "0" + seconds : seconds;
-
-            clock.textContent = $ {
-                hours
-            }: $ {
-                minutes
-            }: $ {
-                seconds
-            }
-            $ {
-                ampm
-            };
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        // Toggle Sidebar
-        const toggleSidebar = document.getElementById("toggleSidebar");
-        const sidebar = document.getElementById("sidebar");
-
-        toggleSidebar.addEventListener("click", () => {
-            if (sidebar.classList.contains("-translate-x-full")) {
-                sidebar.classList.remove("-translate-x-full");
-                sidebar.classList.add("translate-x-0");
-            } else {
-                sidebar.classList.add("-translate-x-full");
-                sidebar.classList.remove("translate-x-0");
-            }
-        });
-
-        // Search filter
-        document.getElementById("searchInput").addEventListener("keyup", function() {
-            let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll("#userTable tr");
-
-            rows.forEach(row => {
-                let name = row.cells[0].textContent.toLowerCase();
-                let email = row.cells[1].textContent.toLowerCase();
-                let barangay = row.cells[2].textContent.toLowerCase();
-
-                row.style.display = (name.includes(filter) || email.includes(filter) || barangay.includes(filter)) ? "" : "none";
-            });
-        });
-
-
-
-        // Ban / Verify button functionality
-        document.querySelectorAll("#userTable .toggleBtn").forEach(button => {
-            button.addEventListener("click", function() {
-                const row = this.closest("tr");
-                const statusCell = row.querySelector(".status");
-
-                if (this.textContent === "Ban") {
-                    statusCell.textContent = "Banned";
-                    statusCell.className = "status px-2 py-1 text-xs rounded-full bg-red-100 text-red-700";
-                    this.textContent = "Unban";
-                    this.className = "toggleBtn px-2 py-1 text-xs rounded border border-green-400 hover:bg-green-100";
-                } else if (this.textContent === "Unban") {
-                    statusCell.textContent = "Active";
-                    statusCell.className = "status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700";
-                    this.textContent = "Ban";
-                    this.className = "toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100";
-                } else if (this.textContent === "Verify") {
-                    statusCell.textContent = "Active";
-                    statusCell.className = "status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700";
-                    this.textContent = "Ban";
-                    this.className = "toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100";
-                }
-            });
-        });
-
-        // Logout modal logic
-        const logoutBtn = document.getElementById("logoutBtn");
-        const logoutModal = document.getElementById("logoutModal");
-        const cancelLogout = document.getElementById("cancelLogout");
-        const confirmLogout = document.getElementById("confirmLogout");
-
-        logoutBtn.addEventListener("click", () => {
-            logoutModal.classList.remove("hidden");
-        });
-
-        cancelLogout.addEventListener("click", () => {
-            logoutModal.classList.add("hidden");
-        });
-
-        confirmLogout.addEventListener("click", () => {
-            // Redirect to login page or perform logout action
-            window.location.href = "login.html";
-        });
-    </script> -->
     <script>
         // Elements
         const logoutModal = document.getElementById("logoutModal");
@@ -277,7 +123,7 @@
 
         // Show modal when logout button is clicked
         logoutTrigger.addEventListener("click", (e) => {
-            e.preventDefault(); // stop immediate navigation
+            e.preventDefault();
             logoutModal.classList.remove("hidden");
         });
 

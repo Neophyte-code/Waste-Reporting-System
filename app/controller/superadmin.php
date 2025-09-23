@@ -173,8 +173,13 @@ class Superadmin extends Controller
 
         $userData = $_SESSION['user'];
 
+        //instantiate  a  users  model
+        $userModel = $this->model('UserModel');
+        $users = $userModel->getUser();
+
         $this->view('superadmin/user', [
-            'user' => $userData
+            'user' => $userData,
+            'users' => $users
         ]);
     }
 }

@@ -629,4 +629,21 @@ class UserModel
             return false;
         }
     }
+
+    //function to retrieve users from db (for superadmin)
+    public function getUser()
+    {
+        try {
+
+            $stmt = $this->db->prepare("
+            select u.id, u.firstname, u.lastname, u.email, u.points, b.name from users u join barangays b on u.barangay_id = b.id where role = 'user' 
+            ");
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Database error: " . $e->getMessage());
+            return false;
+        }
+    }
 }
