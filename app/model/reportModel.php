@@ -400,34 +400,30 @@ class ReportModel
     {
         try {
             $stmt = $this->db->prepare("
-            SELECT 
-            rr.id,
-            u.firstname, 
-            u.lastname, 
-            u.email, 
-            rr.points_amount, 
-            rr.gcash_number, 
-            rr.gcash_name, 
-            rr.qr_code_path, 
-            rr.status, 
-            rr.request_date
-        FROM redemption_requests rr
-        JOIN users u ON rr.user_id = u.id
-        WHERE u.barangay_id = :barangay_id and status = 'pending'
-        ORDER BY rr.request_date DESC
-
-        ");
-
-            $stmt->bindParam(':barangay_id', $barangay_id, PDO::PARAM_INT);
-            $stmt->execute();
+                SELECT 
+                    rr.id,
+                    rr.points_amount,
+                    rr.gcash_number,
+                    rr.gcash_name,
+                    rr.qr_code_path,
+                    rr.status,
+                    rr.request_date,
+                    u.firstname,
+                    u.lastname,
+                    u.email
+                FROM redemption_requests rr
+                INNER JOIN users u ON rr.user_id = u.id
+                WHERE u.barangay_id = :barangay_id
+                ORDER BY rr.request_date DESC
+            ");
+            $stmt->execute([':barangay_id' => $barangay_id]);
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Database error: " . $e->getMessage());
+            error_log("Get Redemptions Error: " . $e->getMessage());
             return [];
         }
     }
-
     // Approve redemption request by ID (for admin)
     public function approveRequest($id)
     {
