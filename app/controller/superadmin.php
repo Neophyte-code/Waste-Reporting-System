@@ -177,9 +177,43 @@ class Superadmin extends Controller
         $userModel = $this->model('UserModel');
         $users = $userModel->getUser();
 
+        $message = null;
+        $messageType = null;
+
+        if (!empty($_SESSION['failed'])) {
+            $message = $_SESSION['failed'];
+            $messageType = 'failed';
+            unset($_SESSION['failed']);
+        } elseif (!empty($_SESSION['success'])) {
+            $message = $_SESSION['success'];
+            $messageType = 'success';
+            unset($_SESSION['success']);
+        }
+
         $this->view('superadmin/user', [
             'user' => $userData,
-            'users' => $users
+            'users' => $users,
+            'message' => $message,
+            'messageType' => $messageType,
         ]);
+    }
+
+    //function to edit users status
+    public function updateStatus()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'], $_POST['action'])) {
+
+            $userModel = $this->model('UserModel');
+            $status = ($_POST['action'] === 'ban') ? 'banned' : 'active';
+
+            if ($userModel->updateStatus($_POST['id'], $status)) {
+                $_SESSION['success'] = "Status updated successfully";
+            } else {
+                $_SESSION['failed'] = "Failed to update status";
+            }
+
+            header('Location: ' . URL_ROOT . '/superadmin/user');
+            exit;
+        }
     }
 }

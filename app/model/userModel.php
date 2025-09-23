@@ -636,11 +636,26 @@ class UserModel
         try {
 
             $stmt = $this->db->prepare("
-            select u.id, u.firstname, u.lastname, u.email, u.points, b.name from users u join barangays b on u.barangay_id = b.id where role = 'user' 
+            select u.id, u.firstname, u.lastname, u.email, u.points, b.name, u.status  from users u join barangays b on u.barangay_id = b.id where role = 'user' 
             ");
             $stmt->execute();
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Database error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    //function to update status of the user  account
+    public function updateStatus($id, $status)
+    {
+        try {
+            $stmt = $this->db->prepare("UPDATE users SET status = :status WHERE id = :id");
+            return $stmt->execute([
+                ':status' => $status,
+                ':id' => $id
+            ]);
         } catch (PDOException $e) {
             error_log("Database error: " . $e->getMessage());
             return false;

@@ -7,6 +7,42 @@
     <title>User Management — Super Admin</title>
     <link href="<?php echo URL_ROOT; ?>/css/output.css" rel="stylesheet">
 </head>
+<style>
+    .flash-message {
+        position: fixed;
+        top: 5px;
+        right: 5px;
+        color: white;
+        padding: 16px 24px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+        text-align: center;
+        opacity: 1;
+        transition: opacity 0.8s ease, transform 0.8s ease;
+        z-index: 9999;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .flash-message.flash-success {
+        background: #22C55E;
+    }
+
+    .flash-message.flash-failed {
+        background: #EF4444;
+    }
+
+    .flash-message.flash-hide {
+        opacity: 0;
+        transform: translateX(10px);
+    }
+</style>
+<!-- Display flash message -->
+<?php if (!empty($data['message'])): ?>
+    <div id="flash-message" class="flash-message flash-<?= htmlspecialchars($data['messageType'] ?? 'success') ?>">
+        <?= htmlspecialchars($data['message']); ?>
+    </div>
+<?php endif; ?>
 
 <body class="bg-green-50 text-green-900">
     <div class="min-h-screen flex">
@@ -86,11 +122,21 @@
                                                 <td class="p-3 "><?php echo $user['email'] ?></td>
                                                 <td class="p-3 "><?php echo $user['name'] ?></td>
                                                 <td class="p-3 "><?php echo $user['points'] ?></td>
-                                                <td class="p-3 ">
-                                                    <span class="status px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Active</span>
+                                                <td class="p-3">
+                                                    <span class="status px-2 py-1 text-xs rounded-full <?= $user['status'] === 'banned' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700' ?>">
+                                                        <?= ucfirst($user['status']) ?>
+                                                    </span>
                                                 </td>
                                                 <td class="p-3">
-                                                    <button class="toggleBtn px-2 py-1 text-xs rounded border border-red-300 hover:bg-red-100">Ban</button>
+                                                    <form method="POST" action="<?php echo URL_ROOT; ?>/superadmin/updateStatus">
+                                                        <input type="hidden" name="id" value="<?= $user['id'] ?>">
+                                                        <input type="hidden" name="action" value="<?= $user['status'] === 'banned' ? 'unban' : 'ban' ?>">
+                                                        <button type="submit"
+                                                            class="px-2 py-1 text-xs rounded border 
+                                                            <?= $user['status'] === 'banned' ? 'border-green-300 hover:bg-green-100' : 'border-red-300 hover:bg-red-100' ?>">
+                                                            <?= $user['status'] === 'banned' ? 'Unban' : 'Ban' ?>
+                                                        </button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -138,6 +184,15 @@
                 logoutModal.classList.add("hidden");
             }
         });
+
+        //flash message
+        const flashMessage = document.getElementById('flash-message');
+        if (flashMessage) {
+            setTimeout(() => {
+                flashMessage.classList.add('flash-hide');
+                setTimeout(() => flashMessage.remove(), 800);
+            }, 3000);
+        }
     </script>
 </body>
 
