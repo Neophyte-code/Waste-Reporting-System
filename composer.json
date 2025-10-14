@@ -3,7 +3,8 @@
         "vlucas/phpdotenv": "^5.6",
         "gemini-api-php/client": "^1.7",
         "guzzlehttp/guzzle": "^7.9",
-        "setasign/fpdf": "^1.8"
+        "setasign/fpdf": "^1.8",
+        "phpmailer/phpmailer": "^6.11"
     },
     "config": {
         "allow-plugins": {

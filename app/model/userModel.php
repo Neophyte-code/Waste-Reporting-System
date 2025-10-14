@@ -9,19 +9,74 @@ class UserModel
         $this->db = Database::connect();
     }
 
-    // Function to register account
+    //funciton to register user
     public function register($data)
     {
-        $stmt = $this->db->prepare("INSERT INTO users (firstname, lastname, barangay_id, email, password, profile_picture) VALUES (:firstname, :lastname, :barangay_id, :email, :password, :profile_picture)");
-        $stmt->bindParam(':firstname', $data['firstname']);
-        $stmt->bindParam(':lastname', $data['lastname']);
-        $stmt->bindParam(':barangay_id', $data['barangay_id'], PDO::PARAM_INT);
-        $stmt->bindParam(':email', $data['email']);
+        $sql = "INSERT INTO users (firstname, lastname, barangay_id, email, password, profile_picture, is_verified)
+                VALUES (:firstname, :lastname, :barangay_id, :email, :password, :profile_picture, 0)";
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bindValue(':firstname', $data['firstname']);
+        $stmt->bindValue(':lastname', $data['lastname']);
+        $stmt->bindValue(':barangay_id', $data['barangay_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':email', $data['email']);
         $hashPassword = password_hash($data['password'], PASSWORD_BCRYPT);
-        $stmt->bindParam(':password', $hashPassword);
+        $stmt->bindValue(':password', $hashPassword);
         $profilePicture = $data['profile_picture'] ?? null;
-        $stmt->bindParam(':profile_picture', $profilePicture);
-        return $stmt->execute();
+        $stmt->bindValue(':profile_picture', $profilePicture);
+
+        if ($stmt->execute()) {
+            return (int)$this->db->lastInsertId();
+        }
+        return false;
+    }
+
+    // Mark user email as verified
+    public function markEmailVerified($user_id)
+    {
+        $stmt = $this->db->prepare("UPDATE users SET is_verified = 1 WHERE id = :id");
+        return $stmt->execute([':id' => $user_id]);
+    }
+
+    // Store OTP hash for user
+    public function storeOtp($user_id, $otpHash, $expiresAt)
+    {
+        $stmt = $this->db->prepare("INSERT INTO email_otps (user_id, otp_hash, expires_at) VALUES (:user_id, :otp_hash, :expires_at)");
+        return $stmt->execute([
+            ':user_id' => $user_id,
+            ':otp_hash' => $otpHash,
+            ':expires_at' => $expiresAt
+        ]);
+    }
+
+    // Get latest OTP record for user
+    public function getLatestOtpRecord($user_id)
+    {
+        $stmt = $this->db->prepare("SELECT id, otp_hash, expires_at, attempts FROM email_otps WHERE user_id = :uid ORDER BY created_at DESC LIMIT 1");
+        $stmt->execute([':uid' => $user_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // Increase OTP attempts
+    public function incrementOtpAttempts($otp_id)
+    {
+        $stmt = $this->db->prepare("UPDATE email_otps SET attempts = attempts + 1 WHERE id = :id");
+        return $stmt->execute([':id' => $otp_id]);
+    }
+
+    // Delete OTP record (after success or cleanup)
+    public function deleteOtp($otp_id)
+    {
+        $stmt = $this->db->prepare("DELETE FROM email_otps WHERE id = :id");
+        return $stmt->execute([':id' => $otp_id]);
+    }
+
+    // Find user by email
+    public function findByEmail($email)
+    {
+        $stmt = $this->db->prepare("SELECT id, is_verified FROM users WHERE email = :email LIMIT 1");
+        $stmt->execute([':email' => $email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     // Function for user login
@@ -706,7 +761,7 @@ class UserModel
         }
     }
 
-    //function to update status of the user  account
+    //function to update status of the user  account (for superadmin)
     public function updateStatus($id, $status)
     {
         try {

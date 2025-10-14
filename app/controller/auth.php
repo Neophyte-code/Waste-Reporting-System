@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../Mailer/Emailer.php';
+
 class Auth extends Controller
 {
     public function __construct() {}
@@ -23,36 +25,74 @@ class Auth extends Controller
                 'form' => 'signup'
             ];
 
-            // Input field validation
+            // basic validation
             if (empty($data['firstname']) || empty($data['lastname']) || empty($data['barangay']) || empty($data['email']) || empty($data['password']) || empty($data['confirm_password'])) {
                 $this->view('auth/index', ['error' => 'All fields are required', 'form' => 'signup']);
                 return;
             }
-
-            // Confirm password
             if ($data['password'] !== $data['confirm_password']) {
                 $this->view('auth/index', ['error' => 'Passwords do not match', 'form' => 'signup']);
                 return;
             }
 
-            // Validate the chosen barangay
             $userModel = $this->model('UserModel');
             $barangay_id = $userModel->getBarangayIdByName($data['barangay']);
             if (!$barangay_id) {
                 $this->view('auth/index', ['error' => 'Invalid barangay selected', 'form' => 'signup']);
                 return;
             }
+            //Validate if email already exists
+            $existingUser = $userModel->getUserByEmail($data['email']);
 
-            // Validate if email is already registered
-            if ($userModel->emailExist($data['email'])) {
-                $this->view("auth/index", ['error' => 'Email already registered', 'form' => 'signup']);
-                return;
+            if ($existingUser) {
+                if ($existingUser['is_verified'] == 0) {
+                    // Not yet verified — tell them to check email
+                    $this->view("auth/index", [
+                        'error' => 'This email is already registered.',
+                        'form' => 'signup',
+                    ]);
+                    return;
+                } else {
+                    // Already verified — cannot register again
+                    $this->view("auth/index", [
+                        'error' => 'This email is already registered.',
+                        'form' => 'signup',
+                    ]);
+                    return;
+                }
             }
 
-            // Register the user
+
+
+            // store user 
             $data['barangay_id'] = $barangay_id;
-            if ($userModel->register($data)) {
-                $this->view("auth/index", ['success' => 'Registration successful!', 'form' => 'signup']);
+            $user_id = $userModel->register($data);
+
+            if ($user_id) {
+                // generate OTP (6 digits)
+                $otp = str_pad((string)random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+
+                // hash OTP and set expiry (10 minutes)
+                $otpHash = password_hash($otp, PASSWORD_DEFAULT);
+                $expiresAt = (new DateTime('+10 minutes'))->format('Y-m-d H:i:s');
+
+                // store OTP
+                if (!$userModel->storeOtp($user_id, $otpHash, $expiresAt)) {
+                    $this->view("auth/index", ['error' => 'Registration failed', 'form' => 'signup']);
+                    return;
+                }
+
+                // send OTP using Emailer
+                $emailer = new Emailer();
+                if (!$emailer->sendVerificationOtp($data['email'], $otp)) {
+                    // sending failed
+                    $this->view("auth/index", ['error' => 'Registration failed. Please try again later.', 'form' => 'signup']);
+                    return;
+                }
+
+                // redirect user to verification page
+                header("Location: " . URL_ROOT . "/auth/verify?email=" . urlencode($data['email']));
+                exit;
             } else {
                 $this->view("auth/index", ['error' => 'Registration failed', 'form' => 'signup']);
             }
@@ -61,7 +101,160 @@ class Auth extends Controller
         }
     }
 
-    // function for loggin in
+    // show verify page (OTP input)
+    public function verify()
+    {
+        $email = $_GET['email'] ?? '';
+        if (!$email) {
+            $this->view("auth/index", ['error' => 'Invalid verification request', 'form' => 'signup']);
+            return;
+        }
+        // show verify form
+        $this->view("auth/verify", ['email' => htmlspecialchars($email)]);
+    }
+
+    // process OTP submission
+    public function verifyOtp()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location: " . URL_ROOT . "/auth/index");
+            exit;
+        }
+
+        $email = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
+        $inputOtp = trim($_POST['otp'] ?? '');
+
+        if (empty($email) || empty($inputOtp)) {
+            $this->view("auth/verify", [
+                'error' => 'Code and email are required.',
+                'email' => htmlspecialchars($email)
+            ]);
+            return;
+        }
+
+        $userModel = $this->model('UserModel');
+        $user = $userModel->findByEmail($email);
+
+        if (!$user) {
+            $this->view("auth/verify", [
+                'error' => 'Invalid code or email.',
+                'email' => htmlspecialchars($email)
+            ]);
+            return;
+        }
+
+        // Get latest OTP record
+        $otpRecord = $userModel->getLatestOtpRecord($user['id']);
+        if (!$otpRecord) {
+            $this->view("auth/verify", [
+                'error' => 'No verification code found. Please request a new one.',
+                'email' => htmlspecialchars($email)
+            ]);
+            return;
+        }
+
+        // Check expiry
+        $now = new DateTime();
+        $expiresAt = new DateTime($otpRecord['expires_at']);
+        if ($now > $expiresAt) {
+            $this->view("auth/verify", [
+                'error' => 'Code expired. Please request a new one.',
+                'email' => htmlspecialchars($email)
+            ]);
+            return;
+        }
+
+        // Check attempts limit
+        if ((int)$otpRecord['attempts'] >= 5) {
+            $this->view("auth/verify", [
+                'error' => 'Too many attempts. Please request a new code.',
+                'email' => htmlspecialchars($email)
+            ]);
+            return;
+        }
+
+        // Verify OTP
+        if (password_verify($inputOtp, $otpRecord['otp_hash'])) {
+            $userModel->markEmailVerified($user['id']);
+            $userModel->deleteOtp($otpRecord['id']);
+
+            // Success message
+            $this->view("auth/index", [
+                'success' => 'Email verified! Your account is pending admin approval. You’ll be able to sign in once approved.',
+                'form' => 'signin',
+                'toast_only' => true
+            ]);
+            return;
+        }
+
+        // Wrong code (increment attempts)
+        $userModel->incrementOtpAttempts($otpRecord['id']);
+        $this->view("auth/verify", [
+            'error' => 'Incorrect code. Please try again.',
+            'email' => htmlspecialchars($email)
+        ]);
+    }
+
+
+    // resend OTP
+    public function resendOtp()
+    {
+        // Allow both GET (link click) and POST (form)
+        $email = filter_var(trim($_GET['email'] ?? $_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
+
+        if (empty($email)) {
+            $this->view("auth/verify", [
+                'error' => 'Invalid request. Email missing.',
+                'email' => ''
+            ]);
+            return;
+        }
+
+        $userModel = $this->model('UserModel');
+        $user = $userModel->findByEmail($email);
+
+        // Don't reveal user existence
+        if (!$user) {
+            $this->view("auth/verify", [
+                'success' => 'If an account exists, a new code was sent.',
+                'email' => htmlspecialchars($email)
+            ]);
+            return;
+        }
+
+        // Generate new OTP
+        $otp = str_pad((string)random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        $otpHash = password_hash($otp, PASSWORD_DEFAULT);
+        $expiresAt = (new DateTime('+10 minutes'))->format('Y-m-d H:i:s');
+
+        // Store new OTP
+        if (!$userModel->storeOtp($user['id'], $otpHash, $expiresAt)) {
+            $this->view("auth/verify", [
+                'error' => 'Failed to create code. Please try again later.',
+                'email' => htmlspecialchars($email)
+            ]);
+            return;
+        }
+
+        // Send via Emailer
+        $emailer = new Emailer();
+        if (!$emailer->sendVerificationOtp($email, $otp)) {
+            $this->view("auth/verify", [
+                'error' => 'Failed to send code. Please try again later.',
+                'email' => htmlspecialchars($email)
+            ]);
+            return;
+        }
+
+        // Success
+        $this->view("auth/verify", [
+            'success' => "A new verification code was sent to $email. It will expire in 10 minutes.",
+            'email' => htmlspecialchars($email)
+        ]);
+    }
+
+
+    // function for logging in
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -74,7 +267,6 @@ class Auth extends Controller
                 return;
             }
 
-            // Instantiate the model class
             $userModel = $this->model('UserModel');
 
             // Check if email is registered
@@ -85,7 +277,40 @@ class Auth extends Controller
 
             // Validate password
             $user = $userModel->login($email, $password);
+
             if ($user) {
+                // Check if email verified
+                if ($user['is_verified'] == 0) {
+                    $this->view('auth/index', [
+                        'error' => 'Your email is not verified. Register it to verify.',
+                        'form' => 'signin',
+                        'toast_only' => true
+                    ]);
+                    return;
+                }
+
+                // Check if still pending admin approval
+                if ($user['status'] === 'pending') {
+                    $this->view('auth/index', [
+                        'success' => 'Your account is still awaiting admin approval. 
+                                  You’ll be able to sign in once approved.',
+                        'form' => 'signin',
+                        'toast_only' => true
+                    ]);
+                    return;
+                }
+
+                //check account if user is banned
+                if ($user['status'] === 'banned') {
+                    $this->view('auth/index', [
+                        'error' => 'Your account has been banned. Please contact support for assistance.',
+                        'form' => 'signin',
+                        'toast_only' => true
+                    ]);
+                    return;
+                }
+
+                // Proceed only if approved
                 $profilePicture = !empty($user['profile_picture'])
                     ? $user['profile_picture']
                     : 'images/profile.png';
@@ -102,10 +327,10 @@ class Auth extends Controller
                     'role' => $user['role']
                 ];
 
-                // Clear localStorage to reset modal state
+                // Clear modal state
                 echo '<script>localStorage.removeItem("modalState"); localStorage.removeItem("activeForm");</script>';
 
-                // Redirect base on roles
+                // Redirect based on roles
                 if ($user['role'] === 'superadmin') {
                     header('Location: ' . URL_ROOT . '/superadmin');
                 } elseif ($user['role'] === 'admin') {
@@ -115,7 +340,6 @@ class Auth extends Controller
                 }
                 exit;
             } else {
-                //Handle incorrect password
                 $this->view('auth/index', ['error' => 'Incorrect password', 'form' => 'signin']);
                 return;
             }
@@ -123,6 +347,8 @@ class Auth extends Controller
             $this->view("auth/index", ['form' => 'signin']);
         }
     }
+
+
 
     // function for logging out
     public function logout()
