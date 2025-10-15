@@ -9,27 +9,31 @@ class UserModel
         $this->db = Database::connect();
     }
 
-    //funciton to register user
+    // Function to register user
     public function register($data)
     {
-        $sql = "INSERT INTO users (firstname, lastname, barangay_id, email, password, profile_picture, is_verified)
-                VALUES (:firstname, :lastname, :barangay_id, :email, :password, :profile_picture, 0)";
+        $sql = "INSERT INTO users 
+        (firstname, lastname, barangay_id, email, password, profile_picture, id_front, id_back, is_verified)
+        VALUES 
+        (:firstname, :lastname, :barangay_id, :email, :password, :profile_picture, :id_front, :id_back, 0)";
+
         $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue(':firstname', $data['firstname']);
         $stmt->bindValue(':lastname', $data['lastname']);
         $stmt->bindValue(':barangay_id', $data['barangay_id'], PDO::PARAM_INT);
         $stmt->bindValue(':email', $data['email']);
-        $hashPassword = password_hash($data['password'], PASSWORD_BCRYPT);
-        $stmt->bindValue(':password', $hashPassword);
-        $profilePicture = $data['profile_picture'] ?? null;
-        $stmt->bindValue(':profile_picture', $profilePicture);
+        $stmt->bindValue(':password', password_hash($data['password'], PASSWORD_BCRYPT));
+        $stmt->bindValue(':profile_picture', $data['profile_picture'] ?? null);
+        $stmt->bindValue(':id_front', $data['id_front'] ?? null);
+        $stmt->bindValue(':id_back', $data['id_back'] ?? null);
 
         if ($stmt->execute()) {
             return (int)$this->db->lastInsertId();
         }
         return false;
     }
+
 
     // Mark user email as verified
     public function markEmailVerified($user_id)
@@ -354,14 +358,28 @@ class UserModel
     public function getUsers($barangay_id)
     {
         try {
-
-            $stmt = $this->db->prepare("select id, firstname, lastname, email from users where barangay_id = :barangay_id and role not in ('admin', 'superadmin')");
-            $stmt->bindParam(':barangay_id', $barangay_id);
+            $sql = "SELECT id, firstname, lastname, email, id_front, id_back, status, is_verified, created_at FROM users WHERE barangay_id = :barangay_id AND role NOT IN ('admin', 'superadmin') ORDER BY (status = 'pending') DESC, created_at DESC";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':barangay_id', $barangay_id, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Database error: " . $e->getMessage());
-            return;
+            error_log('Database error: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+
+    //function to verify the users (status = active)
+    public function approveUserById($userId)
+    {
+        try {
+            $stmt = $this->db->prepare("UPDATE users SET status = 'active' WHERE id = :id");
+            $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log('Database error: ' . $e->getMessage());
+            return false;
         }
     }
 

@@ -184,6 +184,36 @@ class Admin extends Controller
         ]);
     }
 
+    //function to approve user (status)
+    public function approveUser()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
+            $userId = (int)$_POST['user_id'];
+            $userModel = $this->model('UserModel');
+
+            header('Content-Type: application/json');
+
+            if ($userModel->approveUserById($userId)) {
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'User approved successfully!'
+                ]);
+            } else {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Failed to approve user.'
+                ]);
+            }
+            exit;
+        }
+
+        // If accessed directly (not POST)
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'message' => 'Invalid request.']);
+        exit;
+    }
+
+
     //function to delete user
     public function deleteUser()
     {

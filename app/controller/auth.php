@@ -35,37 +35,80 @@ class Auth extends Controller
                 return;
             }
 
+            // Model instance
             $userModel = $this->model('UserModel');
             $barangay_id = $userModel->getBarangayIdByName($data['barangay']);
             if (!$barangay_id) {
                 $this->view('auth/index', ['error' => 'Invalid barangay selected', 'form' => 'signup']);
                 return;
             }
-            //Validate if email already exists
-            $existingUser = $userModel->getUserByEmail($data['email']);
 
+            // Check existing user
+            $existingUser = $userModel->getUserByEmail($data['email']);
             if ($existingUser) {
-                if ($existingUser['is_verified'] == 0) {
-                    // Not yet verified — tell them to check email
-                    $this->view("auth/index", [
-                        'error' => 'This email is already registered.',
-                        'form' => 'signup',
-                    ]);
-                    return;
+                $this->view("auth/index", [
+                    'error' => 'This email is already registered.',
+                    'form' => 'signup'
+                ]);
+                return;
+            }
+
+            // Handle file uploads
+            $uploadDir = __DIR__ . '/../../public/images/ids/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+            $maxSize = 5 * 1024 * 1024;
+
+            $uploadedFiles = $_FILES['files'] ?? null;
+            if (!$uploadedFiles || count($uploadedFiles['name']) < 2) {
+                $this->view("auth/index", ['error' => 'Please upload both front and back ID images.', 'form' => 'signup']);
+                return;
+            }
+
+            $idFront = null;
+            $idBack = null;
+
+            for ($i = 0; $i < count($uploadedFiles['name']); $i++) {
+                if ($uploadedFiles['error'][$i] === UPLOAD_ERR_OK) {
+                    $tmpName = $uploadedFiles['tmp_name'][$i];
+                    $fileType = mime_content_type($tmpName);
+                    $fileSize = $uploadedFiles['size'][$i];
+
+                    if (!in_array($fileType, $allowedTypes)) {
+                        $this->view("auth/index", ['error' => 'Only JPG or PNG files are allowed.', 'form' => 'signup']);
+                        return;
+                    }
+                    if ($fileSize > $maxSize) {
+                        $this->view("auth/index", ['error' => 'Each file must be less than 5MB.', 'form' => 'signup']);
+                        return;
+                    }
+
+                    // Generate safe filename
+                    $ext = pathinfo($uploadedFiles['name'][$i], PATHINFO_EXTENSION);
+                    $newName = uniqid('id_', true) . '.' . $ext;
+                    $targetPath = $uploadDir . $newName;
+
+                    if (move_uploaded_file($tmpName, $targetPath)) {
+                        if ($i == 0) $idFront = 'images/ids/' . $newName;
+                        else $idBack = 'images/ids/' . $newName;
+                    } else {
+                        $this->view("auth/index", ['error' => 'Failed to upload files.', 'form' => 'signup']);
+                        return;
+                    }
                 } else {
-                    // Already verified — cannot register again
-                    $this->view("auth/index", [
-                        'error' => 'This email is already registered.',
-                        'form' => 'signup',
-                    ]);
+                    $this->view("auth/index", ['error' => 'Error uploading ID images.', 'form' => 'signup']);
                     return;
                 }
             }
 
-
-
             // store user 
             $data['barangay_id'] = $barangay_id;
+            $data['id_front'] = $idFront;
+            $data['id_back'] = $idBack;
+
             $user_id = $userModel->register($data);
 
             if ($user_id) {
@@ -85,7 +128,6 @@ class Auth extends Controller
                 // send OTP using Emailer
                 $emailer = new Emailer();
                 if (!$emailer->sendVerificationOtp($data['email'], $otp)) {
-                    // sending failed
                     $this->view("auth/index", ['error' => 'Registration failed. Please try again later.', 'form' => 'signup']);
                     return;
                 }
@@ -100,6 +142,7 @@ class Auth extends Controller
             $this->view("auth/index", ['form' => 'signup']);
         }
     }
+
 
     // show verify page (OTP input)
     public function verify()

@@ -107,11 +107,11 @@
 
         <div class="max-h-[calc(92vh-100px)] sm:max-h-[calc(86vh-100px)] overflow-auto rounded">
 
-          <!-- display flash message -->
-          <?php if (!empty($data['message'])): ?>
+          <?php if (!empty($_SESSION['flash_message'])): ?>
             <div id="flash-message" class="flash-message">
-              <?= htmlspecialchars($data['message'] ?? null); ?>
+              <?= htmlspecialchars($_SESSION['flash_message']); ?>
             </div>
+            <?php unset($_SESSION['flash_message']); ?>
           <?php endif; ?>
 
           <table class="w-full text-sm border-collapse table-fixed">
@@ -123,24 +123,37 @@
               </tr>
             </thead>
             <tbody class="bg-white">
-
               <?php if (empty($data['users'])): ?>
                 <p class="text-center">No Users Found</p>
               <?php else: ?>
                 <?php foreach ($data['users'] as $user): ?>
                   <tr class="border-b border-gray-400 hover:bg-gray-200">
-                    <td class="text-base py-2 px-4"><?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']) ?>
+                    <td class="text-base py-2 px-4">
+                      <?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']) ?>
                       <dl class="lg:hidden gap-1">
                         <dt class="sr-only">Email Address</dt>
                         <dd class="md:hidden text-sm text-gray-500"><?= htmlspecialchars($user['email']) ?></dd>
                       </dl>
                     </td>
                     <td class="hidden md:table-cell p-2.5 text-blue-600"><?= htmlspecialchars($user['email']) ?></td>
-                    <td class="p-3">
+                    <td class="p-3 flex gap-2">
+                      <?php if ($user['status'] === 'pending'): ?>
+                        <button
+                          class="bg-gray-300 hover:bg-green-300 text-white px-3 py-1 rounded verify-btn"
+                          data-id="<?= htmlspecialchars($user['id']) ?>"
+                          data-firstname="<?= htmlspecialchars($user['firstname']) ?>"
+                          data-lastname="<?= htmlspecialchars($user['lastname']) ?>"
+                          data-email="<?= htmlspecialchars($user['email']) ?>"
+                          data-front="<?= URL_ROOT . '/' . htmlspecialchars($user['id_front']) ?>"
+                          data-back="<?= URL_ROOT . '/' . htmlspecialchars($user['id_back']) ?>">
+                          <img src="<?php echo URL_ROOT; ?>/images/icons/check.png" alt="verify" class="h-5 w-5">
+                        </button>
+                      <?php endif; ?>
+
                       <button
-                        class="bg-red-500 hover:bg-red-700 text-white px-3 py-1 rounded delete-btn"
+                        class="bg-gray-300 hover:bg-red-300 text-white px-3 py-1 rounded delete-btn"
                         data-user-id="<?= htmlspecialchars($user['id']) ?>">
-                        Delete Account
+                        <img src="<?php echo URL_ROOT; ?>/images/icons/delete.png" alt="delete" class="h-5 w-5">
                       </button>
                     </td>
                   </tr>
@@ -148,7 +161,6 @@
               <?php endif; ?>
             </tbody>
           </table>
-
           <form id="deleteForm" method="POST" action="<?php echo URL_ROOT; ?>/admin/deleteUser" style="display:none;">
             <input type="hidden" name="user_id" id="deleteUserId">
           </form>
@@ -172,6 +184,35 @@
       <div class="flex justify-end gap-2 mt-4">
         <button id="cancelBtn" class="hover:bg-gray-400 px-4 py-1 rounded-md">Cancel</button>
         <button id="deleteBtn" class="hover:bg-gray-400 px-4 py-1 rounded-md">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Verify Modal -->
+  <div id="verifyModal" class="fixed inset-0 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative">
+      <h2 class="text-xl font-bold text-green-700 mb-4 text-center">Verify User</h2>
+
+      <div class="space-y-2 text-sm">
+        <p><strong>First Name:</strong> <span id="modalFirstName"></span></p>
+        <p><strong>Last Name:</strong> <span id="modalLastName"></span></p>
+        <p><strong>Email:</strong> <span id="modalEmail"></span></p>
+
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          <div>
+            <p class="font-medium text-green-700 text-center mb-1">Front ID</p>
+            <img id="modalFront" src="" alt="Front ID" class="w-full h-40 object-cover rounded border border-gray-300">
+          </div>
+          <div>
+            <p class="font-medium text-green-700 text-center mb-1">Back ID</p>
+            <img id="modalBack" src="" alt="Back ID" class="w-full h-40 object-cover rounded border border-gray-300">
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 flex justify-center gap-2">
+        <button id="closeModal" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+        <button id="approveBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Approve</button>
       </div>
     </div>
   </div>
@@ -283,6 +324,80 @@
           deleteForm.submit();
         }
       });
+    });
+
+    // script for approving the user account (status = active)
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('verifyModal');
+      const closeModal = document.getElementById('closeModal');
+      const approveBtn = document.getElementById('approveBtn');
+
+      // open verify modal
+      document.querySelectorAll('.verify-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.getElementById('modalFirstName').textContent = btn.dataset.firstname;
+          document.getElementById('modalLastName').textContent = btn.dataset.lastname;
+          document.getElementById('modalEmail').textContent = btn.dataset.email;
+          document.getElementById('modalFront').src = btn.dataset.front;
+          document.getElementById('modalBack').src = btn.dataset.back;
+
+          approveBtn.dataset.userId = btn.dataset.id;
+          modal.classList.remove('hidden');
+        });
+      });
+
+      // close modal when cancel button is click
+      closeModal.addEventListener('click', () => modal.classList.add('hidden'));
+
+      //close modal when outside is click
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.add('hidden');
+        }
+      });
+
+      approveBtn.addEventListener('click', () => {
+        const userId = approveBtn.dataset.userId;
+        fetch(`<?php echo URL_ROOT; ?>/admin/approveUser`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `user_id=${encodeURIComponent(userId)}`
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              const flash = document.createElement('div');
+              flash.id = 'flash-message';
+              flash.className = 'fixed top-4 right-4  transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded shadow-md z-50';
+              flash.textContent = data.message || 'User approved successfully!';
+              document.body.appendChild(flash);
+              setTimeout(() => flash.remove(), 4000);
+
+              // Hide modal and reload after a short delay
+              modal.classList.add('hidden');
+              setTimeout(() => location.reload(), 1500);
+            } else {
+              const flash = document.createElement('div');
+              flash.id = 'flash-message';
+              flash.className = 'fixed top-4 right-0 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded shadow-md z-50';
+              flash.textContent = data.message || 'Approval failed.';
+              document.body.appendChild(flash);
+              setTimeout(() => flash.remove(), 4000);
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            const flash = document.createElement('div');
+            flash.id = 'flash-message';
+            flash.className = 'fixed top-4 right-0 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded shadow-md z-50';
+            flash.textContent = 'Network or server error.';
+            document.body.appendChild(flash);
+            setTimeout(() => flash.remove(), 4000);
+          });
+      });
+
     });
   </script>
 </body>
