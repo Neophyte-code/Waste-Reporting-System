@@ -51,7 +51,7 @@
             <div class="flex items-center gap-3 mb-6">
                 <!-- Logo container (no SA text anymore) -->
                 <div id="sidebarLogo" class="h-12 w-12  flex items-center justify-center overflow-hidden">
-                    <!-- Empty, waiting for uploaded logo -->
+                    <img src="<?php echo URL_ROOT; ?>/images/tree3.png" alt="logo" class="h-15">
                 </div>
                 <div>
                     <div class="font-semibold">Super Admin</div>
@@ -59,9 +59,9 @@
                 </div>
             </div>
             <nav class="space-y-1 text-sm">
-                <a href="<?php echo URL_ROOT; ?>/superadmin" class="nav-item block px-3 py-2 rounded hover:bg-green-100">🛡️ Admin Management</a>
-                <a href="<?php echo URL_ROOT; ?>/superadmin/user" class="nav-item block px-3 py-2 rounded hover:bg-green-100">👥 User Management</a>
-                <button id="logoutBtn" class="w-full text-left px-4 py-2 rounded hover:bg-green-100">⏻ Logout</button>
+                <a href="<?php echo URL_ROOT; ?>/superadmin" class="nav-item  px-3 py-2 rounded hover:bg-green-100 flex gap-2"><img src="<?php echo URL_ROOT; ?>/images/icons/admin.png" alt="logout" class="h-5">Admin Management</a>
+                <a href="<?php echo URL_ROOT; ?>/superadmin/user" class="nav-item  px-3 py-2 rounded hover:bg-green-100 flex gap-2"><img src="<?php echo URL_ROOT; ?>/images/icons/profile.png" alt="user-logo" class="h-5">User Management</a>
+                <button id="logoutBtn" class="w-full text-left px-4 py-2 rounded hover:bg-green-100 flex gap-2"><img src="<?php echo URL_ROOT; ?>/images/icons/logout.png" alt="logout" class="h-5">Logout</button>
             </nav>
         </aside>
 
@@ -196,7 +196,7 @@
         </div>
     </div>
 
-    <!-- Add Modal -->
+    <!-- Add admin Modal -->
     <div id="addModal" class="fixed inset-0 hidden items-center justify-center z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
             <h2 class="text-lg font-semibold text-green-800 mb-4">Add Admin</h2>
@@ -371,33 +371,71 @@
             });
         });
 
+        // js for account deletion using AJAX
+        document.addEventListener('DOMContentLoaded', () => {
+            const deleteModal = document.getElementById('deleteModal');
+            const cancelDelete = document.getElementById('cancelDelete');
+            const confirmDelete = document.querySelector('#deleteModal button[type="submit"]');
+            let selectedId = null;
+            let selectedRow = null;
 
-        //use to delete account
-        document.addEventListener("DOMContentLoaded", () => {
-            const deleteButtons = document.querySelectorAll(".deleteBtn");
-            const modal = document.getElementById("deleteModal");
-            const cancelBtn = document.getElementById("cancelDelete");
-            const deleteIdInput = document.getElementById("deleteId");
-
-            // Open modal when delete button is clicked
-            deleteButtons.forEach(btn => {
-                btn.addEventListener("click", () => {
-                    const adminId = btn.dataset.id;
-                    deleteIdInput.value = adminId;
-                    modal.classList.remove("hidden");
+            // Open modal
+            document.querySelectorAll('.deleteBtn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    selectedId = btn.dataset.id;
+                    selectedRow = btn.closest('tr');
+                    deleteModal.classList.remove('hidden');
                 });
             });
 
-            // Close modal when cancel is clicked
-            cancelBtn.addEventListener("click", () => {
-                modal.classList.add("hidden");
+            // Cancel
+            cancelDelete.addEventListener('click', () => {
+                deleteModal.classList.add('hidden');
+                selectedId = null;
             });
 
-            // Optional: close modal if background overlay is clicked
-            modal.addEventListener("click", (e) => {
-                if (e.target === modal) {
-                    modal.classList.add("hidden");
+            // Close when clicking outside
+            deleteModal.addEventListener('click', e => {
+                if (e.target === deleteModal) {
+                    deleteModal.classList.add('hidden');
                 }
+            });
+
+            // Confirm delete (AJAX)
+            confirmDelete.addEventListener('click', e => {
+                e.preventDefault();
+                if (!selectedId) return;
+
+                fetch(`<?php echo URL_ROOT; ?>/superadmin/deleteAdmin`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: `id=${encodeURIComponent(selectedId)}`
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Toast notification
+                        const toast = document.createElement('div');
+                        toast.id = 'flash-message';
+                        toast.className = `fixed top-4 right-4 bg-${data.success ? 'green' : 'red'}-500 text-white px-4 py-2 rounded shadow-md z-50`;
+                        toast.textContent = data.message;
+                        document.body.appendChild(toast);
+                        setTimeout(() => toast.remove(), 4000);
+
+                        // Remove row if success
+                        if (data.success && selectedRow) selectedRow.remove();
+
+                        deleteModal.classList.add('hidden');
+                    })
+                    .catch(() => {
+                        const toast = document.createElement('div');
+                        toast.className = 'fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded shadow-md z-50';
+                        toast.textContent = 'Network or server error.';
+                        document.body.appendChild(toast);
+                        setTimeout(() => toast.remove(), 4000);
+                        deleteModal.classList.add('hidden');
+                    });
             });
         });
 

@@ -52,7 +52,7 @@
             <div class="flex items-center gap-3 mb-6">
                 <!-- Logo container (no SA text anymore) -->
                 <div id="sidebarLogo" class="h-12 w-12  flex items-center justify-center overflow-hidden">
-                    <!-- Empty, waiting for uploaded logo -->
+                    <img src="<?php echo URL_ROOT; ?>/images/tree3.png" alt="logo" class="h-15">
                 </div>
                 <div>
                     <div class="font-semibold">Super Admin</div>
@@ -60,9 +60,9 @@
                 </div>
             </div>
             <nav class="space-y-1 text-sm">
-                <a href="<?php echo URL_ROOT; ?>/superadmin" class="nav-item block px-3 py-2 rounded hover:bg-green-100">🛡️ Admin Management</a>
-                <a href="<?php echo URL_ROOT; ?>/superadmin/user" class="nav-item block px-3 py-2 rounded hover:bg-green-100">👥 User Management</a>
-                <button id="logoutBtn" class="w-full text-left px-4 py-2 rounded hover:bg-green-100">⏻ Logout</button>
+                <a href="<?php echo URL_ROOT; ?>/superadmin" class="nav-item px-3 py-2 rounded hover:bg-green-100 flex gap-2"><img src="<?php echo URL_ROOT; ?>/images/icons/admin.png" alt="logout" class="h-5">Admin Management</a>
+                <a href="<?php echo URL_ROOT; ?>/superadmin/user" class="nav-item px-3 py-2 rounded hover:bg-green-100 flex gap-2"><img src="<?php echo URL_ROOT; ?>/images/icons/profile.png" alt="user-logo" class="h-5"> User Management</a>
+                <button id="logoutBtn" class="w-full flex text-left px-4 py-2 rounded hover:bg-green-100 gap-2"><img src="<?php echo URL_ROOT; ?>/images/icons/logout.png" alt="logout" class="h-5">Logout</button>
             </nav>
         </aside>
 

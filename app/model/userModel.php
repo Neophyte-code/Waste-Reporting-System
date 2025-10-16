@@ -358,7 +358,13 @@ class UserModel
     public function getUsers($barangay_id)
     {
         try {
-            $sql = "SELECT id, firstname, lastname, email, id_front, id_back, status, is_verified, created_at FROM users WHERE barangay_id = :barangay_id AND role NOT IN ('admin', 'superadmin') ORDER BY (status = 'pending') DESC, created_at DESC";
+            $sql = "SELECT id, firstname, lastname, email, id_front, id_back, status, is_verified, created_at 
+                FROM users 
+                WHERE barangay_id = :barangay_id 
+                  AND role NOT IN ('admin', 'superadmin') 
+                  AND deleted_at IS NULL
+                ORDER BY (status = 'pending') DESC, created_at DESC";
+
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':barangay_id', $barangay_id, PDO::PARAM_INT);
             $stmt->execute();
@@ -368,6 +374,7 @@ class UserModel
             return [];
         }
     }
+
 
 
     //function to verify the users (status = active)
@@ -387,7 +394,7 @@ class UserModel
     public function deleteUser($userID)
     {
         try {
-            $stmt = $this->db->prepare("DELETE FROM users WHERE id = :id");
+            $stmt = $this->db->prepare("UPDATE users SET deleted_at = NOW() WHERE id = :id");
             $stmt->bindParam(':id', $userID, PDO::PARAM_INT);
             return $stmt->execute();
         } catch (PDOException $e) {
@@ -395,7 +402,6 @@ class UserModel
             return false;
         }
     }
-
 
     //Get comprehensive summary data with date filtering (for admin)
     public function getSummaryData($barangay_id, $year = null, $month = null, $day = null)
@@ -749,11 +755,15 @@ class UserModel
         }
     }
 
-    //funtion to delete delete admin account (for superadmin)
+    // Function to soft delete admin account (for superadmin)
     public function deleteAdmin($id)
     {
         try {
-            $stmt = $this->db->prepare("delete FROM users WHERE id = :id AND role = 'admin'");
+            $stmt = $this->db->prepare("
+            UPDATE users 
+            SET deleted_at = NOW() 
+            WHERE id = :id AND role = 'admin'
+        ");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             return $stmt->execute();
         } catch (PDOException $e) {
