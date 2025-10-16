@@ -217,26 +217,24 @@ class Admin extends Controller
     //function to delete user
     public function deleteUser()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $userID = $_POST['user_id'] ?? null;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
+            $userID = (int)$_POST['user_id'];
             $userModel = $this->model('UserModel');
 
-            $message = "Invalid User ID.";
-            if ($userID) {
-                $deleted = $userModel->deleteUser($userID);
-                $message = $deleted ? "User deleted successfully." : "Failed to delete user.";
-            }
+            $deleted = $userModel->deleteUser($userID);
 
-            // Reload user list with message
-            $userData = $_SESSION['user'];
-            $users = $userModel->getUsers($userData['barangay_id']);
-
-            $this->view('admin/users', [
-                'user' => $userData,
-                'users' => $users,
-                'message' => $message
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => $deleted,
+                'message' => $deleted ? 'User deleted successfully!' : 'Failed to delete user.'
             ]);
+            exit;
         }
+
+        // Invalid request
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'message' => 'Invalid request.']);
+        exit;
     }
 
     //function to display the announcement UI

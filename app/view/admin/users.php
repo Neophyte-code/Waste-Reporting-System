@@ -8,28 +8,28 @@
   <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/css/output.css">
 </head>
 <style>
-  .flash-message {
-    position: fixed;
-    top: 30px;
-    right: -90px;
-    transform: translate(-50%, -50%);
-    background: #22C55E;
-    color: white;
-    padding: 16px 24px;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: center;
-    opacity: 1;
-    transition: opacity 0.8s ease, transform 0.8s ease;
-    z-index: 9999;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
   }
 
-  /* Hidden state for animation */
-  .flash-hide {
-    opacity: 0;
-    transform: translate(-50%, -60%);
+  .toast {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.375rem;
+    color: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    animation: slideInRight 0.4s ease forwards;
   }
 </style>
 
@@ -106,14 +106,6 @@
         <h2 class="text-xl font-semibold mb-4">User Information</h2>
 
         <div class="max-h-[calc(92vh-100px)] sm:max-h-[calc(86vh-100px)] overflow-auto rounded">
-
-          <?php if (!empty($_SESSION['flash_message'])): ?>
-            <div id="flash-message" class="flash-message">
-              <?= htmlspecialchars($_SESSION['flash_message']); ?>
-            </div>
-            <?php unset($_SESSION['flash_message']); ?>
-          <?php endif; ?>
-
           <table class="w-full text-sm border-collapse table-fixed">
             <thead class="sticky top-0 bg-green-500 text-white">
               <tr>
@@ -136,7 +128,7 @@
                       </dl>
                     </td>
                     <td class="hidden md:table-cell p-2.5 text-blue-600"><?= htmlspecialchars($user['email']) ?></td>
-                    <td class="p-3 flex gap-2">
+                    <td class="p-3 flex gap-2 justify-center">
                       <?php if ($user['status'] === 'pending'): ?>
                         <button
                           class="bg-gray-300 hover:bg-green-300 text-white px-3 py-1 rounded verify-btn"
@@ -149,7 +141,6 @@
                           <img src="<?php echo URL_ROOT; ?>/images/icons/check.png" alt="verify" class="h-5 w-5">
                         </button>
                       <?php endif; ?>
-
                       <button
                         class="bg-gray-300 hover:bg-red-300 text-white px-3 py-1 rounded delete-btn"
                         data-user-id="<?= htmlspecialchars($user['id']) ?>">
@@ -161,12 +152,7 @@
               <?php endif; ?>
             </tbody>
           </table>
-          <form id="deleteForm" method="POST" action="<?php echo URL_ROOT; ?>/admin/deleteUser" style="display:none;">
-            <input type="hidden" name="user_id" id="deleteUserId">
-          </form>
-
         </div>
-
       </div>
     </main>
   </div>
@@ -217,7 +203,13 @@
     </div>
   </div>
 
-  <!-- script for responsive sidebar and flash message-->
+  <!--Image Preview Modal -->
+  <div id="imagePreviewModal"
+    class="fixed inset-0 hidden z-[60] flex items-center justify-center">
+    <img id="previewImage" src="" alt="Preview"
+      class="max-h-[90vh] max-w-[90vw] rounded-lg shadow-2xl border-4 border-white">
+  </div>
+
   <script>
     // Sidebar controls (named functions) + close on outside click
     const toggleBtn = document.getElementById('toggleSidebar');
@@ -289,48 +281,13 @@
     // Update every 30 seconds
     setInterval(updateDateTime, 30000);
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const flashMessage = document.getElementById('flash-message');
-      if (flashMessage) {
-        setTimeout(() => {
-          flashMessage.classList.add('flash-hide');
-          setTimeout(() => flashMessage.remove(), 800); // Matches transition duration
-        }, 3000); // Show for 3 seconds
-      }
-
-      // Delete modal logic
-      const modal = document.getElementById('logoutModal');
-      const cancelBtn = document.getElementById('cancelBtn');
-      const deleteBtn = document.getElementById('deleteBtn');
-      const deleteForm = document.getElementById('deleteForm');
-      const deleteUserIdInput = document.getElementById('deleteUserId');
-
-      let currentUserId = null;
-
-      document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', () => {
-          currentUserId = button.dataset.userId;
-          modal.style.display = 'flex';
-        });
-      });
-
-      cancelBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
-      });
-
-      deleteBtn.addEventListener('click', () => {
-        if (currentUserId) {
-          deleteUserIdInput.value = currentUserId;
-          deleteForm.submit();
-        }
-      });
-    });
-
     // script for approving the user account (status = active)
     document.addEventListener('DOMContentLoaded', () => {
       const modal = document.getElementById('verifyModal');
       const closeModal = document.getElementById('closeModal');
       const approveBtn = document.getElementById('approveBtn');
+      const imagePreviewModal = document.getElementById('imagePreviewModal');
+      const previewImage = document.getElementById('previewImage');
 
       // open verify modal
       document.querySelectorAll('.verify-btn').forEach(btn => {
@@ -370,7 +327,7 @@
             if (data.success) {
               const flash = document.createElement('div');
               flash.id = 'flash-message';
-              flash.className = 'fixed top-4 right-4  transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded shadow-md z-50';
+              flash.className = 'fixed top-4 right-4 transform bg-green-500 text-white px-4 py-2 rounded shadow-md z-50';
               flash.textContent = data.message || 'User approved successfully!';
               document.body.appendChild(flash);
               setTimeout(() => flash.remove(), 4000);
@@ -381,7 +338,7 @@
             } else {
               const flash = document.createElement('div');
               flash.id = 'flash-message';
-              flash.className = 'fixed top-4 right-0 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded shadow-md z-50';
+              flash.className = 'fixed top-4 right-4 transform bg-red-500 text-white px-4 py-2 rounded shadow-md z-50';
               flash.textContent = data.message || 'Approval failed.';
               document.body.appendChild(flash);
               setTimeout(() => flash.remove(), 4000);
@@ -391,13 +348,100 @@
             console.error('Error:', error);
             const flash = document.createElement('div');
             flash.id = 'flash-message';
-            flash.className = 'fixed top-4 right-0 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded shadow-md z-50';
+            flash.className = 'fixed top-4 right-4 transform bg-red-500 text-white px-4 py-2 rounded shadow-md z-50';
             flash.textContent = 'Network or server error.';
             document.body.appendChild(flash);
             setTimeout(() => flash.remove(), 4000);
           });
       });
 
+
+      //Open the image preview for front ID
+      document.getElementById('modalFront').addEventListener('click', () => {
+        previewImage.src = document.getElementById('modalFront').src;
+        imagePreviewModal.classList.remove('hidden');
+      });
+
+      //Open the image preview for back ID
+      document.getElementById('modalBack').addEventListener('click', () => {
+        previewImage.src = document.getElementById('modalBack').src;
+        imagePreviewModal.classList.remove('hidden');
+      });
+
+      // close image preview when click outside
+      imagePreviewModal.addEventListener('click', (e) => {
+        if (e.target === imagePreviewModal) {
+          imagePreviewModal.classList.add('hidden');
+        }
+      });
+    });
+
+    //script for user deletion
+    document.addEventListener('DOMContentLoaded', () => {
+      const deleteModal = document.getElementById('logoutModal');
+      const cancelBtn = document.getElementById('cancelBtn');
+      const confirmDeleteBtn = document.getElementById('deleteBtn');
+      let selectedUserId = null;
+      let selectedRow = null;
+
+      // Open modal on delete click
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectedUserId = btn.dataset.userId;
+          selectedRow = btn.closest('tr');
+          deleteModal.style.display = 'flex';
+        });
+      });
+
+      // Cancel delete
+      cancelBtn.addEventListener('click', () => {
+        deleteModal.style.display = 'none';
+        selectedUserId = null;
+      });
+
+      // Click outside modal closes it
+      deleteModal.addEventListener('click', (e) => {
+        if (e.target === deleteModal) {
+          deleteModal.style.display = 'none';
+        }
+      });
+
+      // Confirm delete
+      confirmDeleteBtn.addEventListener('click', () => {
+        if (!selectedUserId) return;
+
+        fetch(`<?php echo URL_ROOT; ?>/admin/deleteUser`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `user_id=${encodeURIComponent(selectedUserId)}`
+          })
+          .then(response => response.json())
+          .then(data => {
+            // Show toast
+            const flash = document.createElement('div');
+            flash.className = `toast ${data.success ? 'bg-green-500' : 'bg-red-500'}`;
+            flash.textContent = data.message
+            document.body.appendChild(flash);
+            setTimeout(() => flash.remove(), 4000);
+
+
+            // If success, remove row instantly
+            if (data.success && selectedRow) {
+              selectedRow.remove();
+            }
+
+            deleteModal.style.display = 'none';
+          })
+          .catch(() => {
+            const flash = document.createElement('div');
+            flash.className = 'toast bg-red-500';
+            flash.textContent = 'Network or server error.';
+            document.body.appendChild(flash);
+            setTimeout(() => flash.remove(), 4000);
+          });
+      });
     });
   </script>
 </body>

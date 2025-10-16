@@ -57,6 +57,7 @@
     --container-lg: 32rem;
     --container-xl: 36rem;
     --container-2xl: 42rem;
+    --container-3xl: 48rem;
     --container-4xl: 56rem;
     --container-5xl: 64rem;
     --container-7xl: 80rem;
@@ -363,6 +364,9 @@
   .z-50 {
     z-index: 50;
   }
+  .z-\[60\] {
+    z-index: 60;
+  }
   .order-1 {
     order: 1;
   }
@@ -553,6 +557,9 @@
   .h-75 {
     height: calc(var(--spacing) * 75);
   }
+  .h-100 {
+    height: calc(var(--spacing) * 100);
+  }
   .h-\[27rem\] {
     height: 27rem;
   }
@@ -583,6 +590,9 @@
   .max-h-60 {
     max-height: calc(var(--spacing) * 60);
   }
+  .max-h-80 {
+    max-height: calc(var(--spacing) * 80);
+  }
   .max-h-135 {
     max-height: calc(var(--spacing) * 135);
   }
@@ -591,6 +601,9 @@
   }
   .max-h-\[80vh\] {
     max-height: 80vh;
+  }
+  .max-h-\[90vh\] {
+    max-height: 90vh;
   }
   .max-h-\[calc\(92vh-100px\)\] {
     max-height: calc(92vh - 100px);
@@ -717,6 +730,9 @@
   }
   .max-w-2xl {
     max-width: var(--container-2xl);
+  }
+  .max-w-3xl {
+    max-width: var(--container-3xl);
   }
   .max-w-5xl {
     max-width: var(--container-5xl);
@@ -1708,13 +1724,6 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-red-300);
-      }
-    }
-  }
-  .hover\:bg-red-500 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-red-500);
       }
     }
   }
