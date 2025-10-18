@@ -1,3 +1,5 @@
+console.log("URL_ROOT value:", URL_ROOT);
+
 async function fetchNotifications() {
     try {
         const response = await fetch(`${URL_ROOT}/user/getNotifications`, {
@@ -46,19 +48,17 @@ async function fetchNotifications() {
             notificationItem.onclick = () => markAsRead(notification.id, notificationItem);
 
             // Determine icon and colors based on notification type
-            let iconName, bgClass, iconColor;
+            let iconFile, bgClass;
+
             if (notification.type === 'report_status') {
-                iconName = 'trash';
+                iconFile = `${URL_ROOT}/images/icons/check.png`;
                 bgClass = 'bg-green-100';
-                iconColor = 'text-green-600';
             } else if (notification.type === 'report_submitted') {
-                iconName = 'checkmark-circle';
+                iconFile = `${URL_ROOT}/images/icons/check.png`;
                 bgClass = 'bg-blue-100';
-                iconColor = 'text-blue-600';
             } else {
-                iconName = 'notifications';
+                iconFile = `${URL_ROOT}/images/icons/bell-color.png`;
                 bgClass = 'bg-gray-100';
-                iconColor = 'text-gray-600';
             }
 
             // Format the date
@@ -75,8 +75,8 @@ async function fetchNotifications() {
                 <div class="flex items-start gap-3">
                     <div class="flex-shrink-0">
                         <div class="w-10 h-10 ${bgClass} rounded-full flex items-center justify-center">
-                            <ion-icon name="${iconName}" class="${iconColor} text-lg"></ion-icon>
-                        </div>
+                        <img src="${iconFile}" alt="${notification.type}" class="w-5 h-5">
+                    </div>
                     </div>
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center gap-2 mb-1">
