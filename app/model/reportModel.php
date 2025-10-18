@@ -424,6 +424,7 @@ class ReportModel
             return [];
         }
     }
+
     // Approve redemption request by ID (for admin)
     public function approveRequest($id)
     {

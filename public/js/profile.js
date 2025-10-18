@@ -73,7 +73,7 @@
         const profileModal = document.getElementById('profileModal');
         const notificationModal = document.getElementById('notificationModal');
         const profileImg = document.querySelector('img[onclick="openProfileModal()"]');
-        const notificationIcon = document.querySelector('ion-icon[onclick="openNotificationModal()"]');
+        const notificationIcon = document.querySelector('img[onclick="openNotificationModal()"]');
         
         // Check profile modal
         if (!profileModal.classList.contains('hidden') && 

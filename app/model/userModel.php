@@ -686,8 +686,8 @@ class UserModel
     {
         try {
             $stmt = $this->db->prepare("
-                insert into users (firstname, lastname, barangay_id, email, password, role)
-                values (:firstname, :lastname, :barangay, :email, :password, 'admin')
+                insert into users (firstname, lastname, barangay_id, email, password, role, is_verified, status)
+                values (:firstname, :lastname, :barangay, :email, :password, 'admin', '1', 'active')
             ");
 
             // Hash password before saving
@@ -713,7 +713,7 @@ class UserModel
 
         try {
             $stmt = $this->db->prepare("
-            select u.id, u.firstname, u.lastname, b.name, u.email from users u join barangays b on  b.id = u.barangay_id where role = 'admin'
+            select u.id, u.firstname, u.lastname, b.name, u.email from users u join barangays b on  b.id = u.barangay_id where role = 'admin' AND deleted_at IS NULL
             ");
 
             $stmt->execute();

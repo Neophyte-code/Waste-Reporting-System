@@ -23,8 +23,6 @@ async function fetchHistory() {
             },
             credentials: 'same-origin'
         });
-
-        console.log('History response status:', response.status);
         
         if (!response.ok) {
             console.error('Response not OK:', response);
@@ -32,7 +30,6 @@ async function fetchHistory() {
         }
 
         const history = await response.json();
-        console.log('Received history:', history);
 
         const historyContainer = document.querySelector('#historyModal .space-y-4');
         
@@ -223,5 +220,4 @@ modal.addEventListener('click', (event) => {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Transaction history system initialized');
 });

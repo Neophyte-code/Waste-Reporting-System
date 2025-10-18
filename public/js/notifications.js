@@ -8,16 +8,12 @@ async function fetchNotifications() {
             credentials: 'same-origin'
         });
 
-        console.log('Response status:', response.status);
-        console.log('Response headers:', [...response.headers.entries()]);
-        
         if (!response.ok) {
             console.error('Response not OK:', response);
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const notifications = await response.json();
-        console.log('Received notifications:', notifications);
 
         const notificationContent = document.getElementById('notificationContent');
         const notificationBadge = document.getElementById('notificationBadge');
@@ -208,7 +204,6 @@ document.addEventListener('click', function(event) {
 document.addEventListener('DOMContentLoaded', function() {
     // Check if notification elements exist
     if (document.getElementById('notificationModal')) {
-        console.log('Initializing notification system'); // Debug log
         
         // Add click handler to notification icon
         const notificationIcon = document.querySelector('ion-icon[name="notifications-outline"]');

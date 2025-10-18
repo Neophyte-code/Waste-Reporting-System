@@ -50,7 +50,6 @@
         <aside id="sidebar" class="sidebar fixed md:static top-0 left-0 h-screen w-64 bg-white p-4 transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-50 flex-shrink-0">
 
             <div class="flex items-center gap-3 mb-6">
-                <!-- Logo container (no SA text anymore) -->
                 <div id="sidebarLogo" class="h-12 w-12  flex items-center justify-center overflow-hidden">
                     <img src="<?php echo URL_ROOT; ?>/images/tree3.png" alt="logo" class="h-15">
                 </div>
